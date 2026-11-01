@@ -13,12 +13,13 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 # ================= SOZLAMALAR =================
-BOT_TOKEN = "SIZNING_BOT_TOKENINGIZ"
-ADMIN_ID = 123456789  # O'zingizning Telegram ID raqamingiz
- WEBAPP_URL = "https://SIZNING-SAYTINGIZ.onrender.com"  # Render bergan https:// manzil
-CARD_NUMBER = "8600 0000 0000 0000"
-CARD_HOLDER = "ISM FAMILIYA"
-ADMIN_USER = "@admin_username"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://example.com")
+CARD_NUMBER = os.getenv("CARD_NUMBER", "8600 0000 0000 0000")
+CARD_HOLDER = os.getenv("CARD_HOLDER", "ISM FAMILIYA")
+ADMIN_USER = os.getenv("ADMIN_USER", "@admin_username")
+
 
 UC_PACKAGES = {
     "60": "60 UC — 13,000 so'm",
