@@ -2,380 +2,604 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>YAQUB UC SHOP</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root { --bg:#070b14; --card:#10192d; --inner:#0b1222; --b-blue:rgba(56,189,248,0.22); --b-gold:rgba(245,185,21,0.45); --gold:#f5b915; --muted:#94a3b8; }
-* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; -webkit-tap-highlight-color:transparent; }
-body { background:radial-gradient(circle at top,#152238,var(--bg) 70%); color:#f8fafc; min-height:100vh; padding-bottom:84px; overflow-x:hidden; }
-.app { max-width:480px; margin:0 auto; padding:12px 14px; }
+:root{--bg:#050a1e;--topbg:rgba(5,10,30,.82);--card:#0d1740;--card2:#14215a;--line:rgba(64,118,255,.32);--text:#eef2ff;--muted:#8d9cca;--gold:#ffc83d;--gold2:#ff9a1f;--blue:#2f7bff;--green:#2fd27a;--red:#ff5d62;--gray:#8793b8;--ink:#1a1206;--shadow:0 8px 28px rgba(0,0,0,.45)}
+[data-theme=light]{--bg:#eef2fc;--topbg:rgba(238,242,252,.86);--card:#ffffff;--card2:#eaf0ff;--line:rgba(47,107,255,.28);--text:#0c1433;--muted:#5a6a96;--shadow:0 8px 24px rgba(30,60,140,.14)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(90% 45% at 85% -8%,rgba(47,107,255,.38),transparent 62%),radial-gradient(70% 35% at 0% 100%,rgba(255,200,61,.10),transparent 60%)}
+[data-theme=light] body::before{opacity:.4}
+body.lock{overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+.ic{display:block;flex:none}
+#app{position:relative;z-index:1;max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+#app.no-tabs{padding-bottom:28px}
+#app.no-tabs #tabs{display:none}
 
-/* TOP BAR (Faqat logotip va nom, ortiqcha menyu yo'q) */
-.top-bar { display:flex; align-items:center; gap:12px; padding:12px 16px; background:rgba(16,25,45,0.9); border:1px solid var(--b-blue); border-radius:16px; margin-bottom:14px; backdrop-filter:blur(10px); }
-.logo { width:40px; height:40px; border-radius:50%; background:#1a1405; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; color:var(--gold); text-align:center; line-height:1.1; cursor:pointer; }
-.titles h1 { font-size:16px; font-weight:800; color:#fff; }
-.titles p { font-size:10px; color:var(--gold); font-weight:700; letter-spacing:1px; }
+/* ===== Yuqori panel ===== */
+#top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--topbg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.logo{width:42px;height:42px;flex:none;filter:drop-shadow(0 0 8px rgba(255,200,61,.35))}
+.brand{flex:1;min-width:0}
+.brand b{display:block;font-size:17px;letter-spacing:.02em}
+.brand small{display:block;font-size:10px;letter-spacing:.16em;color:var(--muted)}
+.ttl{flex:1;font-size:18px;font-weight:800}
+.rb{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(80,120,255,.14);border:1px solid var(--line);transition:transform .2s,background .2s}
+.rb:active{transform:scale(.88);background:rgba(80,120,255,.3)}
 
-/* ANIMATSIYALI OYNALAR */
-.screen { display:none; opacity:0; transform:translateY(12px); transition:opacity 0.25s ease, transform 0.25s ease; }
-.screen.active { display:block; opacity:1; transform:translateY(0); }
+/* ===== Ekranlar ===== */
+#view{padding:6px 14px 0}
+.screen{animation:scrIn .38s cubic-bezier(.22,1,.36,1)}
+@keyframes scrIn{from{opacity:0;transform:translateX(26px)}}
+.sec{display:flex;align-items:center;gap:8px;margin:22px 2px 12px;font-size:16px;font-weight:800}
+.sec span{font-size:18px}
 
-/* HERO BANNER */
-.hero { position:relative; background:linear-gradient(135deg,#1e293b 0%,#0f172a 55%,#2e1f05 100%); border:1px solid var(--b-gold); border-radius:18px; padding:18px 16px; margin-bottom:12px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.45); }
-.pubg-tag { display:inline-block; background:var(--gold); color:#000; font-weight:900; font-size:15px; padding:2px 8px; border-radius:5px; }
-.pubg-sub { display:block; font-size:10px; letter-spacing:2px; color:var(--gold); font-weight:700; margin:3px 0 10px; }
-.hero h2 { font-size:18px; font-weight:800; max-width:68%; margin-bottom:12px; line-height:1.25; }
-.hero-img { position:absolute; right:-10px; bottom:-12px; width:110px; height:110px; object-fit:contain; pointer-events:none; filter:drop-shadow(0 5px 12px rgba(0,0,0,0.7)); }
-.online { display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.5); color:#34d399; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; }
-.dot { width:7px; height:7px; background:#10b981; border-radius:50%; box-shadow:0 0 8px #10b981; }
+/* ===== Banner ===== */
+.hero{position:relative;overflow:hidden;min-height:178px;padding:18px 16px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(135deg,#0d1d5c 0%,#0a1233 55%,#1b1233 100%);box-shadow:0 0 0 1px rgba(47,107,255,.14),0 0 38px rgba(47,107,255,.28)}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 52%,rgba(255,200,61,.22) 52.4%,rgba(255,200,61,0) 72%)}
+.hero::after{content:"";position:absolute;left:-30%;bottom:-60%;width:90%;height:120%;background:radial-gradient(circle,rgba(47,123,255,.35),transparent 65%)}
+.hero-txt{position:relative;z-index:2;max-width:58%}
+.tagp{display:inline-block;padding:4px 10px;border-radius:8px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink);font-size:12px;font-weight:900;letter-spacing:.06em;font-style:italic}
+.hero h1{margin:12px 0 12px;font-size:20px;line-height:1.15;font-weight:900;font-style:italic;color:#fff;transform:skewX(-6deg);text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.online{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:20px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:12px;font-weight:800;letter-spacing:.08em}
+.online i{width:9px;height:9px;border-radius:50%;background:var(--gray)}
+.online.on i{background:var(--green);box-shadow:0 0 0 0 rgba(47,210,122,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(47,210,122,0)}100%{box-shadow:0 0 0 0 rgba(47,210,122,0)}}
+.hero-img{position:absolute;z-index:1;right:-6px;bottom:6px;width:42%;max-width:180px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.65));animation:float 4.2s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-7px) rotate(-1.5deg)}}
+.spark{position:absolute;z-index:1;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px rgba(255,255,255,.8);opacity:0;animation:tw 3.2s infinite}
+.s1{right:30%;top:22%}.s2{right:8%;top:14%;animation-delay:1.1s}.s3{right:20%;bottom:34%;animation-delay:2s}
+@keyframes tw{40%,60%{opacity:1;transform:scale(1.4)}}
 
-.promo { display:flex; align-items:center; justify-content:space-between; background:linear-gradient(90deg,rgba(245,185,21,0.15),rgba(16,25,45,0.9)); border:1px solid var(--b-gold); border-radius:14px; padding:11px 14px; margin-bottom:15px; font-size:12px; cursor:pointer; }
-.sec-title { font-size:15px; font-weight:700; margin-bottom:10px; }
+/* ===== Aksiya ===== */
+.promo{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:12px 14px;text-align:left;border-radius:16px;border:1px solid rgba(255,200,61,.5);background:linear-gradient(90deg,rgba(255,200,61,.2),rgba(255,154,31,.08));box-shadow:0 0 22px rgba(255,200,61,.14)}
+.promo .gi{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--ink)}
+.promo b{display:block;color:var(--gold);font-size:15px}
+.promo small{display:block;margin-top:2px;font-size:13px}
+.promo>div{flex:1}
 
-/* UC GRID & ORIGINAL IMAGES */
-.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-.uc-card { background:linear-gradient(180deg,#16223b,#0c1324); border:1px solid var(--b-blue); border-radius:14px; padding:12px 6px; text-align:center; cursor:pointer; transition:transform 0.15s, border-color 0.15s; }
-.uc-card:active { border-color:var(--gold); transform:scale(0.96); }
-.uc-img-box { width:46px; height:46px; margin:0 auto 6px; display:flex; align-items:center; justify-content:center; }
-.uc-img-box img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(245,185,21,0.35)); }
-.amt { font-size:14px; font-weight:800; color:#fff; }
-.prc { font-size:11px; font-weight:700; color:var(--gold); margin-top:3px; }
+/* ===== Paketlar ===== */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pk{position:relative;display:flex;flex-direction:column;align-items:center;padding:12px 4px 10px;border-radius:16px;border:1.5px solid var(--line);background:linear-gradient(180deg,var(--card2),var(--card));box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.34,1.56,.64,1),border-color .2s,box-shadow .2s;animation:rise .5s ease backwards;animation-delay:calc(var(--i) * 60ms)}
+@keyframes rise{from{opacity:0;transform:translateY(20px) scale(.94)}}
+.pk:active{transform:scale(.93)}
+.pk.hot{border-color:var(--gold);box-shadow:0 0 0 2px rgba(255,200,61,.16),var(--shadow)}
+.pk img{width:var(--w);height:auto;margin:2px 0 6px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.5))}
+.pk b{font-size:19px;font-weight:900;line-height:1}
+.pk small{font-size:10px;letter-spacing:.14em;color:var(--muted);margin-top:2px}
+.pk .pr{margin-top:7px;padding:3px 9px;border-radius:14px;background:rgba(255,200,61,.14);color:var(--gold);font-size:12.5px;font-weight:800;white-space:nowrap}
+.pk .pr s{color:var(--muted);font-weight:600;font-size:10px;margin-left:3px}
+.flag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;font-size:10.5px;font-weight:900;padding:2px 8px;border-radius:9px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink)}
 
-/* 2 & 3 OYNALAR */
-.sel-banner { display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,#292008,#10192d); border:1px solid var(--b-gold); border-radius:16px; padding:15px; margin-bottom:16px; }
-.badge-pop { display:inline-block; margin-top:5px; background:var(--gold); color:#000; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; }
-.box { background:var(--card); border:1px solid var(--b-blue); border-radius:14px; padding:12px 14px; margin-bottom:12px; }
-.lbl { font-size:12px; color:#cbd5e1; margin-bottom:6px; display:block; font-weight:600; }
-.inp { width:100%; background:var(--inner); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 12px; color:#fff; font-size:15px; outline:none; }
-.inp:focus { border-color:var(--gold); }
-.warn { display:flex; gap:10px; background:rgba(245,158,11,0.1); border:1px solid var(--b-gold); border-radius:14px; padding:12px; margin:12px 0 16px; font-size:12px; line-height:1.4; }
-.gold-btn { width:100%; padding:14px; background:linear-gradient(135deg,#fbbf24,#d97706); color:#090d16; font-weight:800; font-size:15px; border:none; border-radius:14px; cursor:pointer; box-shadow:0 4px 15px rgba(245,185,21,0.25); }
-.gold-btn:active { transform:scale(0.98); }
-.row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
-.row:last-child { border-bottom:none; }
-.copy-btn { background:rgba(14,165,233,0.15); border:1px solid rgba(14,165,233,0.35); color:#38bdf8; border-radius:8px; padding:5px 9px; font-size:11px; cursor:pointer; }
-.pay-opt { display:flex; align-items:center; justify-content:space-between; background:var(--card); border:1px solid var(--b-blue); border-radius:13px; padding:12px 14px; margin-bottom:9px; cursor:pointer; font-size:14px; font-weight:600; }
-.pay-opt.selected { border-color:var(--gold); background:rgba(245,185,21,0.12); }
-.chk { width:20px; height:20px; border-radius:50%; border:2px solid #475569; display:flex; align-items:center; justify-content:center; font-size:11px; color:transparent; }
-.pay-opt.selected .chk { background:var(--gold); border-color:var(--gold); color:#000; font-weight:900; }
+/* ===== Forma ===== */
+.pkgcard{position:relative;display:flex;align-items:center;gap:14px;padding:16px;border-radius:20px;border:1px solid rgba(255,200,61,.5);background:linear-gradient(120deg,#2b2410 0%,var(--card2) 55%,var(--card) 100%);box-shadow:0 0 26px rgba(255,200,61,.14)}
+.pkgcard img{width:112px;flex:none;filter:drop-shadow(0 8px 12px rgba(0,0,0,.55))}
+.pkgcard .big{display:block;font-size:30px;font-weight:900;line-height:1.05}
+.pkgcard .gold{display:block;margin-top:6px;color:var(--gold);font-size:19px;font-weight:800}
+.pkgcard .gold s{color:var(--muted);font-size:13px;font-weight:600;margin-left:6px}
+.pill{position:absolute;right:12px;bottom:12px;padding:4px 12px;border-radius:12px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink);font-size:12px;font-weight:900}
+.fld{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:12px 14px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);transition:border-color .2s,box-shadow .2s}
+.fld:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,123,255,.2)}
+.fld.bad{border-color:var(--red);animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.fi{width:40px;height:40px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(47,123,255,.16);color:#7fb0ff;font-size:20px}
+.fb{flex:1;min-width:0}
+.fb small{display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+.fb input{width:100%;padding:2px 0;border:0;outline:0;background:none;color:var(--text);font:inherit;font-size:16px;font-weight:700}
+.fb input::placeholder{color:var(--muted);font-weight:500}
+.help{color:var(--muted);align-self:flex-start}
+.warn{display:flex;gap:12px;margin:6px 0 18px;padding:14px;border-radius:16px;border:1px solid rgba(255,200,61,.55);background:rgba(255,200,61,.07);color:var(--gold)}
+.warn b{display:block;font-size:15px}
+.warn p{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--text);opacity:.88}
+.cta{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;border-radius:16px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink);font-size:18px;font-weight:900;box-shadow:0 8px 24px rgba(255,154,31,.35);transition:transform .15s}
+.cta:active{transform:scale(.97)}
+.cta.busy{pointer-events:none;opacity:.75}
+.cta.busy::after{content:"";width:18px;height:18px;border-radius:50%;border:3px solid rgba(26,18,6,.3);border-top-color:var(--ink);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* 4. SUCCESS */
-.ok-circle { width:80px; height:80px; border-radius:50%; background:rgba(16,185,129,0.2); border:3px solid #10b981; display:flex; align-items:center; justify-content:center; font-size:38px; color:#10b981; margin:15px auto; box-shadow:0 0 25px rgba(16,185,129,0.4); }
+/* ===== Tasdiqlash ===== */
+.row{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+.row>div{flex:1;min-width:0}
+.row small{display:block;font-size:12px;color:var(--muted)}
+.row b{display:block;margin-top:2px;font-size:17px;word-break:break-all}
+.cp{color:var(--blue);padding:6px}
+.meth{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:14px;border-radius:14px;border:1.5px solid var(--gold);background:rgba(255,200,61,.07)}
+.meth .mi{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,200,61,.18);font-size:20px}
+.meth b{flex:1;font-size:16px}
+.meth small{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+.chk{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--gold);color:var(--ink)}
+.total{display:flex;align-items:center;justify-content:space-between;margin:14px 2px 14px;font-size:15px}
+.total b{font-size:20px;color:var(--gold)}
+.total s{color:var(--muted);font-size:14px;margin-right:6px}
 
-/* 5. TABS */
-.tabs { display:flex; gap:8px; margin-bottom:12px; }
-.tab-btn { flex:1; padding:8px; border-radius:10px; background:var(--card); border:1px solid var(--b-blue); color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; }
-.tab-btn.active { background:var(--gold); color:#000; border-color:var(--gold); font-weight:800; }
-.status-tag { font-size:10px; font-weight:700; padding:3px 8px; border-radius:10px; display:inline-block; margin-bottom:4px; }
-.st-done { background:rgba(16,185,129,0.2); color:#34d399; }
-.st-wait { background:rgba(14,165,233,0.2); color:#38bdf8; }
-.st-no { background:rgba(239,68,68,0.2); color:#f87171; }
+/* ===== Muvaffaqiyat ===== */
+.succ{text-align:center;padding-top:6px}
+.sky{position:relative;height:200px;margin:0 -14px;overflow:hidden}
+.para{position:absolute;top:8px;width:46px;animation:sway 3.4s ease-in-out infinite;transform-origin:50% 0;opacity:.9}
+.para.l{left:10%}.para.r{right:10%;top:30px;animation-delay:1.2s;width:38px}
+@keyframes sway{50%{transform:rotate(7deg) translateY(6px)}}
+.okring{position:absolute;left:50%;top:26px;width:130px;height:130px;margin-left:-65px}
+.okring::before,.okring::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(47,210,122,.55);animation:ring 2.4s ease-out infinite}
+.okring::after{animation-delay:1.2s}
+@keyframes ring{from{transform:scale(.9);opacity:1}to{transform:scale(1.7);opacity:0}}
+.okring svg{position:relative;width:100%;height:100%;filter:drop-shadow(0 0 16px rgba(47,210,122,.7))}
+.okring .c{stroke-dasharray:340;stroke-dashoffset:340;animation:draw .7s .1s ease forwards}
+.okring .t{stroke-dasharray:80;stroke-dashoffset:80;animation:draw .5s .65s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.succ h1{margin:6px 0 8px;font-size:23px;line-height:1.2}
+.succ p{margin:0 0 20px;color:var(--muted);font-size:15px}
+.info{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:13px 14px;text-align:left;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+.info .ii{width:38px;height:38px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(47,123,255,.18);color:#7fb0ff}
+.info small{display:block;color:var(--muted);font-size:12px}
+.info b{font-size:15px}
+.succ .cta{margin-top:16px}
 
-/* 6. SUPPORT & 7. PROFILE */
-.sup-btn { width:100%; padding:13px; border-radius:12px; border:1px solid var(--b-blue); background:var(--card); color:#fff; font-size:14px; font-weight:700; margin-bottom:9px; cursor:pointer; }
-.sup-btn.pri { background:linear-gradient(135deg,#0ea5e9,#0284c7); border:none; }
-.avatar { width:72px; height:72px; border-radius:50%; background:#1e293b; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:800; margin:0 auto 10px; }
+/* ===== Tarix ===== */
+.chips{display:flex;gap:8px;margin:8px 0 14px;overflow-x:auto}
+.chip{padding:9px 18px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:14px;font-weight:700;white-space:nowrap}
+.chip.on{background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink);border-color:transparent}
+.ord{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:12px;border-radius:16px;border:1px solid var(--line);background:var(--card);animation:rise .45s ease backwards;animation-delay:calc(var(--i) * 55ms)}
+.ord img{width:62px;flex:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
+.ord .m{flex:1;min-width:0}
+.ord .m b{display:block;font-size:17px}
+.ord .m span{display:block;margin-top:2px;color:var(--gold);font-weight:700;font-size:14px}
+.ord .m small{display:block;margin-top:3px;color:var(--muted);font-size:10.5px}
+.ord .r{text-align:right}
+.ord .r small{display:block;margin-top:6px;color:var(--muted);font-size:11px;white-space:nowrap}
+.st{display:inline-block;padding:4px 11px;border-radius:9px;font-size:12px;font-weight:800}
+.st.pending{background:rgba(47,123,255,.2);color:#6fa6ff}
+.st.done{background:rgba(47,210,122,.2);color:var(--green)}
+.st.cancelled{background:rgba(135,147,184,.2);color:var(--gray)}
+.empty{padding:50px 10px;text-align:center;color:var(--muted);font-size:15px;line-height:1.7}
+.empty i{display:block;font-style:normal;font-size:44px;margin-bottom:6px}
+.sk{height:78px;margin-bottom:10px;border-radius:16px;background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:shim 1.2s infinite linear}
+@keyframes shim{to{background-position:-200% 0}}
 
-/* PASTKI NAVIGATSIYA MENYU */
-.b-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(11,18,34,0.96); border-top:1px solid var(--b-blue); display:flex; justify-content:space-around; padding:8px 4px 12px; z-index:100; backdrop-filter:blur(10px); }
-.nav-i { background:none; border:none; color:#64748b; font-size:11px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; flex:1; transition:color 0.2s; }
-.nav-i.active { color:#38bdf8; }
+/* ===== Qo'llab-quvvatlash ===== */
+.sup{text-align:center}
+.supart{position:relative;height:190px;margin:0 -14px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(60% 70% at 50% 45%,rgba(47,123,255,.4),transparent 70%)}
+.supart .hd{position:relative;width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1c3fa8,#0b1a55);border:2px solid rgba(100,150,255,.6);color:#fff;box-shadow:0 0 36px rgba(47,123,255,.55)}
+.supart .hd::before{content:"";position:absolute;inset:-14px;border-radius:50%;border:1.5px dashed rgba(100,150,255,.45);animation:spin 14s linear infinite}
+.sup h1{margin:6px 0 6px;font-size:23px}
+.sup p{margin:0 0 18px;color:var(--muted);font-size:15px}
+.sbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-bottom:10px;padding:15px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-size:16px;font-weight:800}
+.sbtn.main{background:linear-gradient(90deg,#1f6bff,#2f8bff);border-color:transparent;color:#fff;box-shadow:0 8px 22px rgba(47,123,255,.4)}
+.sbtn:active{transform:scale(.98)}
+.rtime{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;padding:13px;border-radius:14px;border:1px solid rgba(255,200,61,.4);color:var(--gold);font-weight:800}
+.rtime span{color:var(--text);font-weight:600}
+
+/* ===== Profil ===== */
+.prof{text-align:center;padding-top:10px}
+.ava{position:relative;width:96px;height:96px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:34px;font-weight:900;color:#fff;background:linear-gradient(135deg,#1c3fa8,#0b1a55);border:2px solid rgba(100,150,255,.7);box-shadow:0 0 28px rgba(47,123,255,.5)}
+.ava img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.prof h2{margin:0;font-size:21px}
+.prof .un{margin:3px 0 18px;color:var(--muted);font-size:14px}
+.card{margin-bottom:14px;border-radius:16px;border:1px solid var(--line);background:var(--card);overflow:hidden;text-align:left}
+.it{display:flex;align-items:center;gap:12px;width:100%;padding:14px;text-align:left;font-size:15px;border-bottom:1px solid rgba(100,140,255,.14)}
+.it:last-child{border-bottom:0}
+.it .l{width:34px;height:34px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(47,123,255,.16);color:#7fb0ff}
+.it .t{flex:1;font-weight:600}
+.it .v{color:var(--muted);font-weight:600}
+.it .v.g{color:var(--gold);font-weight:800}
+.it .ch{color:var(--muted)}
+.sw{position:relative;width:48px;height:28px;flex:none;border-radius:14px;background:rgba(135,147,184,.4);transition:background .25s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.4);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.sw.on{background:var(--blue)}
+.sw.on::after{transform:translateX(20px)}
+
+/* ===== Yangiliklar ===== */
+.news{margin-bottom:12px;padding:16px;border-radius:18px;border:1px solid rgba(255,200,61,.45);background:linear-gradient(120deg,rgba(255,200,61,.16),var(--card));display:flex;gap:14px}
+.news .gi{width:48px;height:48px;flex:none;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--ink)}
+.news b{display:block;color:var(--gold);font-size:16px}
+.news p{margin:5px 0 0;font-size:14px;line-height:1.45}
+
+/* ===== Pastki menyu ===== */
+#tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;max-width:520px;margin:0 auto;display:flex;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:var(--topbg);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.tab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--muted);font-size:10px;font-weight:700;white-space:nowrap;letter-spacing:-.1px;transition:color .2s,transform .2s}
+.tab span{position:relative;display:flex;padding:4px 14px;border-radius:12px;transition:background .25s}
+.tab.on{color:var(--blue)}
+.tab.on span{background:rgba(47,123,255,.2);transform:translateY(-1px)}
+.tab:active{transform:scale(.92)}
+
+/* ===== Yon menyu ===== */
+#ov{position:fixed;inset:0;z-index:50;background:rgba(3,6,18,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s}
+body.dr #ov{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;bottom:0;left:0;z-index:60;width:min(78vw,330px);display:flex;flex-direction:column;overflow-y:auto;background:linear-gradient(180deg,#101c4d,#070d26);border-right:1px solid var(--line);border-radius:0 26px 26px 0;box-shadow:14px 0 44px rgba(0,0,0,.55);transform:translateX(-106%);visibility:hidden;transition:transform .5s cubic-bezier(.22,1,.36,1),visibility 0s .5s}
+[data-theme=light] #drawer{background:linear-gradient(180deg,#ffffff,#e6edff)}
+body.dr #drawer{transform:none;visibility:visible;transition-delay:0s}
+.dh{display:flex;align-items:center;gap:12px;padding:18px 14px 14px}
+.dh>div{flex:1;min-width:0}
+.dh b{display:block;font-size:17px}
+.dh small{display:block;font-size:12px;color:var(--muted)}
+.dnav{padding:6px 10px;flex:1}
+.di{display:flex;align-items:center;gap:14px;width:100%;margin-bottom:4px;padding:14px 12px;border-radius:14px;text-align:left;font-size:16px;font-weight:600;opacity:0;transform:translateX(-22px)}
+body.dr .di{animation:dIn .5s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(.12s + var(--i) * 60ms)}
+@keyframes dIn{to{opacity:1;transform:none}}
+.di span{flex:1}
+.di .ch{color:var(--muted)}
+.di.on{background:rgba(255,200,61,.12);color:var(--gold)}
+.dban{position:relative;margin:10px 14px 18px;padding:16px 14px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(135deg,#17358f,#0a1233)}
+.dban::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,61,.45),transparent 70%)}
+.dban b{display:block;position:relative;z-index:1;color:var(--gold);font-size:17px;font-style:italic}
+.dban small{position:relative;z-index:1;color:#cfe0ff;font-size:13px}
+.dban .pl{position:absolute;z-index:1;right:14px;bottom:12px;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#2f8bff;color:#fff}
+
+/* ===== Sheet, toast ===== */
+#sheet{position:fixed;inset:0;z-index:80;pointer-events:none}
+#sheet .bg{position:absolute;inset:0;background:rgba(3,6,18,.55);opacity:0;transition:opacity .3s}
+#sheet .pn{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;padding:14px 14px calc(18px + env(safe-area-inset-bottom));border-radius:22px 22px 0 0;border:1px solid var(--line);background:var(--card);transform:translateY(105%);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+#sheet.on{pointer-events:auto}
+#sheet.on .bg{opacity:1}
+#sheet.on .pn{transform:none}
+#sheet h3{margin:4px 4px 12px;font-size:17px}
+.so{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:8px;padding:14px;border-radius:14px;border:1.5px solid var(--line);font-size:16px;font-weight:700;text-align:left}
+.so.on{border-color:var(--gold);background:rgba(255,200,61,.08)}
+.so span{flex:1}
+.so .k{color:var(--gold)}
+#toast{position:fixed;left:50%;bottom:calc(98px + env(safe-area-inset-bottom));z-index:90;max-width:86vw;padding:11px 18px;border-radius:14px;background:rgba(20,30,70,.96);border:1px solid var(--line);color:#fff;font-size:14px;font-weight:600;text-align:center;opacity:0;pointer-events:none;transform:translate(-50%,12px);transition:opacity .25s,transform .25s}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.di{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-
-<div class="app">
-    <!-- TOP BAR (Ortiqcha 3 nuqta menyu olib tashlandi) -->
-    <div class="top-bar">
-        <div class="logo" onclick="openTab('homeScreen')">YAQUB<br>UC SHOP</div>
-        <div class="titles">
-            <h1>YAQUB UC SHOP</h1>
-            <p>PREMIUM GAME STORE</p>
-        </div>
-    </div>
-
-    <!-- 1. BOSH SAHIFA -->
-    <div id="homeScreen" class="screen active">
-        <div class="hero">
-            <span class="pubg-tag">PUBG</span>
-            <span class="pubg-sub">MOBILE</span>
-            <h2>UC xarid qilish endi yanada oson!</h2>
-            <div class="online"><span class="dot"></span> ONLINE</div>
-            <!-- PUBG Original Helmet Image -->
-            <img src="https://i.ibb.co/6R2191K/pubg-helmet.png" class="hero-img" alt="PUBG" onerror="this.src='https://cdn-icons-png.flaticon.com/512/811/811531.png'">
-        </div>
-
-        <div class="promo" onclick="alert('Birinchi buyurtmangizga 5% bonus qo\'shib beriladi!')">
-            <div><strong style="color:var(--gold);display:block;">🎁 Aksiya!</strong><span>Birinchi buyurtmaga <b>5% chegirma!</b></span></div>
-            <span>❯</span>
-        </div>
-
-        <div class="sec-title">💎 UC Paketlarini tanlang</div>
-        <div class="grid" id="ucGridBox"></div>
-    </div>
-
-    <!-- 2. O'YINCHI MA'LUMOTLARI -->
-    <div id="playerScreen" class="screen">
-        <div class="sel-banner">
-            <div style="width:50px;height:50px;"><img src="https://cdn-icons-png.flaticon.com/512/811/811531.png" style="width:100%;height:100%;object-fit:contain;" alt="UC"></div>
-            <div>
-                <div id="selAmt" style="font-size:22px;font-weight:900;">660 UC</div>
-                <div id="selPrc" style="font-size:14px;color:var(--gold);font-weight:700;">122 000 so'm</div>
-                <span class="badge-pop">Eng ommabop</span>
-            </div>
-        </div>
-        <div class="sec-title">O'yinchi ma'lumotlari</div>
-        <div class="box">
-            <label class="lbl">👤 Player ID</label>
-            <input type="number" id="pidInp" class="inp" placeholder="ID raqamingizni kiriting" inputmode="numeric">
-        </div>
-        <div class="box">
-            <label class="lbl">👑 Nickname</label>
-            <input type="text" id="nickInp" class="inp" placeholder="O'yin ichidagi nickname">
-        </div>
-        <div class="warn">
-            <span>⚠️</span>
-            <div><strong style="color:var(--gold);display:block;">Muhim ma'lumot!</strong>ID va nickname to'g'ri bo'lishi buyurtmaning muvaffaqiyatli bajarilishiga kafolat beradi.</div>
-        </div>
-        <button class="gold-btn" onclick="toConfirm()">Davom etish ➜</button>
-    </div>
-
-    <!-- 3. TASDIQLASH VA TO'LOV USULI -->
-    <div id="confirmScreen" class="screen">
-        <div class="sel-banner">
-            <div style="width:48px;height:48px;"><img src="https://cdn-icons-png.flaticon.com/512/811/811531.png" style="width:100%;height:100%;object-fit:contain;" alt="UC"></div>
-            <div>
-                <div id="confAmt" style="font-size:21px;font-weight:900;">660 UC</div>
-                <div id="confPrc" style="font-size:14px;color:var(--gold);font-weight:700;">122 000 so'm</div>
-            </div>
-        </div>
-        <div class="box">
-            <div class="row">
-                <div><div style="font-size:11px;color:var(--muted);">Player ID</div><div id="confPid" style="font-weight:700;margin-top:2px;">---</div></div>
-                <button class="copy-btn" onclick="copyVal('confPid')">Nusxa</button>
-            </div>
-            <div class="row">
-                <div><div style="font-size:11px;color:var(--muted);">Nickname</div><div id="confNick" style="font-weight:700;margin-top:2px;">---</div></div>
-                <button class="copy-btn" onclick="copyVal('confNick')">Nusxa</button>
-            </div>
-        </div>
-        <div class="sec-title">To'lov usulini tanlang</div>
-        <div class="pay-opt selected" onclick="setPay(this,'Click / UzCard')"><span>💳 Click / UzCard</span><span class="chk">✓</span></div>
-        <div class="pay-opt" onclick="setPay(this,'Payme')"><span>🅿️ Payme</span><span class="chk">✓</span></div>
-        <div class="pay-opt" onclick="setPay(this,'Naqd / Terminal')"><span>💵 Naqd to'lov</span><span class="chk">✓</span></div>
-        <div class="pay-opt" onclick="setPay(this,'Telegram Stars')"><span>⭐ Telegram Stars</span><span class="chk">✓</span></div>
-        <div style="display:flex;justify-content:space-between;padding:12px 4px;font-size:15px;">
-            <span>To'lov summasi:</span><strong id="confTotal" style="color:var(--gold);font-size:17px;">122 000 so'm</strong>
-        </div>
-        <button class="gold-btn" id="payBtn" onclick="sendOrder()">To'lov qilish 💳</button>
-    </div>
-
-    <!-- 4. MUVAFFAQIYATLI YAKUN -->
-    <div id="successScreen" class="screen" style="text-align:center;padding:15px 6px;">
-        <div class="ok-circle">✓</div>
-        <h2 style="font-size:21px;margin-bottom:8px;">Buyurtma muvaffaqiyatli yuborildi!</h2>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Botimizga to'lov kartasi yuborildi. To'lov qilib chekni (skrinshot) botga tashlang! 🙏</p>
-        <div class="box" style="text-align:left;">
-            <div style="font-size:11px;color:var(--muted);">Buyurtma raqami:</div>
-            <div id="ordNum" style="font-weight:800;margin-top:3px;color:var(--gold);">#YAQUB-001</div>
-        </div>
-        <div class="box" style="text-align:left;font-size:13px;">🔔 Sizga xabar orqali holat yangilanadi.</div>
-        <button class="gold-btn" onclick="finishOrder()">🏠 Botga qaytib chek yuborish</button>
-    </div>
-
-    <!-- 5. BUYURTMALAR TARIXI -->
-    <div id="ordersScreen" class="screen">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="renderOrders('all',this)">Barcha</button>
-            <button class="tab-btn" onclick="renderOrders('Jarayonda',this)">Jarayonda</button>
-            <button class="tab-btn" onclick="renderOrders('Bajarilgan',this)">Bajarilgan</button>
-        </div>
-        <div id="ordersBox"></div>
-    </div>
-
-    <!-- 6. QO'LLAB-QUVVATLASH -->
-    <div id="supportScreen" class="screen">
-        <div class="box" style="text-align:center;padding:22px 14px;">
-            <div class="avatar">🎧</div>
-            <h2 style="font-size:19px;margin-bottom:6px;">Biz bilan bog'laning!</h2>
-            <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Savollaringiz bo'lsa, biz doimo siz bilanmiz.</p>
-            <button class="sup-btn pri" onclick="contactAdm()">✈️ <span id="admTxt">@YAQUB_UC_Support</span></button>
-            <button class="sup-btn" onclick="contactAdm()">💬 Chat ochish</button>
-            <button class="sup-btn" onclick="contactAdm()">📢 Telegram kanal</button>
-            <div style="margin-top:10px;color:var(--gold);font-size:13px;font-weight:700;">⚡ Javob vaqti: 24/7</div>
-        </div>
-    </div>
-
-    <!-- 7. PROFIL -->
-    <div id="profileScreen" class="screen">
-        <div style="text-align:center;padding:14px 0;">
-            <div class="avatar" id="pAva">YZ</div>
-            <h2 id="pName" style="font-size:18px;">Foydalanuvchi</h2>
-            <p id="pUser" style="font-size:12px;color:var(--muted);margin-top:3px;">@user</p>
-        </div>
-        <div class="box">
-            <div class="row"><span>🆔 ID:</span><strong id="pId">---</strong></div>
-            <div class="row"><span>🛒 Buyurtmalar:</span><strong id="pCount">0</strong></div>
-            <div class="row"><span>🪙 Umumiy xarid:</span><strong id="pSpent" style="color:var(--gold);">0 so'm</strong></div>
-        </div>
-        <div class="box">
-            <div class="row"><span>🔔 Bildirishnomalar</span><span style="color:#10b981;font-weight:700;">Yoqilgan</span></div>
-            <div class="row"><span>🌐 Til / Language</span><span style="color:var(--muted);">O'zbek ❯</span></div>
-            <div class="row"><span>🌙 Mavzu</span><span style="color:var(--muted);">Qora rejim ❯</span></div>
-        </div>
-    </div>
-</div>
-
-<!-- PASTKI NAVIGATSIYA MENYU -->
-<div class="b-nav">
-    <button class="nav-i active" id="nav-homeScreen" onclick="openTab('homeScreen')"><span style="font-size:18px;">🏠</span><span>Bosh sahifa</span></button>
-    <button class="nav-i" id="nav-ordersScreen" onclick="openTab('ordersScreen')"><span style="font-size:18px;">📋</span><span>Buyurtmalar</span></button>
-    <button class="nav-i" id="nav-supportScreen" onclick="openTab('supportScreen')"><span style="font-size:18px;">🎧</span><span>Qo'llab-quvvatlash</span></button>
-    <button class="nav-i" id="nav-profileScreen" onclick="openTab('profileScreen')"><span style="font-size:18px;">👤</span><span>Profil</span></button>
-</div>
+<div id="app"><header id="top"></header><main id="view"></main><nav id="tabs"></nav></div>
+<div id="ov" data-act="dclose"></div>
+<aside id="drawer"></aside>
+<div id="sheet"></div>
+<div id="toast"></div>
 
 <script>
-const tg = window.Telegram ? window.Telegram.WebApp : null;
-if (tg) tg.expand();
+const tg = (window.Telegram && Telegram.WebApp) || null;
 
-const PACKAGES = [
-    { amount: "60 UC", price: "13 000 so'm", raw: 13000 },
-    { amount: "325 UC", price: "62 000 so'm", raw: 62000 },
-    { amount: "660 UC", price: "122 000 so'm", raw: 122000 },
-    { amount: "1800 UC", price: "300 000 so'm", raw: 300000 },
-    { amount: "3850 UC", price: "590 000 so'm", raw: 590000 },
-    { amount: "8100 UC", price: "1 180 000 so'm", raw: 1180000 }
-];
+// ===== Sozlamalar =====
+const SUPPORT = "believerr88";   // qo'llab-quvvatlash username (@ belgisiz)
+const CHANNEL = "";              // Telegram kanal username (@ belgisiz). Bo'sh bo'lsa, tugma ko'rinmaydi
+const API_FALLBACK = "";         // ixtiyoriy: Render havolasi, masalan https://gameshop.onrender.com
+const POPULAR = "uc325";         // "Mashxur" belgisi turadigan paket
+// Narxlar yulduzda (⭐). bot.py dagi SHOP bilan BIR XIL bo'lishi shart!
+const SHOP = {pubg: {name: "PUBG MOBILE", items: {
+  uc60: ["60 UC", 50], uc325: ["325 UC", 250], uc660: ["660 UC", 500],
+  uc1800: ["1800 UC", 1350], uc3850: ["3850 UC", 2800], uc8100: ["8100 UC", 5600]}}};
+const ITEMS = Object.entries(SHOP.pubg.items);
 
-let curPkg = PACKAGES[2];
-let curPay = "Click / UzCard";
-let admUrl = "https://t.me/YAQUB_UC_Support";
-let orders = JSON.parse(localStorage.getItem("yaqub_orders") || "[]");
+// ===== Matnlar =====
+const I18N = {
+uz: {
+  sub: "PREMIUM GAME STORE", hero: "UC xarid qilish endi yanada oson!", pick: "UC Paketlarini tanlang",
+  promo_t: "Aksiya!", promo_d: "Birinchi buyurtmaga {p}% chegirma!", popular: "Mashxur",
+  order: "Buyurtma berish", player: "O'yinchi ma'lumotlari", pid: "Player ID", pid_ph: "ID raqamingizni kiriting",
+  nick: "Nickname", nick_ph: "O'yin ichidagi nickname", help: "ID ni o'yin ichida Profil bo'limidan topasiz",
+  warn_t: "Muhim ma'lumot!", warn_d: "ID va nickname to'g'ri bo'lishi buyurtmaning muvaffaqiyatli bajarilishiga kafolat beradi.",
+  cont: "Davom etish", e_pid: "ID 5–15 ta raqamdan iborat bo'lishi kerak", e_nick: "Nickname kiriting (20 belgigacha)",
+  confirm: "Buyurtmani tasdiqlash", copied: "Nusxalandi", method: "To'lov usulini tanlang", stars: "Telegram Stars", stars_d: "Tez va xavfsiz to'lov",
+  total: "To'lov summasi", pay: "To'lov qilish", pay_err: "To'lovni boshlab bo'lmadi. Qaytadan urinib ko'ring.", pay_fail: "To'lov amalga oshmadi.", pay_cancel: "To'lov bekor qilindi.",
+  s_t: "Buyurtma muvaffaqiyatli yuborildi!", s_d: "Buyurtmangiz tez orada bajariladi. Rahmat! 🙏", s_no: "Buyurtma raqami", s_note: "Sizga xabar orqali holat yangilanadi.", to_home: "Bosh sahifaga qaytish",
+  orders: "Buyurtmalar tarixi", f_all: "Barcha", f_pending: "Jarayonda", f_done: "Bajarilgan", st_pending: "Jarayonda", st_done: "Bajarilgan", st_cancelled: "Bekor qilingan",
+  o_empty: "Hozircha buyurtma yo'q", o_err: "Yuklab bo'lmadi. Keyinroq urinib ko'ring.",
+  support: "Qo'llab-quvvatlash", sup_h: "Biz bilan bog'laning!", sup_d: "Savollaringiz bo'lsa, biz doimo siz bilanmiz.", sup_chat: "Chat ochish", sup_ch: "Telegram kanal", sup_time: "Javob vaqti:",
+  profile: "Profil", p_orders: "Buyurtmalar", p_spent: "Umumiy xarid", p_notif: "Bildirishnomalar", p_lang: "Til / Language", p_theme: "Mavzu", th_dark: "Qora rejim", th_light: "Yorug' rejim",
+  p_out: "Chiqish", out_q: "Do'kondan chiqasizmi?", sh_lang: "Tilni tanlang", sh_theme: "Mavzuni tanlang",
+  m_home: "Bosh sahifa", m_pick: "UC tanlash", m_orders: "Buyurtmalar tarixi", m_support: "Qo'llab-quvvatlash", m_profile: "Mening profilim", m_news: "Aksiya va yangiliklar", m_set: "Sozlamalar",
+  tab_home: "Bosh sahifa", tab_orders: "Buyurtmalar", tab_support: "Qo'llab-quvvatlash", tab_profile: "Profil",
+  banner: "Ishonchli va sifatli!", news: "Aksiya va yangiliklar", n_promo: "Birinchi buyurtmaga {p}% chegirma. Chegirma to'lov bosqichida avtomatik qo'llanadi.",
+  n_used: "Birinchi buyurtma aksiyasidan foydalangansiz. Yangi aksiyalar tez orada!", n_none: "Hozircha yangi aksiyalar yo'q."
+},
+ru: {
+  sub: "PREMIUM GAME STORE", hero: "Покупать UC стало ещё проще!", pick: "Выберите пакет UC",
+  promo_t: "Акция!", promo_d: "Скидка {p}% на первый заказ!", popular: "Хит",
+  order: "Оформление заказа", player: "Данные игрока", pid: "Player ID", pid_ph: "Введите ваш ID",
+  nick: "Ник", nick_ph: "Ник в игре", help: "ID можно найти в игре, в разделе «Профиль»",
+  warn_t: "Важная информация!", warn_d: "Правильные ID и ник гарантируют успешное выполнение заказа.",
+  cont: "Продолжить", e_pid: "ID должен состоять из 5–15 цифр", e_nick: "Введите ник (до 20 символов)",
+  confirm: "Подтверждение заказа", copied: "Скопировано", method: "Выберите способ оплаты", stars: "Telegram Stars", stars_d: "Быстрая и безопасная оплата",
+  total: "Сумма к оплате", pay: "Оплатить", pay_err: "Не удалось начать оплату. Попробуйте ещё раз.", pay_fail: "Оплата не прошла.", pay_cancel: "Оплата отменена.",
+  s_t: "Заказ успешно отправлен!", s_d: "Ваш заказ скоро будет выполнен. Спасибо! 🙏", s_no: "Номер заказа", s_note: "Статус заказа придёт вам в сообщении.", to_home: "На главную",
+  orders: "История заказов", f_all: "Все", f_pending: "В процессе", f_done: "Выполнен", st_pending: "В процессе", st_done: "Выполнен", st_cancelled: "Отменён",
+  o_empty: "Заказов пока нет", o_err: "Не удалось загрузить. Попробуйте позже.",
+  support: "Поддержка", sup_h: "Свяжитесь с нами!", sup_d: "Если есть вопросы, мы всегда на связи.", sup_chat: "Открыть чат", sup_ch: "Telegram-канал", sup_time: "Время ответа:",
+  profile: "Профиль", p_orders: "Заказы", p_spent: "Всего куплено", p_notif: "Уведомления", p_lang: "Язык / Til", p_theme: "Тема", th_dark: "Тёмная тема", th_light: "Светлая тема",
+  p_out: "Выйти", out_q: "Выйти из магазина?", sh_lang: "Выберите язык", sh_theme: "Выберите тему",
+  m_home: "Главная", m_pick: "Выбор UC", m_orders: "История заказов", m_support: "Поддержка", m_profile: "Мой профиль", m_news: "Акции и новости", m_set: "Настройки",
+  tab_home: "Главная", tab_orders: "Заказы", tab_support: "Поддержка", tab_profile: "Профиль",
+  banner: "Надёжно и качественно!", news: "Акции и новости", n_promo: "Скидка {p}% на первый заказ. Применяется автоматически при оплате.",
+  n_used: "Вы уже использовали акцию на первый заказ. Новые акции скоро!", n_none: "Пока нет новых акций."
+}};
 
-// UC kartochkalariga original UC rasmini joylash
-const ucGridBox = document.getElementById("ucGridBox");
-PACKAGES.forEach(pkg => {
-    const card = document.createElement("div");
-    card.className = "uc-card";
-    card.onclick = () => pickUC(pkg);
-    card.innerHTML = `
-        <div class="uc-img-box"><img src="https://cdn-icons-png.flaticon.com/512/811/811531.png" alt="UC"></div>
-        <div class="amt">${pkg.amount}</div>
-        <div class="prc">${pkg.price}</div>
-    `;
-    ucGridBox.appendChild(card);
+// ===== Yordamchilar =====
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LS = {get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let lang = LS.get("lang");
+if (!I18N[lang]) { const lc = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.language_code) || ""; lang = lc.startsWith("ru") ? "ru" : "uz"; }
+const L = (k, v) => { let s = (I18N[lang][k] ?? I18N.uz[k] ?? k); if (v) for (const x in v) s = s.replace("{" + x + "}", v[x]); return s; };
+const hap = (t = "light") => { try { tg.HapticFeedback.impactOccurred(t); } catch (e) {} };
+const note = t => { try { tg.HapticFeedback.notificationOccurred(t); } catch (e) {} };
+const ICON = {
+  home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  clip:'<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/>',
+  head:'<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>',
+  user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  gift:'<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+  copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  check:'<polyline points="20 6 9 17 4 12"/>', chev:'<polyline points="9 18 15 12 9 6"/>', back:'<polyline points="15 18 9 12 15 6"/>',
+  dots:'<circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/>',
+  send:'<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+  chat:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+  zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  bell:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+  globe:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  moon:'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+  sun:'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/>',
+  out:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+  sliders:'<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>',
+  grid:'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+  help:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  alert:'<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>', arrow:'<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+  card:'<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>'
+};
+const ic = (n, s = 22) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[n]}</svg>`;
+const LOGO = `<svg class="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#0a1233" stroke="#ffc83d" stroke-width="2.5"/><text x="24" y="28" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="21" font-weight="900" fill="#ffc83d">Y</text><text x="24" y="39" text-anchor="middle" font-family="Arial,sans-serif" font-size="7.5" font-weight="800" letter-spacing=".4" fill="#fff">UC SHOP</text></svg>`;
+
+// ===== Holat =====
+const S = {screen: "home", stack: [], pkg: null, pid: LS.get("pid") || "", nick: LS.get("nick") || "", orders: null, ordErr: false, filter: "all", busy: false, code: "", oid: 0};
+let me = null;
+let theme = LS.get("theme") === "light" ? "light" : "dark";
+const API = ((new URLSearchParams(location.search).get("api")) || LS.get("api") || API_FALLBACK).replace(/\/$/, "");
+if (new URLSearchParams(location.search).get("api")) LS.set("api", API);
+
+async function api(path, body) {
+  if (!API) throw new Error("no api");
+  const r = await fetch(API + path, {
+    method: body ? "POST" : "GET",
+    headers: Object.assign({"X-Init-Data": tg ? tg.initData : ""}, body ? {"Content-Type": "application/json"} : {}),
+    body: body ? JSON.stringify(body) : undefined});
+  if (!r.ok) throw new Error("http " + r.status);
+  return r.json();
+}
+
+const disc = () => (me && me.discount && me.discount.eligible && me.discount.pct > 0) ? me.discount.pct : 0;
+const price = s => { const p = disc(); return p ? Math.floor((s * (100 - p) + 50) / 100) : s; };
+const priceHtml = (s, small) => { const d = price(s); return d !== s ? `⭐ ${d}<s>${s}</s>` : `⭐ ${s}`; };
+const okPid = v => /^\d{5,15}$/.test(v);
+const okNick = v => { v = v.trim(); return v.length >= 1 && v.length <= 20; };
+function fmtDate(ts) {
+  const d = new Date((ts + 18000) * 1000), p = n => String(n).padStart(2, "0");
+  return `${p(d.getUTCDate())}.${p(d.getUTCMonth() + 1)}.${d.getUTCFullYear()} • ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`;
+}
+let toastT;
+function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2200); }
+function alertMsg(m) { try { tg.showAlert(m); } catch (e) { toast(m); } }
+function copy(text) {
+  const done = () => { toast(L("copied")); hap(); };
+  try { navigator.clipboard.writeText(text).then(done, fb); } catch (e) { fb(); }
+  function fb() { try { const a = document.createElement("textarea"); a.value = text; a.style.cssText = "position:fixed;opacity:0"; document.body.append(a); a.select(); document.execCommand("copy"); a.remove(); done(); } catch (e) {} }
+}
+
+// ===== Ekranlar =====
+function vHome() {
+  const p = disc(), on = !!me;
+  return `<section class="screen">
+  <div class="hero"><div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div>
+    <div class="hero-txt"><span class="tagp">PUBG MOBILE</span><h1>${L("hero")}</h1>
+    <span class="online ${on ? "on" : ""}"><i></i>${on ? "ONLINE" : "• • •"}</span></div>
+    <img class="hero-img" src="uc.png" alt="UC"></div>
+  ${p ? `<button class="promo" data-act="nav" data-to="news"><span class="gi">${ic("gift", 24)}</span><div><b>${L("promo_t")}</b><small>${L("promo_d", {p})}</small></div>${ic("chev", 20)}</button>` : ""}
+  <h2 class="sec" id="picks"><span>💎</span>${L("pick")}</h2>
+  <div class="pgrid">${ITEMS.map(([k, [n, s]], i) => `<button class="pk${k === POPULAR ? " hot" : ""}" style="--i:${i};--w:${44 + i * 7}px" data-act="pick" data-k="${k}">
+    ${k === POPULAR ? `<em class="flag">🔥 ${L("popular")}</em>` : ""}<img src="uc.png" alt=""><b>${n.split(" ")[0]}</b><small>UC</small><span class="pr">${priceHtml(s)}</span></button>`).join("")}</div></section>`;
+}
+function vForm() {
+  const [n, s] = SHOP.pubg.items[S.pkg];
+  return `<section class="screen">
+  <div class="pkgcard"><img src="uc.png" alt=""><div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span></div>${S.pkg === POPULAR ? `<span class="pill">${L("popular")}</span>` : ""}</div>
+  <h2 class="sec">${L("player")}</h2>
+  <div class="fld" id="f-pid"><span class="fi">${ic("user", 22)}</span><div class="fb"><small>${L("pid")}</small><input id="pid" inputmode="numeric" maxlength="15" autocomplete="off" placeholder="${L("pid_ph")}" value="${esc(S.pid)}"></div><button class="help" data-act="help">${ic("help", 20)}</button></div>
+  <div class="fld" id="f-nick"><span class="fi">👑</span><div class="fb"><small>${L("nick")}</small><input id="nick" maxlength="20" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${L("nick_ph")}" value="${esc(S.nick)}"></div></div>
+  <div class="warn">${ic("alert", 26)}<div><b>${L("warn_t")}</b><p>${L("warn_d")}</p></div></div>
+  <button class="cta" data-act="cont">${L("cont")} ${ic("arrow", 22)}</button></section>`;
+}
+function vConfirm() {
+  const [n, s] = SHOP.pubg.items[S.pkg], d = price(s);
+  return `<section class="screen">
+  <div class="pkgcard"><img src="uc.png" alt=""><div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span></div></div>
+  <div class="row" style="margin-top:12px"><div><small>${L("pid")}</small><b>${esc(S.pid)}</b></div><button class="cp" data-act="copy" data-v="${esc(S.pid)}">${ic("copy", 22)}</button></div>
+  <div class="row"><div><small>${L("nick")}</small><b>${esc(S.nick)}</b></div><button class="cp" data-act="copy" data-v="${esc(S.nick)}">${ic("copy", 22)}</button></div>
+  <h2 class="sec">${L("method")}</h2>
+  <div class="meth"><span class="mi">⭐</span><b>${L("stars")}<small>${L("stars_d")}</small></b><span class="chk">${ic("check", 16)}</span></div>
+  <div class="total"><span>${L("total")}:</span><div>${d !== s ? `<s>⭐ ${s}</s>` : ""}<b>⭐ ${d}</b></div></div>
+  <button class="cta" id="payBtn" data-act="pay">${L("pay")} ${ic("card", 22)}</button></section>`;
+}
+const PARA = `<svg class="para ${"{c}"}" viewBox="0 0 60 80" fill="none"><path d="M4 28C4 10 16 2 30 2s26 8 26 26c-6-5-12-5-18 0-5-5-11-5-16 0-6-5-12-5-18 0z" fill="#ffc83d" stroke="#ff9a1f" stroke-width="2"/><path d="M4 28L28 62M30 28v34M56 28L32 62" stroke="#9fb6ff" stroke-width="1.5"/><rect x="24" y="60" width="12" height="12" rx="2" fill="#2f7bff"/></svg>`;
+function vSuccess() {
+  return `<section class="screen succ"><div class="sky">${PARA.replace("{c}", "l")}${PARA.replace("{c}", "r")}
+  <div class="okring"><svg viewBox="0 0 120 120" fill="none"><circle class="c" cx="60" cy="60" r="54" stroke="#2fd27a" stroke-width="7" stroke-linecap="round" transform="rotate(-90 60 60)"/><polyline class="t" points="36,62 54,80 86,42" stroke="#2fd27a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+  <h1>${L("s_t")}</h1><p>${L("s_d")}</p>
+  <div class="info"><span class="ii">${ic("clip", 20)}</span><div><small>${L("s_no")}:</small><b id="ocode">${S.code || "…"}</b></div></div>
+  <div class="info"><span class="ii">${ic("check", 20)}</span><div>${L("s_note")}</div></div>
+  <button class="cta" data-act="nav" data-to="home">${ic("home", 22)} ${L("to_home")}</button></section>`;
+}
+function vOrders() {
+  const f = S.filter;
+  const chips = ["all", "pending", "done"].map(k => `<button class="chip${f === k ? " on" : ""}" data-act="filter" data-f="${k}">${L("f_" + k)}</button>`).join("");
+  let body;
+  if (S.orders === null && !S.ordErr) body = '<div class="sk"></div><div class="sk"></div><div class="sk"></div>';
+  else if (S.ordErr) body = `<div class="empty"><i>⚠️</i>${L("o_err")}</div>`;
+  else {
+    const list = S.orders.filter(o => f === "all" || o.st === f);
+    body = list.length ? list.map((o, i) => { const it = (SHOP[o.g] || {items: {}}).items[o.i] || [o.i, o.s];
+      return `<div class="ord" style="--i:${Math.min(i, 8)}"><img src="uc.png" alt=""><div class="m"><b>${esc(it[0])}</b><span>⭐ ${o.s}</span><small>${esc(o.c || "")}</small></div>
+      <div class="r"><span class="st ${o.st}">${L("st_" + o.st)}</span><small>${fmtDate(o.t)}</small></div></div>`; }).join("")
+      : `<div class="empty"><i>🛒</i>${L("o_empty")}</div>`;
+  }
+  return `<section class="screen"><div class="chips">${chips}</div>${body}</section>`;
+}
+function vSupport() {
+  return `<section class="screen sup"><div class="supart"><div class="hd">${ic("head", 54)}</div></div>
+  <h1>${L("sup_h")}</h1><p>${L("sup_d")}</p>
+  <button class="sbtn main" data-act="chatopen">${ic("send", 22)} @${SUPPORT}</button>
+  <button class="sbtn" data-act="chatopen">${ic("chat", 22)} ${L("sup_chat")}</button>
+  ${CHANNEL ? `<button class="sbtn" data-act="chanopen">${ic("send", 22)} ${L("sup_ch")}</button>` : ""}
+  <div class="rtime">${ic("zap", 20)}<span>${L("sup_time")}</span> 24/7</div></section>`;
+}
+function vProfile() {
+  const u = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || {};
+  const name = [u.first_name, u.last_name].filter(Boolean).join(" ") || "—";
+  const ini = ((u.first_name || "?")[0] + ((u.last_name || "")[0] || "")).toUpperCase();
+  const on = me ? me.notify : true;
+  return `<section class="screen prof"><div class="ava">${esc(ini)}${u.photo_url ? `<img src="${esc(u.photo_url)}" alt="" onerror="this.remove()">` : ""}</div>
+  <h2>${esc(name)}</h2><div class="un">${u.username ? "@" + esc(u.username) : ""}</div>
+  <div class="card"><button class="it" data-act="copy" data-v="${u.id || ""}"><span class="l">${ic("user", 18)}</span><span class="t">ID: ${u.id || "—"}</span>${ic("copy", 18)}</button>
+    <div class="it"><span class="l">${ic("clip", 18)}</span><span class="t">${L("p_orders")}:</span><span class="v">${me ? me.orders : "—"}</span></div>
+    <div class="it"><span class="l">⭐</span><span class="t">${L("p_spent")}:</span><span class="v g">${me ? "⭐ " + me.spent : "—"}</span></div></div>
+  <div class="card" id="settings"><div class="it"><span class="l">${ic("bell", 18)}</span><span class="t">${L("p_notif")}</span><button class="sw${on ? " on" : ""}" data-act="notif" aria-label="notif"></button></div>
+    <button class="it" data-act="shlang"><span class="l">${ic("globe", 18)}</span><span class="t">${L("p_lang")}</span><span class="v">${lang === "ru" ? "Русский" : "O'zbek"}</span>${ic("chev", 18)}</button>
+    <button class="it" data-act="shtheme"><span class="l">${ic(theme === "dark" ? "moon" : "sun", 18)}</span><span class="t">${L("p_theme")}</span><span class="v">${L(theme === "dark" ? "th_dark" : "th_light")}</span>${ic("chev", 18)}</button>
+    <button class="it" data-act="logout"><span class="l">${ic("out", 18)}</span><span class="t">${L("p_out")}</span></button></div></section>`;
+}
+function vNews() {
+  const p = me && me.discount ? me.discount.pct : 0, el = disc();
+  return `<section class="screen"><div class="news"><span class="gi">${ic("gift", 26)}</span><div><b>${L("promo_t")}</b><p>${el ? L("n_promo", {p}) : (p ? L("n_used") : L("n_none"))}</p></div></div>
+  ${CHANNEL ? `<button class="sbtn" data-act="chanopen">${ic("send", 22)} ${L("sup_ch")}</button>` : ""}</section>`;
+}
+const VIEWS = {home: vHome, form: vForm, confirm: vConfirm, success: vSuccess, orders: vOrders, support: vSupport, profile: vProfile, news: vNews};
+const TITLES = {form: "order", confirm: "confirm", orders: "orders", support: "support", profile: "profile", news: "news", success: "order"};
+const TABMAP = {home: "home", form: "home", news: "home", orders: "orders", support: "support", profile: "profile"};
+
+// ===== Chizish =====
+function render() {
+  const sc = S.screen;
+  $("#app").classList.toggle("no-tabs", sc === "confirm" || sc === "success");
+  $("#top").innerHTML = (sc === "home" || sc === "success"
+    ? `${LOGO}<div class="brand"><b>YAQUB UC SHOP</b><small>${L("sub")}</small></div>`
+    : `<button class="rb" data-act="back">${ic("back", 22)}</button><div class="ttl">${L(TITLES[sc])}</div>`)
+    + `<button class="rb" data-act="dopen">${ic("dots", 22)}</button>`;
+  $("#view").innerHTML = (VIEWS[sc] || vHome)();
+  $("#tabs").innerHTML = [["home", "home"], ["orders", "clip"], ["support", "head"], ["profile", "user"]].map(([k, i]) =>
+    `<button class="tab${TABMAP[sc] === k ? " on" : ""}" data-act="nav" data-to="${k}"><span>${ic(i, 24)}</span>${L("tab_" + k)}</button>`).join("");
+  renderDrawer();
+  try { sc === "home" ? tg.BackButton.hide() : tg.BackButton.show(); } catch (e) {}
+}
+function renderDrawer() {
+  const cur = S.screen === "home" || S.screen === "form" ? "home" : S.screen;
+  const items = [["home", "home", "m_home"], ["pick", "grid", "m_pick"], ["orders", "clip", "m_orders"], ["support", "head", "m_support"], ["profile", "user", "m_profile"], ["news", "gift", "m_news"], ["settings", "sliders", "m_set"]];
+  $("#drawer").innerHTML = `<div class="dh">${LOGO}<div><b>YAQUB UC SHOP</b><small>Premium Game Store</small></div><button class="rb" data-act="dclose">${ic("x", 20)}</button></div>
+  <nav class="dnav">${items.map(([to, i, k], n) => `<button class="di${cur === to ? " on" : ""}" style="--i:${n}" data-act="nav" data-to="${to}">${ic(i, 22)}<span>${L(k)}</span><i class="ch">${ic("chev", 18)}</i></button>`).join("")}</nav>
+  <div class="dban"><b>YAQUB UC SHOP</b><small>${L("banner")}</small><span class="pl">${ic("send", 20)}</span></div>`;
+}
+function openDrawer() { document.body.classList.add("dr", "lock"); hap(); }
+function closeDrawer() { document.body.classList.remove("dr", "lock"); }
+function openSheet(title, rows) {
+  $("#sheet").innerHTML = `<div class="bg" data-act="sclose"></div><div class="pn"><h3>${title}</h3>${rows.map(r => `<button class="so${r.on ? " on" : ""}" data-act="${r.act}" data-v="${r.v}">${r.ic}<span>${r.t}</span>${r.on ? `<b class="k">${ic("check", 20)}</b>` : ""}</button>`).join("")}</div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => $("#sheet").classList.add("on")));
+}
+function closeSheet() { $("#sheet").classList.remove("on"); }
+
+// ===== Navigatsiya =====
+function enter(s) {
+  if (s === "orders") loadOrders();
+  if (s === "profile") loadMe();
+}
+function nav(to, push) {
+  closeDrawer(); closeSheet();
+  if (to === "pick") { S.stack = []; S.screen = "home"; render(); setTimeout(() => { const e = $("#picks"); e && e.scrollIntoView({behavior: "smooth", block: "start"}); }, 60); return; }
+  if (to === "settings") { S.stack = []; S.screen = "profile"; render(); enter("profile"); setTimeout(() => { const e = $("#settings"); e && e.scrollIntoView({behavior: "smooth", block: "center"}); }, 80); return; }
+  if (push) S.stack.push(S.screen); else S.stack = [];
+  S.screen = to; window.scrollTo(0, 0); render(); enter(to);
+}
+function back() {
+  if (document.body.classList.contains("dr")) return closeDrawer();
+  if ($("#sheet").classList.contains("on")) return closeSheet();
+  if (S.stack.length) S.screen = S.stack.pop(); else S.screen = "home";
+  window.scrollTo(0, 0); render(); enter(S.screen);
+}
+
+// ===== Ma'lumot yuklash =====
+async function loadMe() {
+  try {
+    me = await api("/api/me");
+    if (!LS.get("lang") && me.lang && I18N[me.lang]) lang = me.lang;
+  } catch (e) { return; }
+  if (["home", "profile", "news"].includes(S.screen)) { const y = window.scrollY; render(); window.scrollTo(0, y); }
+}
+async function loadOrders() {
+  S.orders = null; S.ordErr = false; render();
+  try { S.orders = (await api("/api/orders")).orders; } catch (e) { S.ordErr = true; }
+  if (S.screen === "orders") render();
+}
+async function pollOrder(id) {
+  for (let i = 0; i < 12; i++) {
+    try { const r = await api("/api/order/" + id); if (r.code) { S.code = r.code; const e = $("#ocode"); if (e) e.textContent = r.code; return; } } catch (e) {}
+    await new Promise(r => setTimeout(r, 800));
+  }
+}
+
+// ===== Harakatlar =====
+function applyTheme() {
+  document.documentElement.dataset.theme = theme;
+  const c = theme === "dark" ? "#050a1e" : "#eef2fc";
+  try { tg.setHeaderColor(c); tg.setBackgroundColor(c); } catch (e) {}
+  try { tg.setBottomBarColor(c); } catch (e) {}
+}
+function mark(id, msg) { const f = $(id); f.classList.remove("bad"); void f.offsetWidth; f.classList.add("bad"); const i = f.querySelector("input"); i && i.focus(); toast(msg); note("error"); }
+async function pay() {
+  if (S.busy) return;
+  const b = $("#payBtn"); S.busy = true; b && b.classList.add("busy");
+  const end = () => { S.busy = false; const x = $("#payBtn"); x && x.classList.remove("busy"); };
+  try {
+    const r = await api("/api/invoice", {g: "pubg", i: S.pkg, p: S.pid, n: S.nick});
+    S.oid = r.id;
+    tg.openInvoice(r.link, st => {
+      end();
+      if (st === "paid") { note("success"); S.code = ""; S.stack = []; S.screen = "success"; window.scrollTo(0, 0); render(); pollOrder(r.id); loadMe(); }
+      else if (st === "failed") alertMsg(L("pay_fail"));
+      else if (st === "cancelled") toast(L("pay_cancel"));
+    });
+  } catch (e) { end(); alertMsg(L("pay_err")); }
+}
+function setLang(l) {
+  lang = l; LS.set("lang", l); api("/api/settings", {lang: l}).catch(() => {});
+  closeSheet(); render();
+}
+const ACT = {
+  nav: el => nav(el.dataset.to), back, dopen: openDrawer, dclose: closeDrawer, sclose: closeSheet,
+  pick: el => { S.pkg = el.dataset.k; hap(); nav("form", true); },
+  help: () => toast(L("help")),
+  cont: () => {
+    S.pid = ($("#pid").value || "").trim(); S.nick = ($("#nick").value || "").replace(/\s+/g, " ").trim();
+    if (!okPid(S.pid)) return mark("#f-pid", L("e_pid"));
+    if (!okNick(S.nick)) return mark("#f-nick", L("e_nick"));
+    LS.set("pid", S.pid); LS.set("nick", S.nick); hap(); nav("confirm", true);
+  },
+  copy: el => el.dataset.v && copy(el.dataset.v),
+  pay,
+  filter: el => { S.filter = el.dataset.f; hap(); render(); },
+  chatopen: () => { hap(); const u = "https://t.me/" + SUPPORT; try { tg.openTelegramLink(u); } catch (e) { location.href = u; } },
+  chanopen: () => { hap(); const u = "https://t.me/" + CHANNEL; try { tg.openTelegramLink(u); } catch (e) { location.href = u; } },
+  notif: el => { const v = !(me ? me.notify : true); if (me) me.notify = v; el.classList.toggle("on", v); hap(); api("/api/settings", {notify: v}).catch(() => { if (me) me.notify = !v; el.classList.toggle("on", !v); }); },
+  shlang: () => openSheet(L("sh_lang"), [{act: "setlang", v: "uz", t: "O'zbekcha", ic: "🇺🇿", on: lang === "uz"}, {act: "setlang", v: "ru", t: "Русский", ic: "🇷🇺", on: lang === "ru"}]),
+  setlang: el => setLang(el.dataset.v),
+  shtheme: () => openSheet(L("sh_theme"), [{act: "settheme", v: "dark", t: L("th_dark"), ic: ic("moon", 22), on: theme === "dark"}, {act: "settheme", v: "light", t: L("th_light"), ic: ic("sun", 22), on: theme === "light"}]),
+  settheme: el => { theme = el.dataset.v; LS.set("theme", theme); applyTheme(); closeSheet(); render(); },
+  logout: () => { try { tg.showConfirm(L("out_q"), ok => ok && tg.close()); } catch (e) {} }
+};
+document.addEventListener("click", e => { const el = e.target.closest("[data-act]"); if (el && ACT[el.dataset.act]) ACT[el.dataset.act](el, e); });
+document.addEventListener("input", e => {
+  if (e.target.id === "pid") { e.target.value = e.target.value.replace(/\D/g, ""); S.pid = e.target.value; e.target.closest(".fld").classList.remove("bad"); }
+  if (e.target.id === "nick") { S.nick = e.target.value.replace(/[\r\n\t]+/g, " "); e.target.closest(".fld").classList.remove("bad"); }
 });
 
-const usr = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : { id:7845123097, first_name:"Foydalanuvchi", username:"user" };
-const fName = ((usr.first_name||"") + " " + (usr.last_name||"")).trim();
-document.getElementById("pName").innerText = fName;
-document.getElementById("pUser").innerText = usr.username ? "@"+usr.username : "@user";
-document.getElementById("pId").innerText = usr.id;
-document.getElementById("pAva").innerText = (fName[0]||"Y").toUpperCase();
-
-fetch("/api/config?user_id=" + usr.id).then(r=>r.json()).then(d=>{
-    if(d.admin_user){
-        const u = d.admin_user.replace("@","").trim();
-        document.getElementById("admTxt").innerText = "@"+u;
-        admUrl = "https://t.me/"+u;
-    }
-    if(d.orders && d.orders.length){ orders = d.orders; localStorage.setItem("yaqub_orders",JSON.stringify(orders)); }
-    updateStats();
-}).catch(()=>updateStats());
-
-function showScr(id){
-    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
+// ===== Boshlash =====
+if (tg) {
+  tg.ready(); tg.expand();
+  try { tg.disableVerticalSwipes(); } catch (e) {}
+  try { tg.MainButton.hide(); } catch (e) {}
+  try { tg.BackButton.onClick(back); } catch (e) {}
 }
-
-function openTab(id){
-    document.querySelectorAll(".nav-i").forEach(b=>b.classList.remove("active"));
-    const btn = document.getElementById("nav-"+id);
-    if(btn) btn.classList.add("active");
-    showScr(id);
-    if(id==="ordersScreen") renderOrders("all", document.querySelector(".tab-btn"));
-    if(id==="profileScreen") updateStats();
-}
-
-function pickUC(pkg){
-    curPkg = pkg;
-    document.getElementById("selAmt").innerText = pkg.amount;
-    document.getElementById("selPrc").innerText = pkg.price;
-    showScr("playerScreen");
-}
-
-function toConfirm(){
-    const pid = document.getElementById("pidInp").value.trim();
-    const nick = document.getElementById("nickInp").value.trim() || "Kiritilmagan";
-    if(!/^\d{8,15}$/.test(pid)){ alert("❗️ Kamida 8 xonali to'g'ri PUBG ID kiriting!"); return; }
-    document.getElementById("confAmt").innerText = curPkg.amount;
-    document.getElementById("confPrc").innerText = curPkg.price;
-    document.getElementById("confPid").innerText = pid;
-    document.getElementById("confNick").innerText = nick;
-    document.getElementById("confTotal").innerText = curPkg.price;
-    showScr("confirmScreen");
-}
-
-function setPay(el,m){
-    document.querySelectorAll(".pay-opt").forEach(x=>x.classList.remove("selected"));
-    el.classList.add("selected");
-    curPay = m;
-}
-
-function copyVal(id){
-    const v = document.getElementById(id).innerText;
-    navigator.clipboard.writeText(v);
-    alert("Nusxalandi: " + v);
-}
-
-async function sendOrder(){
-    const btn = document.getElementById("payBtn");
-    btn.disabled = true; btn.innerText = "Yuborilmoqda...";
-    const pid = document.getElementById("pidInp").value.trim();
-    const nick = document.getElementById("nickInp").value.trim() || "Kiritilmagan";
-    const oid = "#YAQUB-" + Math.floor(100000 + Math.random()*900000);
-    const dt = new Date().toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
-    const ord = { order_id:oid, amount:curPkg.amount, price:curPkg.price, rawPrice:curPkg.raw, package:curPkg.amount+" — "+curPkg.price, pubg_id:pid, nickname:nick, pay_method:curPay, status:"Jarayonda", date:dt };
-    orders.unshift(ord);
-    localStorage.setItem("yaqub_orders",JSON.stringify(orders));
-    document.getElementById("ordNum").innerText = oid;
-    try {
-        await fetch("/api/order",{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ user_id:usr.id, ...ord }) });
-    } catch(e){}
-    btn.disabled = false; btn.innerText = "To'lov qilish 💳";
-    showScr("successScreen");
-}
-
-function finishOrder(){
-    if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user) tg.close();
-    else openTab("homeScreen");
-}
-
-function renderOrders(flt, btn){
-    if(btn){ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); }
-    const box = document.getElementById("ordersBox");
-    const list = flt==="all" ? orders : orders.filter(x=>x.status===flt);
-    if(!list.length){ box.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);">Buyurtmalar yo'q</div>`; return; }
-    box.innerHTML = list.map(o=>{
-        const cl = o.status==="Bajarilgan" ? "st-done" : (o.status==="Bekor qilingan" ? "st-no" : "st-wait");
-        return `<div class="box" style="display:flex;justify-content:space-between;align-items:center;">
-            <div style="display:flex;gap:10px;align-items:center;"><div style="width:36px;height:36px;"><img src="https://cdn-icons-png.flaticon.com/512/811/811531.png" style="width:100%;height:100%;object-fit:contain;"></div><div><div style="font-weight:800;">${o.amount}</div><div style="color:var(--gold);font-size:12px;">${o.price}</div><div style="font-size:11px;color:#cbd5e1;">ID: ${o.pubg_id}</div></div></div>
-            <div style="text-align:right;"><span class="status-tag ${cl}">${o.status}</span><div style="font-size:11px;color:var(--muted);">${o.date}</div></div>
-        </div>`;
-    }).join("");
-}
-
-function updateStats(){
-    document.getElementById("pCount").innerText = orders.length;
-    const sum = orders.filter(x=>x.status!=="Bekor qilingan").reduce((a,b)=>a+(Number(b.rawPrice)||0),0);
-    document.getElementById("pSpent").innerText = sum.toLocaleString("ru-RU") + " so'm";
-}
-
-function contactAdm(){
-    if(tg && tg.openTelegramLink) tg.openTelegramLink(admUrl);
-    else window.open(admUrl,"_blank");
-}
+applyTheme(); render(); loadMe();
 </script>
 </body>
 </html>
