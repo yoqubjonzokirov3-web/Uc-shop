@@ -24,14 +24,12 @@ ADMIN_USER = os.getenv("ADMIN_USER", "@YAQUB_UC_Support")
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# Foydalanuvchining joriy va barcha buyurtmalari xotirasi
 pending_orders = {}
 user_orders_history = {}
 
 class OrderState(StatesGroup):
     waiting_for_receipt = State()
 
-# ================= TUGMALAR =================
 main_kb = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="🌐 YAQUB UC SHOP (Mini App)", web_app=WebAppInfo(url=WEBAPP_URL))]
@@ -55,14 +53,13 @@ def get_admin_inline_kb(user_id: int, order_id: str):
         ]
     )
 
-# ================= HANDLERLAR =================
 @dp.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
         f"Salom, <b>{message.from_user.full_name}</b>!\n"
         f"<b>YAQUB UC SHOP — Premium Game Store</b> botiga xush kelibsiz!\n\n"
-        f"💎 UC xarid qilish, buyurtmalar tarixini ko'rish va admin bilan bog'lanish uchun pastdagi <b>«🌐 YAQUB UC SHOP (Mini App)»</b> tugmasini bosing:",
+        f"💎 UC xarid qilish va buyurtma berish uchun pastdagi <b>«🌐 YAQUB UC SHOP (Mini App)»</b> tugmasini bosing:",
         reply_markup=main_kb,
         parse_mode="HTML"
     )
@@ -76,7 +73,6 @@ async def cancel_order(message: Message, state: FSMContext):
         reply_markup=main_kb
     )
 
-# To'lov chekini (skrinshot) qabul qilish
 @dp.message(F.photo)
 async def process_receipt(message: Message, state: FSMContext):
     order = pending_orders.get(message.from_user.id)
@@ -125,29 +121,21 @@ async def admin_decision(callback: CallbackQuery):
     user_id = int(user_id_str)
     order_id = f"#{clean_oid}"
 
-    # Mini App tarixi uchun holatni yangilash
-    new_status = "Bajarilgan" if action == "ok" else "Bekor qilingan"
     for item in user_orders_history.get(user_id, []):
         if item.get("order_id") == order_id:
-            item["status"] = new_status
+            item["status"] = "Bajarilgan" if action == "ok" else "Bekor qilingan"
 
     if action == "ok":
         await bot.send_message(
             chat_id=user_id,
-            text=(
-                f"🎉 <b>Buyurtmangiz bajarildi! ({order_id})</b>\n"
-                f"Hisobingizga UC muvaffaqiyatli tushirildi. Xaridingiz uchun rahmat! 🙏"
-            ),
+            text=f"🎉 <b>Buyurtmangiz bajarildi! ({order_id})</b>\nHisobingizga UC muvaffaqiyatli tushirildi. Xaridingiz uchun rahmat! 🙏",
             parse_mode="HTML"
         )
         status_text = "\n\n✅ <b>HOLAT: BAJARILDI</b>"
     else:
         await bot.send_message(
             chat_id=user_id,
-            text=(
-                f"❌ <b>Buyurtmangiz rad etildi! ({order_id})</b>\n"
-                f"To'lov cheki xato yoki ID noto'g'ri. Qo'shimcha ma'lumot uchun: {ADMIN_USER}"
-            ),
+            text=f"❌ <b>Buyurtmangiz rad etildi! ({order_id})</b>\nTo'lov cheki xato yoki ID noto'g'ri. Murojaat: {ADMIN_USER}",
             parse_mode="HTML"
         )
         status_text = "\n\n❌ <b>HOLAT: BEKOR QILINDI</b>"
@@ -159,16 +147,14 @@ async def admin_decision(callback: CallbackQuery):
     )
     await callback.answer("Holat yangilandi!")
 
-# ================= RENDER WEB SERVER VA API =================
 async def handle_index(request):
     return web.FileResponse("index.html")
 
 async def handle_config(request):
     user_id = int(request.query.get("user_id", "0"))
-    orders = user_orders_history.get(user_id, [])
     return web.json_response({
         "admin_user": ADMIN_USER,
-        "orders": orders
+        "orders": user_orders_history.get(user_id, [])
     })
 
 async def handle_api_order(request):
@@ -229,4 +215,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-    
