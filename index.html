@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PUBG Mobile UC Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1e293b, #0f172a 75%);
+            color: #f8fafc;
+            min-height: 100vh;
+            padding: 16px 14px 40px;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 18px 12px;
+            background: rgba(30, 41, 59, 0.75);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            color: #fbbf24;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 12px;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.97);
+            border-color: #f59e0b;
+        }
+
+        .uc-icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+
+        .uc-amount {
+            font-size: 19px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .uc-price {
+            font-size: 13px;
+            color: #fbbf24;
+            font-weight: 600;
+            margin: 6px 0 12px;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 10px 0;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* Modal (Buyurtma oynasi) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 100;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #1e293b;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 18px;
+            width: 100%;
+            max-width: 380px;
+            padding: 22px 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .modal h2 {
+            font-size: 18px;
+            color: #fbbf24;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .selected-pkg {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 12px 0 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #f59e0b;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 12px;
+            background: #334155;
+            color: #f8fafc;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            flex: 2;
+            padding: 12px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <span class="status-badge">● Mini App 24/7 Online</span>
+            <h1>PUBG UC SHOP</h1>
+            <p>Kerakli UC paketni tanlang va ID kiriting</p>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="uc-icon">💵</div>
+                <div class="uc-amount">60 UC</div>
+                <div class="uc-price">13,000 so'm</div>
+                <button class="buy-btn" onclick="openOrderModal('60 UC — 13,000 so\'m')">Sotib olish</button>
+            </div>
+
+            <div class="card">
+                <div class="uc-icon">💰</div>
+                <div class="uc-amount">325 UC</div>
+                <div class="uc-price">62,000 so'm</div>
+                <button class="buy-btn" onclick="openOrderModal('325 UC — 62,000 so\'m')">Sotib olish</button>
+            </div>
+
+            <div class="card">
+                <div class="uc-icon">💎</div>
+                <div class="uc-amount">660 UC</div>
+                <div class="uc-price">122,000 so'm</div>
+                <button class="buy-btn" onclick="openOrderModal('660 UC — 122,000 so\'m')">Sotib olish</button>
+            </div>
+
+            <div class="card">
+                <div class="uc-icon">📦</div>
+                <div class="uc-amount">1800 UC</div>
+                <div class="uc-price">300,000 so'm</div>
+                <button class="buy-btn" onclick="openOrderModal('1800 UC — 300,000 so\'m')">Sotib olish</button>
+            </div>
+
+            <div class="card">
+                <div class="uc-icon">👑</div>
+                <div class="uc-amount">3850 UC</div>
+                <div class="uc-price">590,000 so'm</div>
+                <button class="buy-btn" onclick="openOrderModal('3850 UC — 590,000 so\'m')">Sotib olish</button>
+            </div>
+
+            <div class="card">
+                <div class="uc-icon">🔥</div>
+                <div class="uc-amount">8100 UC</div>
+                <div class="uc-price">1,180,000 so'm</div>
+                <button class="buy-btn" onclick="openOrderModal('8100 UC — 1,180,000 so\'m')">Sotib olish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buyurtma berish oynasi -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
+            <h2>🎮 Buyurtmani rasmiylashtirish</h2>
+            <div class="selected-pkg" id="selectedPackageText">60 UC — 13,000 so'm</div>
+
+            <div class="input-group">
+                <label for="pubgIdInput">PUBG Mobile ID raqamingiz:</label>
+                <input type="number" id="pubgIdInput" placeholder="Masalan: 5123456789" inputmode="numeric">
+                <div class="error-msg" id="errorMsg">❗️ Iltimos, kamida 8 xonali to'g'ri PUBG ID kiriting!</div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeOrderModal()">Bekor qilish</button>
+                <button class="btn-submit" id="submitBtn" onclick="submitOrder()">Davom etish</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let currentPackage = "";
+
+        function openOrderModal(packageName) {
+            currentPackage = packageName;
+            document.getElementById("selectedPackageText").innerText = packageName;
+            document.getElementById("pubgIdInput").value = "";
+            document.getElementById("errorMsg").style.display = "none";
+            document.getElementById("orderModal").classList.add("active");
+        }
+
+        function closeOrderModal() {
+            document.getElementById("orderModal").classList.remove("active");
+        }
+
+        async function submitOrder() {
+            const pubgId = document.getElementById("pubgIdInput").value.trim();
+            const errorMsg = document.getElementById("errorMsg");
+            const submitBtn = document.getElementById("submitBtn");
+
+            if (!/^\d{8,15}$/.test(pubgId)) {
+                errorMsg.style.display = "block";
+                return;
+            }
+            errorMsg.style.display = "none";
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Yuborilmoqda...";
+
+            const payload = {
+                package: currentPackage,
+                pubg_id: pubgId
+            };
+
+            // 1-usul: Agar Inline WebApp yoki Menu tugmasi orqali ochilgan bo'lsa (API orqali yuboradi)
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+                try {
+                    await fetch("/api/order", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            user_id: tg.initDataUnsafe.user.id,
+                            package: currentPackage,
+                            pubg_id: pubgId
+                        })
+                    });
+                    tg.close();
+                    return;
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            // 2-usul: Pastki menyu (ReplyKeyboard) WebApp tugmasi orqali ochilgan bo'lsa
+            tg.sendData(JSON.stringify(payload));
+        }
+    </script>
+</body>
+  </html>
+  
