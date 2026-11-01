@@ -18,7 +18,7 @@
             background: radial-gradient(circle at top, #1e293b, #0f172a 75%);
             color: #f8fafc;
             min-height: 100vh;
-            padding: 16px 14px 40px;
+            padding: 16px 14px 90px;
         }
 
         .container {
@@ -32,7 +32,7 @@
             background: rgba(30, 41, 59, 0.75);
             border: 1px solid rgba(245, 158, 11, 0.35);
             border-radius: 18px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
 
@@ -61,6 +61,16 @@
             margin-top: 4px;
         }
 
+        /* Bo'limlar (Tab) */
+        .tab-section {
+            display: none;
+        }
+
+        .tab-section.active {
+            display: block;
+        }
+
+        /* Do'kon Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -109,6 +119,116 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
+        }
+
+        /* Admin bilan aloqa bo'limi */
+        .admin-card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 18px;
+            padding: 24px 18px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+        }
+
+        .admin-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(245, 158, 11, 0.15);
+            border: 2px solid #f59e0b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            margin: 0 auto 14px;
+        }
+
+        .admin-card h2 {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .admin-card p {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .info-list {
+            text-align: left;
+            background: rgba(15, 23, 42, 0.65);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        .info-list div {
+            margin-bottom: 8px;
+        }
+
+        .info-list div:last-child {
+            margin-bottom: 0;
+        }
+
+        .admin-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+        }
+
+        /* Pastki Menyu (Bottom Navigation) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 16px;
+            backdrop-filter: blur(10px);
+            z-index: 90;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 12px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .nav-btn span.icon {
+            font-size: 20px;
+        }
+
+        .nav-btn.active {
+            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.12);
         }
 
         /* Modal (Buyurtma oynasi) */
@@ -220,53 +340,85 @@
     <div class="container">
         <header>
             <span class="status-badge">● Mini App 24/7 Online</span>
-            <h1>PUBG UC SHOP</h1>
-            <p>Kerakli UC paketni tanlang va ID kiriting</p>
+            <h1>YAQUB UC SHOP</h1>
+            <p>Tezkor va ishonchli PUBG Mobile UC xizmati</p>
         </header>
 
-        <div class="grid">
-            <div class="card">
-                <div class="uc-icon">💵</div>
-                <div class="uc-amount">60 UC</div>
-                <div class="uc-price">13,000 so'm</div>
-                <button class="buy-btn" onclick="openOrderModal('60 UC — 13,000 so\'m')">Sotib olish</button>
-            </div>
+        <!-- 1-BO'LIM: UC DO'KON -->
+        <div id="shopTab" class="tab-section active">
+            <div class="grid">
+                <div class="card">
+                    <div class="uc-icon">💵</div>
+                    <div class="uc-amount">60 UC</div>
+                    <div class="uc-price">13,000 so'm</div>
+                    <button class="buy-btn" onclick="openOrderModal('60 UC — 13,000 so\'m')">Sotib olish</button>
+                </div>
 
-            <div class="card">
-                <div class="uc-icon">💰</div>
-                <div class="uc-amount">325 UC</div>
-                <div class="uc-price">62,000 so'm</div>
-                <button class="buy-btn" onclick="openOrderModal('325 UC — 62,000 so\'m')">Sotib olish</button>
-            </div>
+                <div class="card">
+                    <div class="uc-icon">💰</div>
+                    <div class="uc-amount">325 UC</div>
+                    <div class="uc-price">62,000 so'm</div>
+                    <button class="buy-btn" onclick="openOrderModal('325 UC — 62,000 so\'m')">Sotib olish</button>
+                </div>
 
-            <div class="card">
-                <div class="uc-icon">💎</div>
-                <div class="uc-amount">660 UC</div>
-                <div class="uc-price">122,000 so'm</div>
-                <button class="buy-btn" onclick="openOrderModal('660 UC — 122,000 so\'m')">Sotib olish</button>
-            </div>
+                <div class="card">
+                    <div class="uc-icon">💎</div>
+                    <div class="uc-amount">660 UC</div>
+                    <div class="uc-price">122,000 so'm</div>
+                    <button class="buy-btn" onclick="openOrderModal('660 UC — 122,000 so\'m')">Sotib olish</button>
+                </div>
 
-            <div class="card">
-                <div class="uc-icon">📦</div>
-                <div class="uc-amount">1800 UC</div>
-                <div class="uc-price">300,000 so'm</div>
-                <button class="buy-btn" onclick="openOrderModal('1800 UC — 300,000 so\'m')">Sotib olish</button>
-            </div>
+                <div class="card">
+                    <div class="uc-icon">📦</div>
+                    <div class="uc-amount">1800 UC</div>
+                    <div class="uc-price">300,000 so'm</div>
+                    <button class="buy-btn" onclick="openOrderModal('1800 UC — 300,000 so\'m')">Sotib olish</button>
+                </div>
 
-            <div class="card">
-                <div class="uc-icon">👑</div>
-                <div class="uc-amount">3850 UC</div>
-                <div class="uc-price">590,000 so'm</div>
-                <button class="buy-btn" onclick="openOrderModal('3850 UC — 590,000 so\'m')">Sotib olish</button>
-            </div>
+                <div class="card">
+                    <div class="uc-icon">👑</div>
+                    <div class="uc-amount">3850 UC</div>
+                    <div class="uc-price">590,000 so'm</div>
+                    <button class="buy-btn" onclick="openOrderModal('3850 UC — 590,000 so\'m')">Sotib olish</button>
+                </div>
 
-            <div class="card">
-                <div class="uc-icon">🔥</div>
-                <div class="uc-amount">8100 UC</div>
-                <div class="uc-price">1,180,000 so'm</div>
-                <button class="buy-btn" onclick="openOrderModal('8100 UC — 1,180,000 so\'m')">Sotib olish</button>
+                <div class="card">
+                    <div class="uc-icon">🔥</div>
+                    <div class="uc-amount">8100 UC</div>
+                    <div class="uc-price">1,180,000 so'm</div>
+                    <button class="buy-btn" onclick="openOrderModal('8100 UC — 1,180,000 so\'m')">Sotib olish</button>
+                </div>
             </div>
         </div>
+
+        <!-- 2-BO'LIM: ADMIN BILAN ALOQA -->
+        <div id="adminTab" class="tab-section">
+            <div class="admin-card">
+                <div class="admin-avatar">👨‍💻</div>
+                <h2>Admin bilan bog'lanish</h2>
+                <p>To'lovlar, buyurtma holati yoki hamkorlik bo'yicha savollaringiz bo'lsa, adminga murojaat qiling.</p>
+
+                <div class="info-list">
+                    <div>⚡️ <b>Ish vaqti:</b> 24/7 (Har kuni)</div>
+                    <div>⏱ <b>UC tushish vaqti:</b> 2–10 daqiqa ichida</div>
+                    <div>📞 <b>Admin:</b> <span id="adminUsernameText">@admin</span></div>
+                </div>
+
+                <button class="admin-btn" onclick="contactAdmin()">💬 Adminga yozish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pastki navigatsiya menyusi -->
+    <div class="bottom-nav">
+        <button class="nav-btn active" id="navShopBtn" onclick="switchTab('shop')">
+            <span class="icon">🛒</span>
+            <span>UC Do'kon</span>
+        </button>
+        <button class="nav-btn" id="navAdminBtn" onclick="switchTab('admin')">
+            <span class="icon">👨‍💻</span>
+            <span>Admin bilan aloqa</span>
+        </button>
     </div>
 
     <!-- Buyurtma berish oynasi -->
@@ -293,6 +445,34 @@
         tg.expand();
 
         let currentPackage = "";
+        let adminUrl = "https://t.me/admin_username";
+
+        // Serverdan admin username'ni avtomatik olish
+        fetch("/api/config")
+            .then(r => r.json())
+            .then(data => {
+                if (data.admin_user) {
+                    const cleanUser = data.admin_user.replace("@", "").trim();
+                    document.getElementById("adminUsernameText").innerText = "@" + cleanUser;
+                    adminUrl = "https://t.me/" + cleanUser;
+                }
+            })
+            .catch(() => {});
+
+        function switchTab(tab) {
+            document.getElementById("shopTab").classList.toggle("active", tab === "shop");
+            document.getElementById("adminTab").classList.toggle("active", tab === "admin");
+            document.getElementById("navShopBtn").classList.toggle("active", tab === "shop");
+            document.getElementById("navAdminBtn").classList.toggle("active", tab === "admin");
+        }
+
+        function contactAdmin() {
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink(adminUrl);
+            } else {
+                window.open(adminUrl, "_blank");
+            }
+        }
 
         function openOrderModal(packageName) {
             currentPackage = packageName;
@@ -324,7 +504,6 @@
                 pubg_id: pubgId
             };
 
-            // 1-usul: Agar Inline WebApp yoki Menu tugmasi orqali ochilgan bo'lsa (API orqali yuboradi)
             if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
                 try {
                     await fetch("/api/order", {
@@ -343,10 +522,8 @@
                 }
             }
 
-            // 2-usul: Pastki menyu (ReplyKeyboard) WebApp tugmasi orqali ochilgan bo'lsa
             tg.sendData(JSON.stringify(payload));
         }
     </script>
 </body>
-  </html>
-  
+</html>
