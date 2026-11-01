@@ -1,740 +1,391 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YAQUB UC SHOP — Premium Game Store</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        :root {
-            --bg-main: #070b14;
-            --bg-card: #10192d;
-            --bg-card-inner: #0b1222;
-            --border-blue: rgba(56, 189, 248, 0.22);
-            --border-gold: rgba(245, 185, 21, 0.45);
-            --gold: #f5b915;
-            --gold-dark: #d97706;
-            --text-white: #f8fafc;
-            --text-muted: #94a3b8;
-            --green: #10b981;
-            --blue: #0ea5e9;
-            --red: #ef4444;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background: radial-gradient(circle at top, #152238, var(--bg-main) 70%);
-            color: var(--text-white);
-            min-height: 100vh;
-            padding-bottom: 82px;
-            overflow-x: hidden;
-        }
-
-        .app-container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 12px 14px;
-        }
-
-        /* TOP HEADER */
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 12px;
-            background: rgba(16, 25, 45, 0.85);
-            border: 1px solid var(--border-blue);
-            border-radius: 16px;
-            margin-bottom: 14px;
-            backdrop-filter: blur(10px);
-        }
-
-        .brand-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-circle {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #2a1f04, #090d16);
-            border: 2px solid var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-            font-weight: 900;
-            color: var(--gold);
-            text-align: center;
-            line-height: 1.05;
-            box-shadow: 0 0 12px rgba(245, 185, 21, 0.35);
-            cursor: pointer;
-        }
-
-        .back-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-blue);
-            color: #fff;
-            font-size: 18px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .brand-titles h1 {
-            font-size: 16px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-
-        .brand-titles p {
-            font-size: 10px;
-            color: var(--gold);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .menu-icon-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-blue);
-            color: var(--text-white);
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* SCREENS */
-        .screen {
-            display: none;
-            animation: fadeIn 0.2s ease;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 1. HOME SCREEN */
-        .hero-banner {
-            position: relative;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 55%, #2e1f05 100%);
-            border: 1px solid var(--border-gold);
-            border-radius: 18px;
-            padding: 20px 16px;
-            margin-bottom: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
-        }
-
-        .pubg-badge {
-            display: inline-block;
-            background: var(--gold);
-            color: #000;
-            font-weight: 900;
-            font-size: 16px;
-            padding: 3px 10px;
-            border-radius: 6px;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-        }
-
-        .pubg-sub {
-            display: block;
-            font-size: 10px;
-            letter-spacing: 2px;
-            color: var(--gold);
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .hero-banner h2 {
-            font-size: 19px;
-            font-weight: 800;
-            line-height: 1.25;
-            max-width: 68%;
-            margin-bottom: 12px;
-        }
-
-        .hero-helmet {
-            position: absolute;
-            right: -6px;
-            bottom: -10px;
-            font-size: 88px;
-            opacity: 0.9;
-            filter: drop-shadow(0 6px 15px rgba(0,0,0,0.6));
-            pointer-events: none;
-        }
-
-        .online-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid rgba(16, 185, 129, 0.5);
-            color: #34d399;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-
-        .online-dot {
-            width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #10b981;
-        }
-
-        .promo-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(90deg, rgba(245, 185, 21, 0.14), rgba(16, 25, 45, 0.9));
-            border: 1px solid var(--border-gold);
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-bottom: 16px;
-            cursor: pointer;
-        }
-
-        .promo-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .promo-gift {
-            font-size: 26px;
-        }
-
-        .promo-text strong {
-            display: block;
-            color: var(--gold);
-            font-size: 13px;
-        }
-
-        .promo-text span {
-            font-size: 12px;
-            color: var(--text-white);
-        }
-
-        .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* 3x2 UC GRID */
-        .uc-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .uc-card {
-            background: linear-gradient(180deg, #16223b 0%, #0c1324 100%);
-            border: 1px solid var(--border-blue);
-            border-radius: 14px;
-            padding: 12px 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-            position: relative;
-        }
-
-        .uc-card:active, .uc-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--gold);
-            box-shadow: 0 6px 18px rgba(245, 185, 21, 0.22);
-        }
-
-        .uc-coin-box {
-            width: 54px;
-            height: 46px;
-            margin: 0 auto 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle, rgba(245, 185, 21, 0.25), transparent 70%);
-            font-size: 32px;
-        }
-
-        .uc-amount {
-            font-size: 15px;
-            font-weight: 800;
-            color: #fff;
-        }
-
-        .uc-price {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--gold);
-            margin-top: 3px;
-        }
-
-        /* 2. PLAYER INFO SCREEN */
-        .selected-banner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, #292008, #10192d);
-            border: 1px solid var(--border-gold);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 18px;
-        }
-
-        .selected-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .selected-coin {
-            font-size: 46px;
-            filter: drop-shadow(0 4px 10px rgba(245, 185, 21, 0.4));
-        }
-
-        .selected-info h3 {
-            font-size: 24px;
-            font-weight: 900;
-            color: #fff;
-        }
-
-        .selected-info p {
-            font-size: 15px;
-            color: var(--gold);
-            font-weight: 700;
-            margin-top: 2px;
-        }
-
-        .popular-badge {
-            display: inline-block;
-            margin-top: 6px;
-            background: var(--gold);
-            color: #000;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 3px 10px;
-            border-radius: 12px;
-        }
-
-        .field-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-blue);
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-bottom: 12px;
-        }
-
-        .field-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #cbd5e1;
-            margin-bottom: 8px;
-        }
-
-        .field-input {
-            width: 100%;
-            background: var(--bg-card-inner);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 12px;
-            color: #fff;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .field-input:focus {
-            border-color: var(--gold);
-        }
-
-        .warning-box {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--border-gold);
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin: 14px 0 18px;
-            font-size: 12px;
-            line-height: 1.45;
-        }
-
-        .warning-box strong {
-            display: block;
-            color: var(--gold);
-            margin-bottom: 2px;
-        }
-
-        .gold-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #fbbf24, #d97706);
-            color: #090d16;
-            font-weight: 800;
-            font-size: 16px;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(245, 185, 21, 0.3);
-        }
-
-        .gold-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* 3. CONFIRM ORDER SCREEN */
-        .summary-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-blue);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 16px;
-        }
-
-        .summary-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .summary-row:last-child {
-            border-bottom: none;
-        }
-
-        .summary-label {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .summary-val {
-            font-size: 14px;
-            font-weight: 700;
-            color: #fff;
-            margin-top: 2px;
-        }
-
-        .copy-btn {
-            background: rgba(14, 165, 233, 0.15);
-            border: 1px solid rgba(14, 165, 233, 0.35);
-            color: #38bdf8;
-            border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .pay-option {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--bg-card);
-            border: 1px solid var(--border-blue);
-            border-radius: 14px;
-            padding: 13px 14px;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-
-        .pay-option.selected {
-            border-color: var(--gold);
-            background: linear-gradient(90deg, rgba(245, 185, 21, 0.12), var(--bg-card));
-        }
-
-        .pay-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .pay-icon {
-            width: 34px;
-            height: 26px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 15px;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .pay-check {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            border: 2px solid #475569;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: transparent;
-        }
-
-        .pay-option.selected .pay-check {
-            background: var(--gold);
-            border-color: var(--gold);
-            color: #000;
-            font-weight: 900;
-        }
-
-        .total-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 4px;
-            font-size: 15px;
-            margin-bottom: 10px;
-        }
-
-        .total-bar strong {
-            font-size: 18px;
-            color: var(--gold);
-        }
-
-        /* 4. SUCCESS SCREEN */
-        .success-wrap {
-            text-align: center;
-            padding: 24px 10px;
-        }
-
-        .check-circle {
-            width: 88px;
-            height: 88px;
-            border-radius: 50%;
-            background: rgba(16, 185, 129, 0.2);
-            border: 3px solid #10b981;
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 42px;
-            color: #10b981;
-            margin: 0 auto 18px;
-        }
-
-        .success-wrap h2 {
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .success-wrap p {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 22px;
-        }
-
-        .info-pill-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-align: left;
-            background: var(--bg-card);
-            border: 1px solid var(--border-blue);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-
-        .info-pill-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(14, 165, 233, 0.2);
-            color: #38bdf8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        /* 5. ORDERS HISTORY SCREEN */
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-
-        .filter-btn {
-            flex: 1;
-            padding: 9px;
-            border-radius: 10px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-blue);
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .filter-btn.active {
-            background: var(--gold);
-            color: #000;
-            border-color: var(--gold);
-            font-weight: 800;
-        }
-
-        .order-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--bg-card);
-            border: 1px solid var(--border-blue);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 10px;
-        }
-
-        .order-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .order-status {
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 12px;
-            display: inline-block;
-            margin-bottom: 6px;
-        }
-
-        .status-done { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-        .status-pending { background: rgba(14, 165, 233, 0.2); color: #38bdf8; }
-        .status-cancel { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
-
-        .order-date {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        /* 6. SUPPORT SCREEN */
-        .support-hero {
-            text-align: center;
-            background: var(--bg-card);
-            border: 1px solid var(--border-blue);
-            border-radius: 18px;
-            padding: 22px 16px;
-            margin-bottom: 14px;
-        }
-
-        .support-avatar {
-            width: 84px;
-            height: 84px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(14, 165, 233, 0.3), #0f172a);
-            border: 2px solid var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 44px;
-            margin: 0 auto 12px;
-        }
-
-        .support-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: 1px solid var(--border-blue);
-            background: var(--bg-card);
-            color: #fff;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .support-btn.primary {
-            background: linear-gradient(135deg, #0ea5e9, #0284c7);
-            border: none;
-        }
-
-        /* 7. PROFILE SCREEN */
-        .profile-header {
-            text-align: center;
-            padding: 18px 12px;
-        }
-
-        .profile-initials {
-            width: 76px;
-            height: 76px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 2px solid #38bdf8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            font-weight: 800;
-            margin: 0 auto 10px;
-        }
-
-        .menu-list-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-blue);
-            border-radius: 16px;
-            padding: 6px 14px;
-            margin-bottom: 14px;
-        }
-
-        .menu-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 14px;
-        }
-
-        .menu-row:last-child {
-            border-bottom: none;
-        }
-
-        /* 8. SIDE DRAWER MENU */
-        .drawer-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>YAQUB UC SHOP</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root { --bg:#070b14; --card:#10192d; --inner:#0b1222; --b-blue:rgba(56,189,248,0.22); --b-gold:rgba(245,185,21,0.45); --gold:#f5b915; --muted:#94a3b8; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; -webkit-tap-highlight-color:transparent; }
+body { background:radial-gradient(circle at top,#152238,var(--bg) 70%); color:#f8fafc; min-height:100vh; padding-bottom:84px; }
+.app { max-width:480px; margin:0 auto; padding:12px 14px; }
+.top-bar { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:rgba(16,25,45,0.9); border:1px solid var(--b-blue); border-radius:16px; margin-bottom:14px; }
+.brand-left { display:flex; align-items:center; gap:10px; }
+.logo { width:38px; height:38px; border-radius:50%; background:#1a1405; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:900; color:var(--gold); text-align:center; line-height:1.1; cursor:pointer; }
+.icon-btn { width:36px; height:36px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid var(--b-blue); color:#fff; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.titles h1 { font-size:15px; font-weight:800; color:#fff; }
+.titles p { font-size:10px; color:var(--gold); font-weight:700; letter-spacing:0.8px; }
+.screen { display:none; }
+.screen.active { display:block; }
+.hero { position:relative; background:linear-gradient(135deg,#1e293b 0%,#0f172a 55%,#2e1f05 100%); border:1px solid var(--b-gold); border-radius:18px; padding:18px 16px; margin-bottom:12px; overflow:hidden; }
+.pubg-tag { display:inline-block; background:var(--gold); color:#000; font-weight:900; font-size:15px; padding:2px 8px; border-radius:5px; }
+.pubg-sub { display:block; font-size:10px; letter-spacing:2px; color:var(--gold); font-weight:700; margin:3px 0 10px; }
+.hero h2 { font-size:18px; font-weight:800; max-width:70%; margin-bottom:12px; line-height:1.25; }
+.hero-art { position:absolute; right:4px; bottom:-6px; font-size:76px; pointer-events:none; }
+.online { display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.5); color:#34d399; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; }
+.dot { width:7px; height:7px; background:#10b981; border-radius:50%; box-shadow:0 0 8px #10b981; }
+.promo { display:flex; align-items:center; justify-content:space-between; background:linear-gradient(90deg,rgba(245,185,21,0.15),rgba(16,25,45,0.9)); border:1px solid var(--b-gold); border-radius:14px; padding:11px 14px; margin-bottom:15px; font-size:12px; cursor:pointer; }
+.sec-title { font-size:15px; font-weight:700; margin-bottom:10px; }
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.uc-card { background:linear-gradient(180deg,#16223b,#0c1324); border:1px solid var(--b-blue); border-radius:14px; padding:12px 6px; text-align:center; cursor:pointer; }
+.uc-card:active { border-color:var(--gold); transform:scale(0.97); }
+.coin { font-size:30px; margin-bottom:6px; }
+.amt { font-size:14px; font-weight:800; color:#fff; }
+.prc { font-size:11px; font-weight:700; color:var(--gold); margin-top:3px; }
+.sel-banner { display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,#292008,#10192d); border:1px solid var(--b-gold); border-radius:16px; padding:15px; margin-bottom:16px; }
+.badge-pop { display:inline-block; margin-top:5px; background:var(--gold); color:#000; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; }
+.box { background:var(--card); border:1px solid var(--b-blue); border-radius:14px; padding:12px 14px; margin-bottom:12px; }
+.lbl { font-size:12px; color:#cbd5e1; margin-bottom:6px; display:block; font-weight:600; }
+.inp { width:100%; background:var(--inner); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:11px 12px; color:#fff; font-size:15px; outline:none; }
+.inp:focus { border-color:var(--gold); }
+.warn { display:flex; gap:10px; background:rgba(245,158,11,0.1); border:1px solid var(--b-gold); border-radius:14px; padding:12px; margin:12px 0 16px; font-size:12px; line-height:1.4; }
+.gold-btn { width:100%; padding:14px; background:linear-gradient(135deg,#fbbf24,#d97706); color:#090d16; font-weight:800; font-size:15px; border:none; border-radius:14px; cursor:pointer; }
+.row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.row:last-child { border-bottom:none; }
+.copy-btn { background:rgba(14,165,233,0.15); border:1px solid rgba(14,165,233,0.35); color:#38bdf8; border-radius:8px; padding:5px 9px; font-size:11px; cursor:pointer; }
+.pay-opt { display:flex; align-items:center; justify-content:space-between; background:var(--card); border:1px solid var(--b-blue); border-radius:13px; padding:12px 14px; margin-bottom:9px; cursor:pointer; font-size:14px; font-weight:600; }
+.pay-opt.selected { border-color:var(--gold); background:rgba(245,185,21,0.12); }
+.chk { width:20px; height:20px; border-radius:50%; border:2px solid #475569; display:flex; align-items:center; justify-content:center; font-size:11px; color:transparent; }
+.pay-opt.selected .chk { background:var(--gold); border-color:var(--gold); color:#000; font-weight:900; }
+.ok-circle { width:80px; height:80px; border-radius:50%; background:rgba(16,185,129,0.2); border:3px solid #10b981; display:flex; align-items:center; justify-content:center; font-size:38px; color:#10b981; margin:15px auto; }
+.tabs { display:flex; gap:8px; margin-bottom:12px; }
+.tab-btn { flex:1; padding:8px; border-radius:10px; background:var(--card); border:1px solid var(--b-blue); color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; }
+.tab-btn.active { background:var(--gold); color:#000; border-color:var(--gold); font-weight:800; }
+.status-tag { font-size:10px; font-weight:700; padding:3px 8px; border-radius:10px; display:inline-block; margin-bottom:4px; }
+.st-done { background:rgba(16,185,129,0.2); color:#34d399; }
+.st-wait { background:rgba(14,165,233,0.2); color:#38bdf8; }
+.st-no { background:rgba(239,68,68,0.2); color:#f87171; }
+.sup-btn { width:100%; padding:13px; border-radius:12px; border:1px solid var(--b-blue); background:var(--card); color:#fff; font-size:14px; font-weight:700; margin-bottom:9px; cursor:pointer; }
+.sup-btn.pri { background:linear-gradient(135deg,#0ea5e9,#0284c7); border:none; }
+.avatar { width:72px; height:72px; border-radius:50%; background:#1e293b; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:800; margin:0 auto 10px; }
+.drawer-bg { position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; display:none; }
+.drawer-bg.active { display:block; }
+.drawer { position:fixed; top:0; right:-280px; width:260px; height:100vh; background:#0b1222; border-left:1px solid var(--b-blue); z-index:201; padding:18px 14px; transition:0.25s; display:flex; flex-direction:column; justify-content:space-between; }
+.drawer.active { right:0; }
+.d-item { display:flex; justify-content:space-between; padding:12px 8px; color:#e2e8f0; font-size:14px; font-weight:600; border-bottom:1px solid rgba(255,255,255,0.05); cursor:pointer; }
+.b-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(11,18,34,0.96); border-top:1px solid var(--b-blue); display:flex; justify-content:space-around; padding:8px 4px 12px; z-index:100; }
+.nav-i { background:none; border:none; color:#64748b; font-size:11px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; flex:1; }
+.nav-i.active { color:#38bdf8; }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <div class="top-bar">
+        <div class="brand-left">
+            <button class="icon-btn" id="backBtn" style="display:none;" onclick="goBack()">❮</button>
+            <div class="logo" id="logoBtn" onclick="openTab('homeScreen')">YAQUB<br>UC SHOP</div>
+            <div class="titles">
+                <h1 id="topTitle">YAQUB UC SHOP</h1>
+                <p>PREMIUM GAME STORE</p>
+            </div>
+        </div>
+        <button class="icon-btn" onclick="toggleDrawer(true)">☰</button>
+    </div>
+
+    <!-- 1. BOSH SAHIFA -->
+    <div id="homeScreen" class="screen active">
+        <div class="hero">
+            <span class="pubg-tag">PUBG</span>
+            <span class="pubg-sub">MOBILE</span>
+            <h2>UC xarid qilish endi yanada oson!</h2>
+            <div class="online"><span class="dot"></span> ONLINE</div>
+            <div class="hero-art">🪖</div>
+        </div>
+
+        <div class="promo" onclick="alert('Birinchi buyurtmangizga 5% bonus qo\'shib beriladi!')">
+            <div><strong style="color:var(--gold);display:block;">🎁 Aksiya!</strong><span>Birinchi buyurtmaga <b>5% chegirma!</b></span></div>
+            <span>❯</span>
+        </div>
+
+        <div class="sec-title">💎 UC Paketlarini tanlang</div>
+        <div class="grid">
+            <div class="uc-card" onclick="pickUC('60 UC','13 000 so\'m',13000)"><div class="coin">🪙</div><div class="amt">60 UC</div><div class="prc">13 000 so'm</div></div>
+            <div class="uc-card" onclick="pickUC('325 UC','62 000 so\'m',62000)"><div class="coin">🪙</div><div class="amt">325 UC</div><div class="prc">62 000 so'm</div></div>
+            <div class="uc-card" onclick="pickUC('660 UC','122 000 so\'m',122000)"><div class="coin">🪙</div><div class="amt">660 UC</div><div class="prc">122 000 so'm</div></div>
+            <div class="uc-card" onclick="pickUC('1800 UC','300 000 so\'m',300000)"><div class="coin">🪙</div><div class="amt">1800 UC</div><div class="prc">300 000 so'm</div></div>
+            <div class="uc-card" onclick="pickUC('3850 UC','590 000 so\'m',590000)"><div class="coin">🪙</div><div class="amt">3850 UC</div><div class="prc">590 000 so'm</div></div>
+            <div class="uc-card" onclick="pickUC('8100 UC','1 180 000 so\'m',1180000)"><div class="coin">🪙</div><div class="amt">8100 UC</div><div class="prc">1 180 000 so'm</div></div>
+        </div>
+    </div>
+
+    <!-- 2. O'YINCHI MA'LUMOTLARI -->
+    <div id="playerScreen" class="screen">
+        <div class="sel-banner">
+            <div style="font-size:42px;">🪙</div>
+            <div>
+                <div id="selAmt" style="font-size:22px;font-weight:900;">660 UC</div>
+                <div id="selPrc" style="font-size:14px;color:var(--gold);font-weight:700;">122 000 so'm</div>
+                <span class="badge-pop">Eng ommabop</span>
+            </div>
+        </div>
+        <div class="sec-title">O'yinchi ma'lumotlari</div>
+        <div class="box">
+            <label class="lbl">👤 Player ID</label>
+            <input type="number" id="pidInp" class="inp" placeholder="ID raqamingizni kiriting" inputmode="numeric">
+        </div>
+        <div class="box">
+            <label class="lbl">👑 Nickname</label>
+            <input type="text" id="nickInp" class="inp" placeholder="O'yin ichidagi nickname">
+        </div>
+        <div class="warn">
+            <span>⚠️</span>
+            <div><strong style="color:var(--gold);display:block;">Muhim ma'lumot!</strong>ID va nickname to'g'ri bo'lishi buyurtmaning muvaffaqiyatli bajarilishiga kafolat beradi.</div>
+        </div>
+        <button class="gold-btn" onclick="toConfirm()">Davom etish ➜</button>
+    </div>
+
+    <!-- 3. TASDIQLASH VA TO'LOV USULI -->
+    <div id="confirmScreen" class="screen">
+        <div class="sel-banner">
+            <div style="font-size:40px;">🪙</div>
+            <div>
+                <div id="confAmt" style="font-size:21px;font-weight:900;">660 UC</div>
+                <div id="confPrc" style="font-size:14px;color:var(--gold);font-weight:700;">122 000 so'm</div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="row">
+                <div><div style="font-size:11px;color:var(--muted);">Player ID</div><div id="confPid" style="font-weight:700;margin-top:2px;">---</div></div>
+                <button class="copy-btn" onclick="copyVal('confPid')">Nusxa</button>
+            </div>
+            <div class="row">
+                <div><div style="font-size:11px;color:var(--muted);">Nickname</div><div id="confNick" style="font-weight:700;margin-top:2px;">---</div></div>
+                <button class="copy-btn" onclick="copyVal('confNick')">Nusxa</button>
+            </div>
+        </div>
+        <div class="sec-title">To'lov usulini tanlang</div>
+        <div class="pay-opt selected" onclick="setPay(this,'Click / UzCard')"><span>💳 Click / UzCard</span><span class="chk">✓</span></div>
+        <div class="pay-opt" onclick="setPay(this,'Payme')"><span>🅿️ Payme</span><span class="chk">✓</span></div>
+        <div class="pay-opt" onclick="setPay(this,'Naqd / Terminal')"><span>💵 Naqd to'lov</span><span class="chk">✓</span></div>
+        <div class="pay-opt" onclick="setPay(this,'Telegram Stars')"><span>⭐ Telegram Stars</span><span class="chk">✓</span></div>
+        <div style="display:flex;justify-content:space-between;padding:12px 4px;font-size:15px;">
+            <span>To'lov summasi:</span><strong id="confTotal" style="color:var(--gold);font-size:17px;">122 000 so'm</strong>
+        </div>
+        <button class="gold-btn" id="payBtn" onclick="sendOrder()">To'lov qilish 💳</button>
+    </div>
+
+    <!-- 4. MUVAFFAQIYATLI YAKUN -->
+    <div id="successScreen" class="screen" style="text-align:center;padding:15px 6px;">
+        <div class="ok-circle">✓</div>
+        <h2 style="font-size:21px;margin-bottom:8px;">Buyurtma muvaffaqiyatli yuborildi!</h2>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">Botimizga to'lov kartasi yuborildi. To'lov qilib chekni (skrinshot) botga tashlang! 🙏</p>
+        <div class="box" style="text-align:left;">
+            <div style="font-size:11px;color:var(--muted);">Buyurtma raqami:</div>
+            <div id="ordNum" style="font-weight:800;margin-top:3px;color:var(--gold);">#YAQUB-001</div>
+        </div>
+        <div class="box" style="text-align:left;font-size:13px;">🔔 Sizga xabar orqali holat yangilanadi.</div>
+        <button class="gold-btn" onclick="finishOrder()">🏠 Botga qaytib chek yuborish</button>
+    </div>
+
+    <!-- 5. BUYURTMALAR TARIXI -->
+    <div id="ordersScreen" class="screen">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="renderOrders('all',this)">Barcha</button>
+            <button class="tab-btn" onclick="renderOrders('Jarayonda',this)">Jarayonda</button>
+            <button class="tab-btn" onclick="renderOrders('Bajarilgan',this)">Bajarilgan</button>
+        </div>
+        <div id="ordersBox"></div>
+    </div>
+
+    <!-- 6. QO'LLAB-QUVVATLASH -->
+    <div id="supportScreen" class="screen">
+        <div class="box" style="text-align:center;padding:22px 14px;">
+            <div class="avatar">🎧</div>
+            <h2 style="font-size:19px;margin-bottom:6px;">Biz bilan bog'laning!</h2>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Savollaringiz bo'lsa, biz doimo siz bilanmiz.</p>
+            <button class="sup-btn pri" onclick="contactAdm()">✈️ <span id="admTxt">@YAQUB_UC_Support</span></button>
+            <button class="sup-btn" onclick="contactAdm()">💬 Chat ochish</button>
+            <button class="sup-btn" onclick="contactAdm()">📢 Telegram kanal</button>
+            <div style="margin-top:10px;color:var(--gold);font-size:13px;font-weight:700;">⚡ Javob vaqti: 24/7</div>
+        </div>
+    </div>
+
+    <!-- 7. PROFIL -->
+    <div id="profileScreen" class="screen">
+        <div style="text-align:center;padding:14px 0;">
+            <div class="avatar" id="pAva">YZ</div>
+            <h2 id="pName" style="font-size:18px;">Foydalanuvchi</h2>
+            <p id="pUser" style="font-size:12px;color:var(--muted);margin-top:3px;">@user</p>
+        </div>
+        <div class="box">
+            <div class="row"><span>🆔 ID:</span><strong id="pId">---</strong></div>
+            <div class="row"><span>🛒 Buyurtmalar:</span><strong id="pCount">0</strong></div>
+            <div class="row"><span>🪙 Umumiy xarid:</span><strong id="pSpent" style="color:var(--gold);">0 so'm</strong></div>
+        </div>
+        <div class="box">
+            <div class="row"><span>🔔 Bildirishnomalar</span><span style="color:#10b981;font-weight:700;">Yoqilgan</span></div>
+            <div class="row"><span>🌐 Til / Language</span><span style="color:var(--muted);">O'zbek ❯</span></div>
+            <div class="row"><span>🌙 Mavzu</span><span style="color:var(--muted);">Qora rejim ❯</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- 8. YON MENYU -->
+<div class="drawer-bg" id="drwBg" onclick="toggleDrawer(false)"></div>
+<div class="drawer" id="drw">
+    <div>
+        <div class="brand-left" style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--b-blue);">
+            <div class="logo">YAQUB<br>UC SHOP</div>
+            <div class="titles"><h1>YAQUB UC SHOP</h1><p>Premium Game Store</p></div>
+        </div>
+        <div class="d-item" onclick="fromDrw('homeScreen')"><span>🏠 Bosh sahifa</span><span>❯</span></div>
+        <div class="d-item" onclick="fromDrw('homeScreen')"><span>💎 UC tanlash</span><span>❯</span></div>
+        <div class="d-item" onclick="fromDrw('ordersScreen')"><span>📋 Buyurtmalar tarixi</span><span>❯</span></div>
+        <div class="d-item" onclick="fromDrw('supportScreen')"><span>🎧 Qo'llab-quvvatlash</span><span>❯</span></div>
+        <div class="d-item" onclick="fromDrw('profileScreen')"><span>👤 Mening profilim</span><span>❯</span></div>
+    </div>
+    <div class="box" style="text-align:center;border-color:var(--b-gold);margin:0;">
+        <div style="color:var(--gold);font-weight:800;font-size:13px;">YAQUB UC SHOP</div>
+        <div style="font-size:11px;color:#cbd5e1;margin-top:3px;">Ishonchli va sifatli!</div>
+    </div>
+</div>
+
+<!-- PASTKI NAVIGATSIYA -->
+<div class="b-nav">
+    <button class="nav-i active" id="nav-homeScreen" onclick="openTab('homeScreen')"><span style="font-size:18px;">🏠</span><span>Bosh sahifa</span></button>
+    <button class="nav-i" id="nav-ordersScreen" onclick="openTab('ordersScreen')"><span style="font-size:18px;">📋</span><span>Buyurtmalar</span></button>
+    <button class="nav-i" id="nav-supportScreen" onclick="openTab('supportScreen')"><span style="font-size:18px;">🎧</span><span>Qo'llab-quvvatlash</span></button>
+    <button class="nav-i" id="nav-profileScreen" onclick="openTab('profileScreen')"><span style="font-size:18px;">👤</span><span>Profil</span></button>
+</div>
+
+<script>
+const tg = window.Telegram ? window.Telegram.WebApp : null;
+if (tg) tg.expand();
+
+let curPkg = { amount:"660 UC", price:"122 000 so'm", rawPrice:122000 };
+let curPay = "Click / UzCard";
+let admUrl = "https://t.me/YAQUB_UC_Support";
+let orders = JSON.parse(localStorage.getItem("yaqub_orders") || "[]");
+
+const usr = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : { id:7845123097, first_name:"Foydalanuvchi", username:"user" };
+const fName = ((usr.first_name||"") + " " + (usr.last_name||"")).trim();
+document.getElementById("pName").innerText = fName;
+document.getElementById("pUser").innerText = usr.username ? "@"+usr.username : "@user";
+document.getElementById("pId").innerText = usr.id;
+document.getElementById("pAva").innerText = (fName[0]||"Y").toUpperCase();
+
+fetch("/api/config?user_id=" + usr.id).then(r=>r.json()).then(d=>{
+    if(d.admin_user){
+        const u = d.admin_user.replace("@","").trim();
+        document.getElementById("admTxt").innerText = "@"+u;
+        admUrl = "https://t.me/"+u;
+    }
+    if(d.orders && d.orders.length){ orders = d.orders; localStorage.setItem("yaqub_orders",JSON.stringify(orders)); }
+    updateStats();
+}).catch(()=>updateStats());
+
+function showScr(id, title="YAQUB UC SHOP"){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    const sub = ["playerScreen","confirmScreen","successScreen"].includes(id);
+    document.getElementById("backBtn").style.display = sub ? "flex" : "none";
+    document.getElementById("logoBtn").style.display = sub ? "none" : "flex";
+    document.getElementById("topTitle").innerText = title;
+}
+
+function openTab(id){
+    document.querySelectorAll(".nav-i").forEach(b=>b.classList.remove("active"));
+    const btn = document.getElementById("nav-"+id);
+    if(btn) btn.classList.add("active");
+    const t = { homeScreen:"YAQUB UC SHOP", ordersScreen:"Buyurtmalar tarixi", supportScreen:"Qo'llab-quvvatlash", profileScreen:"Profil" };
+    showScr(id, t[id]);
+    if(id==="ordersScreen") renderOrders("all", document.querySelector(".tab-btn"));
+    if(id==="profileScreen") updateStats();
+}
+
+function goBack(){
+    if(document.getElementById("confirmScreen").classList.contains("active")) showScr("playerScreen","O'yinchi ma'lumotlari");
+    else openTab("homeScreen");
+}
+
+function toggleDrawer(v){
+    document.getElementById("drwBg").classList.toggle("active",v);
+    document.getElementById("drw").classList.toggle("active",v);
+}
+
+function fromDrw(id){ toggleDrawer(false); openTab(id); }
+
+function pickUC(amt,prc,raw){
+    curPkg = { amount:amt, price:prc, rawPrice:raw };
+    document.getElementById("selAmt").innerText = amt;
+    document.getElementById("selPrc").innerText = prc;
+    showScr("playerScreen","O'yinchi ma'lumotlari");
+}
+
+function toConfirm(){
+    const pid = document.getElementById("pidInp").value.trim();
+    const nick = document.getElementById("nickInp").value.trim() || "Kiritilmagan";
+    if(!/^\d{8,15}$/.test(pid)){ alert("❗️ Kamida 8 xonali to'g'ri PUBG ID kiriting!"); return; }
+    document.getElementById("confAmt").innerText = curPkg.amount;
+    document.getElementById("confPrc").innerText = curPkg.price;
+    document.getElementById("confPid").innerText = pid;
+    document.getElementById("confNick").innerText = nick;
+    document.getElementById("confTotal").innerText = curPkg.price;
+    showScr("confirmScreen","Buyurtmani tasdiqlash");
+}
+
+function setPay(el,m){
+    document.querySelectorAll(".pay-opt").forEach(x=>x.classList.remove("selected"));
+    el.classList.add("selected");
+    curPay = m;
+}
+
+function copyVal(id){
+    const v = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(v);
+    alert("Nusxalandi: " + v);
+}
+
+async function sendOrder(){
+    const btn = document.getElementById("payBtn");
+    btn.disabled = true; btn.innerText = "Yuborilmoqda...";
+    const pid = document.getElementById("pidInp").value.trim();
+    const nick = document.getElementById("nickInp").value.trim() || "Kiritilmagan";
+    const oid = "#YAQUB-" + Math.floor(100000 + Math.random()*900000);
+    const dt = new Date().toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+    const ord = { order_id:oid, amount:curPkg.amount, price:curPkg.price, rawPrice:curPkg.rawPrice, package:curPkg.amount+" — "+curPkg.price, pubg_id:pid, nickname:nick, pay_method:curPay, status:"Jarayonda", date:dt };
+    orders.unshift(ord);
+    localStorage.setItem("yaqub_orders",JSON.stringify(orders));
+    document.getElementById("ordNum").innerText = oid;
+    try {
+        await fetch("/api/order",{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ user_id:usr.id, ...ord }) });
+    } catch(e){}
+    btn.disabled = false; btn.innerText = "To'lov qilish 💳";
+    showScr("successScreen","Buyurtma holati");
+}
+
+function finishOrder(){
+    if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user) tg.close();
+    else openTab("homeScreen");
+}
+
+function renderOrders(flt, btn){
+    if(btn){ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); }
+    const box = document.getElementById("ordersBox");
+    const list = flt==="all" ? orders : orders.filter(x=>x.status===flt);
+    if(!list.length){ box.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);">Buyurtmalar yo'q</div>`; return; }
+    box.innerHTML = list.map(o=>{
+        const cl = o.status==="Bajarilgan" ? "st-done" : (o.status==="Bekor qilingan" ? "st-no" : "st-wait");
+        return `<div class="box" style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;gap:10px;align-items:center;"><div style="font-size:28px;">🪙</div><div><div style="font-weight:800;">${o.amount}</div><div style="color:var(--gold);font-size:12px;">${o.price}</div><div style="font-size:11px;color:#cbd5e1;">ID: ${o.pubg_id}</div></div></div>
+            <div style="text-align:right;"><span class="status-tag ${cl}">${o.status}</span><div style="font-size:11px;color:var(--muted);">${o.date}</div></div>
+        </div>`;
+    }).join("");
+}
+
+function updateStats(){
+    document.getElementById("pCount").innerText = orders.length;
+    const sum = orders.filter(x=>x.status!=="Bekor qilingan").reduce((a,b)=>a+(Number(b.rawPrice)||0),0);
+    document.getElementById("pSpent").innerText = sum.toLocaleString("ru-RU") + " so'm";
+}
+
+function contactAdm(){
+    if(tg && tg.openTelegramLink) tg.openTelegramLink(admUrl);
+    else window.open(admUrl,"_blank");
+}
+</script>
+</body>
+</html>
+    
