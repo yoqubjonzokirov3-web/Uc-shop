@@ -1,2 +1,2 @@
-aiogram>=3.0.0
-aiohttp
+aiogram>=3.13
+asyncpg>=0.29
