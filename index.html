@@ -3,527 +3,738 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PUBG Mobile UC Shop</title>
+    <title>YAQUB UC SHOP — Premium Game Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --bg-main: #070b14;
+            --bg-card: #10192d;
+            --bg-card-inner: #0b1222;
+            --border-blue: rgba(56, 189, 248, 0.22);
+            --border-gold: rgba(245, 185, 21, 0.45);
+            --gold: #f5b915;
+            --gold-dark: #d97706;
+            --text-white: #f8fafc;
+            --text-muted: #94a3b8;
+            --green: #10b981;
+            --blue: #0ea5e9;
+            --red: #ef4444;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: radial-gradient(circle at top, #1e293b, #0f172a 75%);
-            color: #f8fafc;
+            background: radial-gradient(circle at top, #152238, var(--bg-main) 70%);
+            color: var(--text-white);
             min-height: 100vh;
-            padding: 16px 14px 90px;
+            padding-bottom: 82px;
+            overflow-x: hidden;
         }
 
-        .container {
+        .app-container {
             max-width: 480px;
             margin: 0 auto;
+            padding: 12px 14px;
         }
 
-        header {
+        /* TOP HEADER */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: rgba(16, 25, 45, 0.85);
+            border: 1px solid var(--border-blue);
+            border-radius: 16px;
+            margin-bottom: 14px;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #2a1f04, #090d16);
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 900;
+            color: var(--gold);
             text-align: center;
-            padding: 18px 12px;
-            background: rgba(30, 41, 59, 0.75);
-            border: 1px solid rgba(245, 158, 11, 0.35);
-            border-radius: 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            line-height: 1.05;
+            box-shadow: 0 0 12px rgba(245, 185, 21, 0.35);
+            cursor: pointer;
         }
 
-        .status-badge {
-            display: inline-block;
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            font-size: 12px;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-bottom: 8px;
-        }
-
-        header h1 {
-            font-size: 24px;
-            color: #fbbf24;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        header p {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-top: 4px;
-        }
-
-        /* Bo'limlar (Tab) */
-        .tab-section {
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-blue);
+            color: #fff;
+            font-size: 18px;
             display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
 
-        .tab-section.active {
+        .brand-titles h1 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-titles p {
+            font-size: 10px;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .menu-icon-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-blue);
+            color: var(--text-white);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SCREENS */
+        .screen {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .screen.active {
             display: block;
         }
 
-        /* Do'kon Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 1. HOME SCREEN */
+        .hero-banner {
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 55%, #2e1f05 100%);
+            border: 1px solid var(--border-gold);
+            border-radius: 18px;
+            padding: 20px 16px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+        }
+
+        .pubg-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: #000;
+            font-weight: 900;
+            font-size: 16px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .pubg-sub {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero-banner h2 {
+            font-size: 19px;
+            font-weight: 800;
+            line-height: 1.25;
+            max-width: 68%;
+            margin-bottom: 12px;
+        }
+
+        .hero-helmet {
+            position: absolute;
+            right: -6px;
+            bottom: -10px;
+            font-size: 88px;
+            opacity: 0.9;
+            filter: drop-shadow(0 6px 15px rgba(0,0,0,0.6));
+            pointer-events: none;
+        }
+
+        .online-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            color: #34d399;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .promo-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(90deg, rgba(245, 185, 21, 0.14), rgba(16, 25, 45, 0.9));
+            border: 1px solid var(--border-gold);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .promo-left {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-        .card {
-            background: rgba(30, 41, 59, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 16px 12px;
+        .promo-gift {
+            font-size: 26px;
+        }
+
+        .promo-text strong {
+            display: block;
+            color: var(--gold);
+            font-size: 13px;
+        }
+
+        .promo-text span {
+            font-size: 12px;
+            color: var(--text-white);
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 3x2 UC GRID */
+        .uc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .uc-card {
+            background: linear-gradient(180deg, #16223b 0%, #0c1324 100%);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            padding: 12px 8px;
             text-align: center;
-            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+            position: relative;
         }
 
-        .card:active {
-            transform: scale(0.97);
-            border-color: #f59e0b;
+        .uc-card:active, .uc-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold);
+            box-shadow: 0 6px 18px rgba(245, 185, 21, 0.22);
         }
 
-        .uc-icon {
+        .uc-coin-box {
+            width: 54px;
+            height: 46px;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(245, 185, 21, 0.25), transparent 70%);
             font-size: 32px;
-            margin-bottom: 6px;
         }
 
         .uc-amount {
-            font-size: 19px;
+            font-size: 15px;
             font-weight: 800;
-            color: #ffffff;
+            color: #fff;
         }
 
         .uc-price {
-            font-size: 13px;
-            color: #fbbf24;
-            font-weight: 600;
-            margin: 6px 0 12px;
-        }
-
-        .buy-btn {
-            width: 100%;
-            padding: 10px 0;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #0f172a;
+            font-size: 11px;
             font-weight: 700;
-            font-size: 14px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
+            color: var(--gold);
+            margin-top: 3px;
         }
 
-        /* Admin bilan aloqa bo'limi */
-        .admin-card {
-            background: rgba(30, 41, 59, 0.85);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 18px;
-            padding: 24px 18px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-        }
-
-        .admin-avatar {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: rgba(245, 158, 11, 0.15);
-            border: 2px solid #f59e0b;
+        /* 2. PLAYER INFO SCREEN */
+        .selected-banner {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 34px;
-            margin: 0 auto 14px;
-        }
-
-        .admin-card h2 {
-            font-size: 20px;
-            color: #fff;
-            margin-bottom: 6px;
-        }
-
-        .admin-card p {
-            font-size: 14px;
-            color: #94a3b8;
-            line-height: 1.5;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #292008, #10192d);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 16px;
             margin-bottom: 18px;
         }
 
-        .info-list {
-            text-align: left;
-            background: rgba(15, 23, 42, 0.65);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: #cbd5e1;
+        .selected-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .info-list div {
+        .selected-coin {
+            font-size: 46px;
+            filter: drop-shadow(0 4px 10px rgba(245, 185, 21, 0.4));
+        }
+
+        .selected-info h3 {
+            font-size: 24px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .selected-info p {
+            font-size: 15px;
+            color: var(--gold);
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .popular-badge {
+            display: inline-block;
+            margin-top: 6px;
+            background: var(--gold);
+            color: #000;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+
+        .field-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+
+        .field-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
             margin-bottom: 8px;
         }
 
-        .info-list div:last-child {
-            margin-bottom: 0;
-        }
-
-        .admin-btn {
-            display: block;
+        .field-input {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #0ea5e9, #0284c7);
-            color: #fff;
-            font-weight: 700;
-            font-size: 15px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
-        }
-
-        /* Pastki Menyu (Bottom Navigation) */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 16px;
-            backdrop-filter: blur(10px);
-            z-index: 90;
-        }
-
-        .nav-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            color: #64748b;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: 12px;
-            transition: color 0.2s, background 0.2s;
-        }
-
-        .nav-btn span.icon {
-            font-size: 20px;
-        }
-
-        .nav-btn.active {
-            color: #fbbf24;
-            background: rgba(245, 158, 11, 0.12);
-        }
-
-        /* Modal (Buyurtma oynasi) */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            z-index: 100;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
-            background: #1e293b;
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            border-radius: 18px;
-            width: 100%;
-            max-width: 380px;
-            padding: 22px 18px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-        }
-
-        .modal h2 {
-            font-size: 18px;
-            color: #fbbf24;
-            margin-bottom: 6px;
-            text-align: center;
-        }
-
-        .selected-pkg {
-            text-align: center;
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            background: rgba(15, 23, 42, 0.7);
-            padding: 10px;
+            background: var(--bg-card-inner);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
-            margin: 12px 0 16px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            color: #cbd5e1;
-            margin-bottom: 6px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1px solid #334155;
-            background: #0f172a;
+            padding: 12px;
             color: #fff;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
         }
 
-        .input-group input:focus {
-            border-color: #f59e0b;
+        .field-input:focus {
+            border-color: var(--gold);
         }
 
-        .error-msg {
-            color: #ef4444;
-            font-size: 12px;
-            margin-top: 6px;
-            display: none;
-        }
-
-        .modal-actions {
+        .warning-box {
             display: flex;
+            align-items: flex-start;
             gap: 10px;
-            margin-top: 18px;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--border-gold);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 14px 0 18px;
+            font-size: 12px;
+            line-height: 1.45;
         }
 
-        .btn-cancel {
-            flex: 1;
-            padding: 12px;
-            background: #334155;
-            color: #f8fafc;
+        .warning-box strong {
+            display: block;
+            color: var(--gold);
+            margin-bottom: 2px;
+        }
+
+        .gold-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+            color: #090d16;
+            font-weight: 800;
+            font-size: 16px;
             border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(245, 185, 21, 0.3);
+        }
+
+        .gold-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 3. CONFIRM ORDER SCREEN */
+        .summary-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-blue);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .summary-val {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 2px;
+        }
+
+        .copy-btn {
+            background: rgba(14, 165, 233, 0.15);
+            border: 1px solid rgba(14, 165, 233, 0.35);
+            color: #38bdf8;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .pay-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            padding: 13px 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .pay-option.selected {
+            border-color: var(--gold);
+            background: linear-gradient(90deg, rgba(245, 185, 21, 0.12), var(--bg-card));
+        }
+
+        .pay-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .pay-icon {
+            width: 34px;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .pay-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: transparent;
+        }
+
+        .pay-option.selected .pay-check {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: #000;
+            font-weight: 900;
+        }
+
+        .total-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 4px;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .total-bar strong {
+            font-size: 18px;
+            color: var(--gold);
+        }
+
+        /* 4. SUCCESS SCREEN */
+        .success-wrap {
+            text-align: center;
+            padding: 24px 10px;
+        }
+
+        .check-circle {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.2);
+            border: 3px solid #10b981;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            color: #10b981;
+            margin: 0 auto 18px;
+        }
+
+        .success-wrap h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .success-wrap p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+        }
+
+        .info-pill-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            background: var(--bg-card);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .info-pill-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(14, 165, 233, 0.2);
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        /* 5. ORDERS HISTORY SCREEN */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 9px;
             border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-blue);
+            color: var(--text-muted);
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
         }
 
-        .btn-submit {
-            flex: 2;
-            padding: 12px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
+        .filter-btn.active {
+            background: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+            font-weight: 800;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .order-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .order-status {
+            font-size: 11px;
             font-weight: 700;
-            font-size: 15px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .status-done { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .status-pending { background: rgba(14, 165, 233, 0.2); color: #38bdf8; }
+        .status-cancel { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+
+        .order-date {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* 6. SUPPORT SCREEN */
+        .support-hero {
+            text-align: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-blue);
+            border-radius: 18px;
+            padding: 22px 16px;
+            margin-bottom: 14px;
+        }
+
+        .support-avatar {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.3), #0f172a);
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            margin: 0 auto 12px;
+        }
+
+        .support-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border-blue);
+            background: var(--bg-card);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
             cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <header>
-            <span class="status-badge">● Mini App 24/7 Online</span>
-            <h1>YAQUB UC SHOP</h1>
-            <p>Tezkor va ishonchli PUBG Mobile UC xizmati</p>
-        </header>
-
-        <!-- 1-BO'LIM: UC DO'KON -->
-        <div id="shopTab" class="tab-section active">
-            <div class="grid">
-                <div class="card">
-                    <div class="uc-icon">💵</div>
-                    <div class="uc-amount">60 UC</div>
-                    <div class="uc-price">13,000 so'm</div>
-                    <button class="buy-btn" onclick="openOrderModal('60 UC — 13,000 so\'m')">Sotib olish</button>
-                </div>
-
-                <div class="card">
-                    <div class="uc-icon">💰</div>
-                    <div class="uc-amount">325 UC</div>
-                    <div class="uc-price">62,000 so'm</div>
-                    <button class="buy-btn" onclick="openOrderModal('325 UC — 62,000 so\'m')">Sotib olish</button>
-                </div>
-
-                <div class="card">
-                    <div class="uc-icon">💎</div>
-                    <div class="uc-amount">660 UC</div>
-                    <div class="uc-price">122,000 so'm</div>
-                    <button class="buy-btn" onclick="openOrderModal('660 UC — 122,000 so\'m')">Sotib olish</button>
-                </div>
-
-                <div class="card">
-                    <div class="uc-icon">📦</div>
-                    <div class="uc-amount">1800 UC</div>
-                    <div class="uc-price">300,000 so'm</div>
-                    <button class="buy-btn" onclick="openOrderModal('1800 UC — 300,000 so\'m')">Sotib olish</button>
-                </div>
-
-                <div class="card">
-                    <div class="uc-icon">👑</div>
-                    <div class="uc-amount">3850 UC</div>
-                    <div class="uc-price">590,000 so'm</div>
-                    <button class="buy-btn" onclick="openOrderModal('3850 UC — 590,000 so\'m')">Sotib olish</button>
-                </div>
-
-                <div class="card">
-                    <div class="uc-icon">🔥</div>
-                    <div class="uc-amount">8100 UC</div>
-                    <div class="uc-price">1,180,000 so'm</div>
-                    <button class="buy-btn" onclick="openOrderModal('8100 UC — 1,180,000 so\'m')">Sotib olish</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2-BO'LIM: ADMIN BILAN ALOQA -->
-        <div id="adminTab" class="tab-section">
-            <div class="admin-card">
-                <div class="admin-avatar">👨‍💻</div>
-                <h2>Admin bilan bog'lanish</h2>
-                <p>To'lovlar, buyurtma holati yoki hamkorlik bo'yicha savollaringiz bo'lsa, adminga murojaat qiling.</p>
-
-                <div class="info-list">
-                    <div>⚡️ <b>Ish vaqti:</b> 24/7 (Har kuni)</div>
-                    <div>⏱ <b>UC tushish vaqti:</b> 2–10 daqiqa ichida</div>
-                    <div>📞 <b>Admin:</b> <span id="adminUsernameText">@admin</span></div>
-                </div>
-
-                <button class="admin-btn" onclick="contactAdmin()">💬 Adminga yozish</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pastki navigatsiya menyusi -->
-    <div class="bottom-nav">
-        <button class="nav-btn active" id="navShopBtn" onclick="switchTab('shop')">
-            <span class="icon">🛒</span>
-            <span>UC Do'kon</span>
-        </button>
-        <button class="nav-btn" id="navAdminBtn" onclick="switchTab('admin')">
-            <span class="icon">👨‍💻</span>
-            <span>Admin bilan aloqa</span>
-        </button>
-    </div>
-
-    <!-- Buyurtma berish oynasi -->
-    <div class="modal-overlay" id="orderModal">
-        <div class="modal">
-            <h2>🎮 Buyurtmani rasmiylashtirish</h2>
-            <div class="selected-pkg" id="selectedPackageText">60 UC — 13,000 so'm</div>
-
-            <div class="input-group">
-                <label for="pubgIdInput">PUBG Mobile ID raqamingiz:</label>
-                <input type="number" id="pubgIdInput" placeholder="Masalan: 5123456789" inputmode="numeric">
-                <div class="error-msg" id="errorMsg">❗️ Iltimos, kamida 8 xonali to'g'ri PUBG ID kiriting!</div>
-            </div>
-
-            <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeOrderModal()">Bekor qilish</button>
-                <button class="btn-submit" id="submitBtn" onclick="submitOrder()">Davom etish</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        let currentPackage = "";
-        let adminUrl = "https://t.me/admin_username";
-
-        // Serverdan admin username'ni avtomatik olish
-        fetch("/api/config")
-            .then(r => r.json())
-            .then(data => {
-                if (data.admin_user) {
-                    const cleanUser = data.admin_user.replace("@", "").trim();
-                    document.getElementById("adminUsernameText").innerText = "@" + cleanUser;
-                    adminUrl = "https://t.me/" + cleanUser;
-                }
-            })
-            .catch(() => {});
-
-        function switchTab(tab) {
-            document.getElementById("shopTab").classList.toggle("active", tab === "shop");
-            document.getElementById("adminTab").classList.toggle("active", tab === "admin");
-            document.getElementById("navShopBtn").classList.toggle("active", tab === "shop");
-            document.getElementById("navAdminBtn").classList.toggle("active", tab === "admin");
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        function contactAdmin() {
-            if (tg.openTelegramLink) {
-                tg.openTelegramLink(adminUrl);
-            } else {
-                window.open(adminUrl, "_blank");
-            }
+        .support-btn.primary {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border: none;
         }
 
-        function openOrderModal(packageName) {
-            currentPackage = packageName;
-            document.getElementById("selectedPackageText").innerText = packageName;
-            document.getElementById("pubgIdInput").value = "";
-            document.getElementById("errorMsg").style.display = "none";
-            document.getElementById("orderModal").classList.add("active");
+        /* 7. PROFILE SCREEN */
+        .profile-header {
+            text-align: center;
+            padding: 18px 12px;
         }
 
-        function closeOrderModal() {
-            document.getElementById("orderModal").classList.remove("active");
+        .profile-initials {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0 auto 10px;
         }
 
-        async function submitOrder() {
-            const pubgId = document.getElementById("pubgIdInput").value.trim();
-            const errorMsg = document.getElementById("errorMsg");
-            const submitBtn = document.getElementById("submitBtn");
-
-            if (!/^\d{8,15}$/.test(pubgId)) {
-                errorMsg.style.display = "block";
-                return;
-            }
-            errorMsg.style.display = "none";
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Yuborilmoqda...";
-
-            const payload = {
-                package: currentPackage,
-                pubg_id: pubgId
-            };
-
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
-                try {
-                    await fetch("/api/order", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            user_id: tg.initDataUnsafe.user.id,
-                            package: currentPackage,
-                            pubg_id: pubgId
-                        })
-                    });
-                    tg.close();
-                    return;
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-
-            tg.sendData(JSON.stringify(payload));
+        .menu-list-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-blue);
+            border-radius: 16px;
+            padding: 6px 14px;
+            margin-bottom: 14px;
         }
-    </script>
-</body>
-</html>
+
+        .menu-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 14px;
+        }
+
+        .menu-row:last-child {
+            border-bottom: none;
+        }
+
+        /* 8. SIDE DRAWER MENU */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0
