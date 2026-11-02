@@ -22,7 +22,9 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;paddin
 
 /* ===== Yuqori panel ===== */
 #top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--topbg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
-.logo{width:42px;height:42px;flex:none;filter:drop-shadow(0 0 8px rgba(255,200,61,.35))}
+.logo{flex:none;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,200,61,.35))}
+svg.logo{width:44px;height:44px}
+img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 .brand{flex:1;min-width:0}
 .brand b{display:block;font-size:17px;letter-spacing:.02em}
 .brand small{display:block;font-size:10px;letter-spacing:.16em;color:var(--muted)}
@@ -42,12 +44,9 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;paddin
 .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 52%,rgba(255,200,61,.22) 52.4%,rgba(255,200,61,0) 72%)}
 .hero::after{content:"";position:absolute;left:-30%;bottom:-60%;width:90%;height:120%;background:radial-gradient(circle,rgba(47,123,255,.35),transparent 65%)}
 .hero-txt{position:relative;z-index:2;max-width:58%}
+.pubg{display:block;height:64px;width:auto;max-width:100%;object-fit:contain;object-position:left center;filter:drop-shadow(0 4px 10px rgba(0,0,0,.55))}
 .tagp{display:inline-block;padding:4px 10px;border-radius:8px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink);font-size:12px;font-weight:900;letter-spacing:.06em;font-style:italic}
-.hero h1{margin:12px 0 12px;font-size:20px;line-height:1.15;font-weight:900;font-style:italic;color:#fff;transform:skewX(-6deg);text-shadow:0 2px 12px rgba(0,0,0,.5)}
-.online{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:20px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:12px;font-weight:800;letter-spacing:.08em}
-.online i{width:9px;height:9px;border-radius:50%;background:var(--gray)}
-.online.on i{background:var(--green);box-shadow:0 0 0 0 rgba(47,210,122,.7);animation:pulse 1.8s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(47,210,122,0)}100%{box-shadow:0 0 0 0 rgba(47,210,122,0)}}
+.hero h1{margin:12px 0 4px;font-size:20px;line-height:1.15;font-weight:900;font-style:italic;color:#fff;transform:skewX(-6deg);text-shadow:0 2px 12px rgba(0,0,0,.5)}
 .hero-img{position:absolute;z-index:1;right:-6px;bottom:6px;width:42%;max-width:180px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.65));animation:float 4.2s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-7px) rotate(-1.5deg)}}
 .spark{position:absolute;z-index:1;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px rgba(255,255,255,.8);opacity:0;animation:tw 3.2s infinite}
@@ -67,7 +66,8 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;paddin
 @keyframes rise{from{opacity:0;transform:translateY(20px) scale(.94)}}
 .pk:active{transform:scale(.93)}
 .pk.hot{border-color:var(--gold);box-shadow:0 0 0 2px rgba(255,200,61,.16),var(--shadow)}
-.pk img{width:var(--w);height:auto;margin:2px 0 6px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.5))}
+.pimg{display:block;object-fit:contain;filter:drop-shadow(0 5px 7px rgba(0,0,0,.5))}
+.pk .pimg{width:calc(100% - 12px);max-width:92px;height:62px;margin:0 0 6px}
 .pk b{font-size:19px;font-weight:900;line-height:1}
 .pk small{font-size:10px;letter-spacing:.14em;color:var(--muted);margin-top:2px}
 .pk .pr{margin-top:7px;padding:3px 9px;border-radius:14px;background:rgba(255,200,61,.14);color:var(--gold);font-size:12.5px;font-weight:800;white-space:nowrap}
@@ -76,7 +76,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;paddin
 
 /* ===== Forma ===== */
 .pkgcard{position:relative;display:flex;align-items:center;gap:14px;padding:16px;border-radius:20px;border:1px solid rgba(255,200,61,.5);background:linear-gradient(120deg,#2b2410 0%,var(--card2) 55%,var(--card) 100%);box-shadow:0 0 26px rgba(255,200,61,.14)}
-.pkgcard img{width:112px;flex:none;filter:drop-shadow(0 8px 12px rgba(0,0,0,.55))}
+.pkgcard .pimg{width:116px;height:92px;flex:none;filter:drop-shadow(0 8px 12px rgba(0,0,0,.55))}
 .pkgcard .big{display:block;font-size:30px;font-weight:900;line-height:1.05}
 .pkgcard .gold{display:block;margin-top:6px;color:var(--gold);font-size:19px;font-weight:800}
 .pkgcard .gold s{color:var(--muted);font-size:13px;font-weight:600;margin-left:6px}
@@ -142,7 +142,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;paddin
 .chip{padding:9px 18px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:14px;font-weight:700;white-space:nowrap}
 .chip.on{background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink);border-color:transparent}
 .ord{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:12px;border-radius:16px;border:1px solid var(--line);background:var(--card);animation:rise .45s ease backwards;animation-delay:calc(var(--i) * 55ms)}
-.ord img{width:62px;flex:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
+.ord .pimg{width:64px;height:52px;flex:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
 .ord .m{flex:1;min-width:0}
 .ord .m b{display:block;font-size:17px}
 .ord .m span{display:block;margin-top:2px;color:var(--gold);font-weight:700;font-size:14px}
@@ -168,8 +168,6 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;paddin
 .sbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-bottom:10px;padding:15px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-size:16px;font-weight:800}
 .sbtn.main{background:linear-gradient(90deg,#1f6bff,#2f8bff);border-color:transparent;color:#fff;box-shadow:0 8px 22px rgba(47,123,255,.4)}
 .sbtn:active{transform:scale(.98)}
-.rtime{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;padding:13px;border-radius:14px;border:1px solid rgba(255,200,61,.4);color:var(--gold);font-weight:800}
-.rtime span{color:var(--text);font-weight:600}
 
 /* ===== Profil ===== */
 .prof{text-align:center;padding-top:10px}
@@ -183,7 +181,6 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;paddin
 .it .l{width:34px;height:34px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(47,123,255,.16);color:#7fb0ff}
 .it .t{flex:1;font-weight:600}
 .it .v{color:var(--muted);font-weight:600}
-.it .v.g{color:var(--gold);font-weight:800}
 .it .ch{color:var(--muted)}
 .sw{position:relative;width:48px;height:28px;flex:none;border-radius:14px;background:rgba(135,147,184,.4);transition:background .25s}
 .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.4);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
@@ -279,8 +276,8 @@ uz: {
   s_t: "Buyurtma muvaffaqiyatli yuborildi!", s_d: "Buyurtmangiz tez orada bajariladi. Rahmat! 🙏", s_no: "Buyurtma raqami", s_note: "Sizga xabar orqali holat yangilanadi.", to_home: "Bosh sahifaga qaytish",
   orders: "Buyurtmalar tarixi", f_all: "Barcha", f_pending: "Jarayonda", f_done: "Bajarilgan", st_pending: "Jarayonda", st_done: "Bajarilgan", st_cancelled: "Bekor qilingan",
   o_empty: "Hozircha buyurtma yo'q", o_err: "Yuklab bo'lmadi. Keyinroq urinib ko'ring.",
-  support: "Qo'llab-quvvatlash", sup_h: "Biz bilan bog'laning!", sup_d: "Savollaringiz bo'lsa, biz doimo siz bilanmiz.", sup_chat: "Chat ochish", sup_ch: "Telegram kanal", sup_time: "Javob vaqti:",
-  profile: "Profil", p_orders: "Buyurtmalar", p_spent: "Umumiy xarid", p_notif: "Bildirishnomalar", p_lang: "Til / Language", p_theme: "Mavzu", th_dark: "Qora rejim", th_light: "Yorug' rejim",
+  support: "Qo'llab-quvvatlash", sup_h: "Biz bilan bog'laning!", sup_d: "Savollaringiz bo'lsa, biz doimo siz bilanmiz.", sup_chat: "Chat ochish", sup_ch: "Telegram kanal",
+  profile: "Profil", p_orders: "Buyurtmalar", p_notif: "Bildirishnomalar", p_lang: "Til / Language", p_theme: "Mavzu", th_dark: "Qora rejim", th_light: "Yorug' rejim",
   p_out: "Chiqish", out_q: "Do'kondan chiqasizmi?", sh_lang: "Tilni tanlang", sh_theme: "Mavzuni tanlang",
   m_home: "Bosh sahifa", m_pick: "UC tanlash", m_orders: "Buyurtmalar tarixi", m_support: "Qo'llab-quvvatlash", m_profile: "Mening profilim", m_news: "Aksiya va yangiliklar", m_set: "Sozlamalar",
   tab_home: "Bosh sahifa", tab_orders: "Buyurtmalar", tab_support: "Qo'llab-quvvatlash", tab_profile: "Profil",
@@ -299,8 +296,8 @@ ru: {
   s_t: "Заказ успешно отправлен!", s_d: "Ваш заказ скоро будет выполнен. Спасибо! 🙏", s_no: "Номер заказа", s_note: "Статус заказа придёт вам в сообщении.", to_home: "На главную",
   orders: "История заказов", f_all: "Все", f_pending: "В процессе", f_done: "Выполнен", st_pending: "В процессе", st_done: "Выполнен", st_cancelled: "Отменён",
   o_empty: "Заказов пока нет", o_err: "Не удалось загрузить. Попробуйте позже.",
-  support: "Поддержка", sup_h: "Свяжитесь с нами!", sup_d: "Если есть вопросы, мы всегда на связи.", sup_chat: "Открыть чат", sup_ch: "Telegram-канал", sup_time: "Время ответа:",
-  profile: "Профиль", p_orders: "Заказы", p_spent: "Всего куплено", p_notif: "Уведомления", p_lang: "Язык / Til", p_theme: "Тема", th_dark: "Тёмная тема", th_light: "Светлая тема",
+  support: "Поддержка", sup_h: "Свяжитесь с нами!", sup_d: "Если есть вопросы, мы всегда на связи.", sup_chat: "Открыть чат", sup_ch: "Telegram-канал",
+  profile: "Профиль", p_orders: "Заказы", p_notif: "Уведомления", p_lang: "Язык / Til", p_theme: "Тема", th_dark: "Тёмная тема", th_light: "Светлая тема",
   p_out: "Выйти", out_q: "Выйти из магазина?", sh_lang: "Выберите язык", sh_theme: "Выберите тему",
   m_home: "Главная", m_pick: "Выбор UC", m_orders: "История заказов", m_support: "Поддержка", m_profile: "Мой профиль", m_news: "Акции и новости", m_set: "Настройки",
   tab_home: "Главная", tab_orders: "Заказы", tab_support: "Поддержка", tab_profile: "Профиль",
@@ -342,7 +339,16 @@ const ICON = {
   card:'<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>'
 };
 const ic = (n, s = 22) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[n]}</svg>`;
-const LOGO = `<svg class="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#0a1233" stroke="#ffc83d" stroke-width="2.5"/><text x="24" y="28" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="21" font-weight="900" fill="#ffc83d">Y</text><text x="24" y="39" text-anchor="middle" font-family="Arial,sans-serif" font-size="7.5" font-weight="800" letter-spacing=".4" fill="#fff">UC SHOP</text></svg>`;
+const LOGO = `<svg class="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#0a1233" stroke="#ffc83d" stroke-width="2.5"/><text x="24" y="27" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="21" font-weight="900" fill="#ffc83d">Y</text><text x="24" y="37.5" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.2" font-weight="800" letter-spacing=".2" fill="#fff">UC SHOP</text></svg>`;
+// Rasmlar: logo.png (do'kon logosi), pubg.png (PUBG MOBILE logosi), uc60.png ... uc8100.png (har paket uchun).
+// Rasm yuklanmagan bo'lsa, zaxira ko'rsatiladi (singan rasm chiqmaydi).
+const BAD = new Set();
+function pic(src, cls, fb = "") {
+  if (BAD.has(src)) return fb;
+  return `<img class="${cls}" src="${src}" alt="" data-s="${src}" data-fb="${encodeURIComponent(fb)}" onerror="picFail(this)">`;
+}
+function picFail(el) { BAD.add(el.dataset.s); el.outerHTML = decodeURIComponent(el.dataset.fb); }
+const pkgImg = k => pic(k + ".png", "pimg", pic("uc.png", "pimg"));
 
 // ===== Holat =====
 const S = {screen: "home", stack: [], pkg: null, pid: LS.get("pid") || "", nick: LS.get("nick") || "", orders: null, ordErr: false, filter: "all", busy: false, code: "", oid: 0};
@@ -363,7 +369,7 @@ async function api(path, body) {
 
 const disc = () => (me && me.discount && me.discount.eligible && me.discount.pct > 0) ? me.discount.pct : 0;
 const price = s => { const p = disc(); return p ? Math.floor((s * (100 - p) + 50) / 100) : s; };
-const priceHtml = (s, small) => { const d = price(s); return d !== s ? `⭐ ${d}<s>${s}</s>` : `⭐ ${s}`; };
+const priceHtml = s => { const d = price(s); return d !== s ? `⭐ ${d}<s>${s}</s>` : `⭐ ${s}`; };
 const okPid = v => /^\d{5,15}$/.test(v);
 const okNick = v => { v = v.trim(); return v.length >= 1 && v.length <= 20; };
 function fmtDate(ts) {
@@ -381,21 +387,20 @@ function copy(text) {
 
 // ===== Ekranlar =====
 function vHome() {
-  const p = disc(), on = !!me;
+  const p = disc();
   return `<section class="screen">
   <div class="hero"><div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div>
-    <div class="hero-txt"><span class="tagp">PUBG MOBILE</span><h1>${L("hero")}</h1>
-    <span class="online ${on ? "on" : ""}"><i></i>${on ? "ONLINE" : "• • •"}</span></div>
-    <img class="hero-img" src="uc.png" alt="UC"></div>
+    <div class="hero-txt">${pic("pubg.png", "pubg", `<span class="tagp">PUBG MOBILE</span>`)}<h1>${L("hero")}</h1></div>
+    ${pic("uc.png", "hero-img")}</div>
   ${p ? `<button class="promo" data-act="nav" data-to="news"><span class="gi">${ic("gift", 24)}</span><div><b>${L("promo_t")}</b><small>${L("promo_d", {p})}</small></div>${ic("chev", 20)}</button>` : ""}
   <h2 class="sec" id="picks"><span>💎</span>${L("pick")}</h2>
-  <div class="pgrid">${ITEMS.map(([k, [n, s]], i) => `<button class="pk${k === POPULAR ? " hot" : ""}" style="--i:${i};--w:${44 + i * 7}px" data-act="pick" data-k="${k}">
-    ${k === POPULAR ? `<em class="flag">🔥 ${L("popular")}</em>` : ""}<img src="uc.png" alt=""><b>${n.split(" ")[0]}</b><small>UC</small><span class="pr">${priceHtml(s)}</span></button>`).join("")}</div></section>`;
+  <div class="pgrid">${ITEMS.map(([k, [n, s]], i) => `<button class="pk${k === POPULAR ? " hot" : ""}" style="--i:${i}" data-act="pick" data-k="${k}">
+    ${k === POPULAR ? `<em class="flag">🔥 ${L("popular")}</em>` : ""}${pkgImg(k)}<b>${n.split(" ")[0]}</b><small>UC</small><span class="pr">${priceHtml(s)}</span></button>`).join("")}</div></section>`;
 }
 function vForm() {
   const [n, s] = SHOP.pubg.items[S.pkg];
   return `<section class="screen">
-  <div class="pkgcard"><img src="uc.png" alt=""><div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span></div>${S.pkg === POPULAR ? `<span class="pill">${L("popular")}</span>` : ""}</div>
+  <div class="pkgcard">${pkgImg(S.pkg)}<div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span></div>${S.pkg === POPULAR ? `<span class="pill">${L("popular")}</span>` : ""}</div>
   <h2 class="sec">${L("player")}</h2>
   <div class="fld" id="f-pid"><span class="fi">${ic("user", 22)}</span><div class="fb"><small>${L("pid")}</small><input id="pid" inputmode="numeric" maxlength="15" autocomplete="off" placeholder="${L("pid_ph")}" value="${esc(S.pid)}"></div><button class="help" data-act="help">${ic("help", 20)}</button></div>
   <div class="fld" id="f-nick"><span class="fi">👑</span><div class="fb"><small>${L("nick")}</small><input id="nick" maxlength="20" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${L("nick_ph")}" value="${esc(S.nick)}"></div></div>
@@ -405,7 +410,7 @@ function vForm() {
 function vConfirm() {
   const [n, s] = SHOP.pubg.items[S.pkg], d = price(s);
   return `<section class="screen">
-  <div class="pkgcard"><img src="uc.png" alt=""><div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span></div></div>
+  <div class="pkgcard">${pkgImg(S.pkg)}<div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span></div></div>
   <div class="row" style="margin-top:12px"><div><small>${L("pid")}</small><b>${esc(S.pid)}</b></div><button class="cp" data-act="copy" data-v="${esc(S.pid)}">${ic("copy", 22)}</button></div>
   <div class="row"><div><small>${L("nick")}</small><b>${esc(S.nick)}</b></div><button class="cp" data-act="copy" data-v="${esc(S.nick)}">${ic("copy", 22)}</button></div>
   <h2 class="sec">${L("method")}</h2>
@@ -431,7 +436,7 @@ function vOrders() {
   else {
     const list = S.orders.filter(o => f === "all" || o.st === f);
     body = list.length ? list.map((o, i) => { const it = (SHOP[o.g] || {items: {}}).items[o.i] || [o.i, o.s];
-      return `<div class="ord" style="--i:${Math.min(i, 8)}"><img src="uc.png" alt=""><div class="m"><b>${esc(it[0])}</b><span>⭐ ${o.s}</span><small>${esc(o.c || "")}</small></div>
+      return `<div class="ord" style="--i:${Math.min(i, 8)}">${pkgImg(o.i)}<div class="m"><b>${esc(it[0])}</b><span>⭐ ${o.s}</span><small>${esc(o.c || "")}</small></div>
       <div class="r"><span class="st ${o.st}">${L("st_" + o.st)}</span><small>${fmtDate(o.t)}</small></div></div>`; }).join("")
       : `<div class="empty"><i>🛒</i>${L("o_empty")}</div>`;
   }
@@ -440,10 +445,8 @@ function vOrders() {
 function vSupport() {
   return `<section class="screen sup"><div class="supart"><div class="hd">${ic("head", 54)}</div></div>
   <h1>${L("sup_h")}</h1><p>${L("sup_d")}</p>
-  <button class="sbtn main" data-act="chatopen">${ic("send", 22)} @${SUPPORT}</button>
-  <button class="sbtn" data-act="chatopen">${ic("chat", 22)} ${L("sup_chat")}</button>
-  ${CHANNEL ? `<button class="sbtn" data-act="chanopen">${ic("send", 22)} ${L("sup_ch")}</button>` : ""}
-  <div class="rtime">${ic("zap", 20)}<span>${L("sup_time")}</span> 24/7</div></section>`;
+  <button class="sbtn main" data-act="chatopen">${ic("chat", 22)} ${L("sup_chat")}</button>
+  ${CHANNEL ? `<button class="sbtn" data-act="chanopen">${ic("send", 22)} ${L("sup_ch")}</button>` : ""}</section>`;
 }
 function vProfile() {
   const u = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || {};
@@ -453,8 +456,7 @@ function vProfile() {
   return `<section class="screen prof"><div class="ava">${esc(ini)}${u.photo_url ? `<img src="${esc(u.photo_url)}" alt="" onerror="this.remove()">` : ""}</div>
   <h2>${esc(name)}</h2><div class="un">${u.username ? "@" + esc(u.username) : ""}</div>
   <div class="card"><button class="it" data-act="copy" data-v="${u.id || ""}"><span class="l">${ic("user", 18)}</span><span class="t">ID: ${u.id || "—"}</span>${ic("copy", 18)}</button>
-    <div class="it"><span class="l">${ic("clip", 18)}</span><span class="t">${L("p_orders")}:</span><span class="v">${me ? me.orders : "—"}</span></div>
-    <div class="it"><span class="l">⭐</span><span class="t">${L("p_spent")}:</span><span class="v g">${me ? "⭐ " + me.spent : "—"}</span></div></div>
+    <div class="it"><span class="l">${ic("clip", 18)}</span><span class="t">${L("p_orders")}:</span><span class="v">${me ? me.orders : "—"}</span></div></div>
   <div class="card" id="settings"><div class="it"><span class="l">${ic("bell", 18)}</span><span class="t">${L("p_notif")}</span><button class="sw${on ? " on" : ""}" data-act="notif" aria-label="notif"></button></div>
     <button class="it" data-act="shlang"><span class="l">${ic("globe", 18)}</span><span class="t">${L("p_lang")}</span><span class="v">${lang === "ru" ? "Русский" : "O'zbek"}</span>${ic("chev", 18)}</button>
     <button class="it" data-act="shtheme"><span class="l">${ic(theme === "dark" ? "moon" : "sun", 18)}</span><span class="t">${L("p_theme")}</span><span class="v">${L(theme === "dark" ? "th_dark" : "th_light")}</span>${ic("chev", 18)}</button>
@@ -466,17 +468,18 @@ function vNews() {
   ${CHANNEL ? `<button class="sbtn" data-act="chanopen">${ic("send", 22)} ${L("sup_ch")}</button>` : ""}</section>`;
 }
 const VIEWS = {home: vHome, form: vForm, confirm: vConfirm, success: vSuccess, orders: vOrders, support: vSupport, profile: vProfile, news: vNews};
-const TITLES = {form: "order", confirm: "confirm", orders: "orders", support: "support", profile: "profile", news: "news", success: "order"};
+const TITLES = {form: "order", confirm: "confirm", orders: "orders", support: "support", profile: "profile", news: "news"};
 const TABMAP = {home: "home", form: "home", news: "home", orders: "orders", support: "support", profile: "profile"};
 
 // ===== Chizish =====
 function render() {
   const sc = S.screen;
   $("#app").classList.toggle("no-tabs", sc === "confirm" || sc === "success");
-  $("#top").innerHTML = (sc === "home" || sc === "success"
-    ? `${LOGO}<div class="brand"><b>YAQUB UC SHOP</b><small>${L("sub")}</small></div>`
-    : `<button class="rb" data-act="back">${ic("back", 22)}</button><div class="ttl">${L(TITLES[sc])}</div>`)
-    + `<button class="rb" data-act="dopen">${ic("dots", 22)}</button>`;
+  const brand = `${pic("logo.png", "logo", LOGO)}<div class="brand"><b>YAQUB UC SHOP</b><small>${L("sub")}</small></div>`;
+  const dots = `<button class="rb" data-act="dopen">${ic("dots", 22)}</button>`;
+  $("#top").innerHTML = sc === "home" ? brand
+    : sc === "success" ? brand + dots
+    : `<button class="rb" data-act="back">${ic("back", 22)}</button><div class="ttl">${L(TITLES[sc])}</div>` + dots;
   $("#view").innerHTML = (VIEWS[sc] || vHome)();
   $("#tabs").innerHTML = [["home", "home"], ["orders", "clip"], ["support", "head"], ["profile", "user"]].map(([k, i]) =>
     `<button class="tab${TABMAP[sc] === k ? " on" : ""}" data-act="nav" data-to="${k}"><span>${ic(i, 24)}</span>${L("tab_" + k)}</button>`).join("");
@@ -486,7 +489,7 @@ function render() {
 function renderDrawer() {
   const cur = S.screen === "home" || S.screen === "form" ? "home" : S.screen;
   const items = [["home", "home", "m_home"], ["pick", "grid", "m_pick"], ["orders", "clip", "m_orders"], ["support", "head", "m_support"], ["profile", "user", "m_profile"], ["news", "gift", "m_news"], ["settings", "sliders", "m_set"]];
-  $("#drawer").innerHTML = `<div class="dh">${LOGO}<div><b>YAQUB UC SHOP</b><small>Premium Game Store</small></div><button class="rb" data-act="dclose">${ic("x", 20)}</button></div>
+  $("#drawer").innerHTML = `<div class="dh">${pic("logo.png", "logo", LOGO)}<div><b>YAQUB UC SHOP</b><small>Premium Game Store</small></div><button class="rb" data-act="dclose">${ic("x", 20)}</button></div>
   <nav class="dnav">${items.map(([to, i, k], n) => `<button class="di${cur === to ? " on" : ""}" style="--i:${n}" data-act="nav" data-to="${to}">${ic(i, 22)}<span>${L(k)}</span><i class="ch">${ic("chev", 18)}</i></button>`).join("")}</nav>
   <div class="dban"><b>YAQUB UC SHOP</b><small>${L("banner")}</small><span class="pl">${ic("send", 20)}</span></div>`;
 }
