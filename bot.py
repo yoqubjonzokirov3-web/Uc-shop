@@ -269,12 +269,6 @@ async def start(m: types.Message):
     await upsert_user({"id": m.from_user.id, "first_name": m.from_user.first_name,
                        "username": m.from_user.username, "language_code": m.from_user.language_code})
     lang = await user_lang(m.from_user.id)
-    # Eski pastki "Do'konni ochish" tugmasini olib tashlash
-    try:
-        tmp = await m.answer("⏳", reply_markup=ReplyKeyboardRemove())
-        await tmp.delete()
-    except Exception:
-        pass
     kb = InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(text=MSG[lang]["open"], web_app=WebAppInfo(url=webapp_url()))
     ]])
