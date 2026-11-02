@@ -392,7 +392,6 @@ function vHome() {
   <div class="hero"><div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div>
     <div class="hero-txt">${pic("pubg.png", "pubg", `<span class="tagp">PUBG MOBILE</span>`)}<h1>${L("hero")}</h1></div>
     ${pic("uc.png", "hero-img")}</div>
-  ${p ? `<button class="promo" data-act="nav" data-to="news"><span class="gi">${ic("gift", 24)}</span><div><b>${L("promo_t")}</b><small>${L("promo_d", {p})}</small></div>${ic("chev", 20)}</button>` : ""}
   <h2 class="sec" id="picks"><span>💎</span>${L("pick")}</h2>
   <div class="pgrid">${ITEMS.map(([k, [n, s]], i) => `<button class="pk${k === POPULAR ? " hot" : ""}" style="--i:${i}" data-act="pick" data-k="${k}">
     ${k === POPULAR ? `<em class="flag">🔥 ${L("popular")}</em>` : ""}${pkgImg(k)}<b>${n.split(" ")[0]}</b><small>UC</small><span class="pr">${priceHtml(s)}</span></button>`).join("")}</div></section>`;
@@ -475,10 +474,9 @@ function render() {
   const sc = S.screen;
   $("#app").classList.toggle("no-tabs", sc === "confirm" || sc === "success");
   const brand = `${pic("logo.png", "logo", LOGO)}<div class="brand"><b>YAQUB UC SHOP</b><small>${L("sub")}</small></div>`;
-  const dots = `<button class="rb" data-act="dopen">${ic("dots", 22)}</button>`;
   $("#top").innerHTML = sc === "home" ? brand
-    : sc === "success" ? brand + dots
-    : `<button class="rb" data-act="back">${ic("back", 22)}</button><div class="ttl">${L(TITLES[sc])}</div>` + dots;
+    : sc === "success" ? brand
+    : `<button class="rb" data-act="back">${ic("back", 22)}</button><div class="ttl">${L(TITLES[sc])}</div>`;
   $("#view").innerHTML = (VIEWS[sc] || vHome)();
   $("#tabs").innerHTML = [["home", "home"], ["orders", "clip"], ["support", "head"], ["profile", "user"]].map(([k, i]) =>
     `<button class="tab${TABMAP[sc] === k ? " on" : ""}" data-act="nav" data-to="${k}"><span>${ic(i, 24)}</span>${L("tab_" + k)}</button>`).join("");
