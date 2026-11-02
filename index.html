@@ -72,6 +72,7 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 .pk small{font-size:10px;letter-spacing:.14em;color:var(--muted);margin-top:2px}
 .pk .pr{margin-top:7px;padding:3px 9px;border-radius:14px;background:rgba(255,200,61,.14);color:var(--gold);font-size:12.5px;font-weight:800;white-space:nowrap}
 .pk .pr s{color:var(--muted);font-weight:600;font-size:10px;margin-left:3px}
+.pr small,.gold small{margin:0;letter-spacing:0;font-size:.62em;font-weight:700;color:inherit;opacity:.85}
 .flag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;font-size:10.5px;font-weight:900;padding:2px 8px;border-radius:9px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink)}
 
 /* ===== Forma ===== */
@@ -256,10 +257,14 @@ const SUPPORT = "believerr88";   // qo'llab-quvvatlash username (@ belgisiz)
 const CHANNEL = "";              // Telegram kanal username (@ belgisiz). Bo'sh bo'lsa, tugma ko'rinmaydi
 const API_FALLBACK = "";         // ixtiyoriy: Render havolasi, masalan https://gameshop.onrender.com
 const POPULAR = "uc325";         // "Mashxur" belgisi turadigan paket
-// Narxlar yulduzda (⭐). bot.py dagi SHOP bilan BIR XIL bo'lishi shart!
+// Narxlar so'mda. bot.py dagi SHOP bilan BIR XIL bo'lishi shart!
 const SHOP = {pubg: {name: "PUBG MOBILE", items: {
-  uc60: ["60 UC", 50], uc325: ["325 UC", 250], uc660: ["660 UC", 500],
-  uc1800: ["1800 UC", 1350], uc3850: ["3850 UC", 2800], uc8100: ["8100 UC", 5600]}}};
+  uc60: ["60 UC", 13000], uc120: ["120 UC", 26000], uc180: ["180 UC", 39000], uc240: ["240 UC", 52000],
+  uc325: ["325 UC", 60000], uc385: ["385 UC", 73000], uc660: ["660 UC", 120000], uc720: ["720 UC", 133000],
+  uc1800: ["1800 UC", 305000], uc2460: ["2460 UC", 425000], uc5650: ["5650 UC", 885000], uc8100: ["8100 UC", 1200000]}}};
+// Alohida rasmi yo'q paketlar uchun eng yaqin rasm (ucXXX.png yuklansa, o'sha ishlatiladi)
+const IMGMAP = {uc120: "uc60", uc180: "uc60", uc240: "uc325", uc385: "uc325", uc720: "uc660", uc2460: "uc1800", uc5650: "uc3850"};
+const LEGACY = {uc3850: "3850 UC"};   // eski buyurtmalar tarixi uchun
 const ITEMS = Object.entries(SHOP.pubg.items);
 
 // ===== Matnlar =====
@@ -269,12 +274,12 @@ uz: {
   promo_t: "Aksiya!", promo_d: "Birinchi buyurtmaga {p}% chegirma!", popular: "Mashxur",
   order: "Buyurtma berish", player: "O'yinchi ma'lumotlari", pid: "Player ID", pid_ph: "ID raqamingizni kiriting",
   nick: "Nickname", nick_ph: "O'yin ichidagi nickname", help: "ID ni o'yin ichida Profil bo'limidan topasiz",
-  warn_t: "Muhim ma'lumot!", warn_d: "ID va nickname to'g'ri bo'lishi buyurtmaning muvaffaqiyatli bajarilishiga kafolat beradi.",
-  cont: "Davom etish", e_pid: "ID 5–15 ta raqamdan iborat bo'lishi kerak", e_nick: "Nickname kiriting (20 belgigacha)",
+  warn_t: "Muhim ma'lumot!", warn_d: "ID va nickname to'g'ri bo'lishi muhim. Buyurtmadan so'ng karta ma'lumotlari bot orqali yuboriladi.",
+  cont: "Buyurtma berish", e_pid: "ID 5–15 ta raqamdan iborat bo'lishi kerak", e_nick: "Nickname kiriting (20 belgigacha)",
   confirm: "Buyurtmani tasdiqlash", copied: "Nusxalandi", method: "To'lov usulini tanlang", stars: "Telegram Stars", stars_d: "Tez va xavfsiz to'lov",
-  total: "To'lov summasi", pay: "To'lov qilish", pay_err: "To'lovni boshlab bo'lmadi. Qaytadan urinib ko'ring.", pay_fail: "To'lov amalga oshmadi.", pay_cancel: "To'lov bekor qilindi.",
-  s_t: "Buyurtma muvaffaqiyatli yuborildi!", s_d: "Buyurtmangiz tez orada bajariladi. Rahmat! 🙏", s_no: "Buyurtma raqami", s_note: "Sizga xabar orqali holat yangilanadi.", to_home: "Bosh sahifaga qaytish",
-  orders: "Buyurtmalar tarixi", f_all: "Barcha", f_pending: "Jarayonda", f_done: "Bajarilgan", st_pending: "Jarayonda", st_done: "Bajarilgan", st_cancelled: "Bekor qilingan",
+  total: "To'lov summasi", pay: "To'lov qilish", pay_err: "Buyurtmani yuborib bo'lmadi. Qaytadan urinib ko'ring.", bot_err: "Avval botga kirib /start bosing, keyin qayta urinib ko'ring.", pay_fail: "To'lov amalga oshmadi.", pay_cancel: "To'lov bekor qilindi.",
+  s_t: "Buyurtma qabul qilindi!", s_d: "Karta ma'lumotlari botga yuborildi. Botga o'tib, to'lov chekini (skrinshot) yuboring.", s_no: "Buyurtma raqami", s_note: "Admin tekshirgach, UC hisobingizga tushiriladi.", to_home: "Bosh sahifaga qaytish",
+  orders: "Buyurtmalar tarixi", f_all: "Barcha", f_pending: "Jarayonda", f_done: "Bajarilgan", st_new: "To'lov kutilmoqda", st_pending: "Tekshirilmoqda", st_done: "Bajarilgan", st_cancelled: "Bekor qilingan",
   o_empty: "Hozircha buyurtma yo'q", o_err: "Yuklab bo'lmadi. Keyinroq urinib ko'ring.",
   support: "Qo'llab-quvvatlash", sup_h: "Biz bilan bog'laning!", sup_d: "Savollaringiz bo'lsa, biz doimo siz bilanmiz.", sup_chat: "Chat ochish", sup_ch: "Telegram kanal",
   profile: "Profil", p_orders: "Buyurtmalar", p_notif: "Bildirishnomalar", p_lang: "Til / Language", p_theme: "Mavzu", th_dark: "Qora rejim", th_light: "Yorug' rejim",
@@ -289,12 +294,12 @@ ru: {
   promo_t: "Акция!", promo_d: "Скидка {p}% на первый заказ!", popular: "Хит",
   order: "Оформление заказа", player: "Данные игрока", pid: "Player ID", pid_ph: "Введите ваш ID",
   nick: "Ник", nick_ph: "Ник в игре", help: "ID можно найти в игре, в разделе «Профиль»",
-  warn_t: "Важная информация!", warn_d: "Правильные ID и ник гарантируют успешное выполнение заказа.",
-  cont: "Продолжить", e_pid: "ID должен состоять из 5–15 цифр", e_nick: "Введите ник (до 20 символов)",
+  warn_t: "Важная информация!", warn_d: "Важно указать верные ID и ник. После заказа данные карты придут в бот.",
+  cont: "Оформить заказ", e_pid: "ID должен состоять из 5–15 цифр", e_nick: "Введите ник (до 20 символов)",
   confirm: "Подтверждение заказа", copied: "Скопировано", method: "Выберите способ оплаты", stars: "Telegram Stars", stars_d: "Быстрая и безопасная оплата",
-  total: "Сумма к оплате", pay: "Оплатить", pay_err: "Не удалось начать оплату. Попробуйте ещё раз.", pay_fail: "Оплата не прошла.", pay_cancel: "Оплата отменена.",
-  s_t: "Заказ успешно отправлен!", s_d: "Ваш заказ скоро будет выполнен. Спасибо! 🙏", s_no: "Номер заказа", s_note: "Статус заказа придёт вам в сообщении.", to_home: "На главную",
-  orders: "История заказов", f_all: "Все", f_pending: "В процессе", f_done: "Выполнен", st_pending: "В процессе", st_done: "Выполнен", st_cancelled: "Отменён",
+  total: "Сумма к оплате", pay: "Оплатить", pay_err: "Не удалось отправить заказ. Попробуйте ещё раз.", bot_err: "Сначала зайдите в бота и нажмите /start, затем повторите.", pay_fail: "Оплата не прошла.", pay_cancel: "Оплата отменена.",
+  s_t: "Заказ принят!", s_d: "Данные карты отправлены в бота. Перейдите в бота и отправьте чек (скриншот).", s_no: "Номер заказа", s_note: "После проверки админом UC будут зачислены.", to_home: "На главную",
+  orders: "История заказов", f_all: "Все", f_pending: "В процессе", f_done: "Выполнен", st_new: "Ожидает оплаты", st_pending: "Проверяется", st_done: "Выполнен", st_cancelled: "Отменён",
   o_empty: "Заказов пока нет", o_err: "Не удалось загрузить. Попробуйте позже.",
   support: "Поддержка", sup_h: "Свяжитесь с нами!", sup_d: "Если есть вопросы, мы всегда на связи.", sup_chat: "Открыть чат", sup_ch: "Telegram-канал",
   profile: "Профиль", p_orders: "Заказы", p_notif: "Уведомления", p_lang: "Язык / Til", p_theme: "Тема", th_dark: "Тёмная тема", th_light: "Светлая тема",
@@ -348,7 +353,7 @@ function pic(src, cls, fb = "") {
   return `<img class="${cls}" src="${src}" alt="" data-s="${src}" data-fb="${encodeURIComponent(fb)}" onerror="picFail(this)">`;
 }
 function picFail(el) { BAD.add(el.dataset.s); el.outerHTML = decodeURIComponent(el.dataset.fb); }
-const pkgImg = k => pic(k + ".png", "pimg", pic("uc.png", "pimg"));
+const pkgImg = k => pic(k + ".png", "pimg", IMGMAP[k] ? pic(IMGMAP[k] + ".png", "pimg", pic("uc.png", "pimg")) : pic("uc.png", "pimg"));
 
 // ===== Holat =====
 const S = {screen: "home", stack: [], pkg: null, pid: LS.get("pid") || "", nick: LS.get("nick") || "", orders: null, ordErr: false, filter: "all", busy: false, code: "", oid: 0};
@@ -367,9 +372,9 @@ async function api(path, body) {
   return r.json();
 }
 
-const disc = () => (me && me.discount && me.discount.eligible && me.discount.pct > 0) ? me.discount.pct : 0;
-const price = s => { const p = disc(); return p ? Math.floor((s * (100 - p) + 50) / 100) : s; };
-const priceHtml = s => { const d = price(s); return d !== s ? `⭐ ${d}<s>${s}</s>` : `⭐ ${s}`; };
+const disc = () => 0;
+const fmtSum = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const priceHtml = s => `${fmtSum(s)} <small>so'm</small>`;
 const okPid = v => /^\d{5,15}$/.test(v);
 const okNick = v => { v = v.trim(); return v.length >= 1 && v.length <= 20; };
 function fmtDate(ts) {
@@ -387,7 +392,6 @@ function copy(text) {
 
 // ===== Ekranlar =====
 function vHome() {
-  const p = disc();
   return `<section class="screen">
   <div class="hero"><div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div>
     <div class="hero-txt">${pic("pubg.png", "pubg", `<span class="tagp">PUBG MOBILE</span>`)}<h1>${L("hero")}</h1></div>
@@ -406,23 +410,11 @@ function vForm() {
   <div class="warn">${ic("alert", 26)}<div><b>${L("warn_t")}</b><p>${L("warn_d")}</p></div></div>
   <button class="cta" data-act="cont">${L("cont")} ${ic("arrow", 22)}</button></section>`;
 }
-function vConfirm() {
-  const [n, s] = SHOP.pubg.items[S.pkg], d = price(s);
-  return `<section class="screen">
-  <div class="pkgcard">${pkgImg(S.pkg)}<div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span></div></div>
-  <div class="row" style="margin-top:12px"><div><small>${L("pid")}</small><b>${esc(S.pid)}</b></div><button class="cp" data-act="copy" data-v="${esc(S.pid)}">${ic("copy", 22)}</button></div>
-  <div class="row"><div><small>${L("nick")}</small><b>${esc(S.nick)}</b></div><button class="cp" data-act="copy" data-v="${esc(S.nick)}">${ic("copy", 22)}</button></div>
-  <h2 class="sec">${L("method")}</h2>
-  <div class="meth"><span class="mi">⭐</span><b>${L("stars")}<small>${L("stars_d")}</small></b><span class="chk">${ic("check", 16)}</span></div>
-  <div class="total"><span>${L("total")}:</span><div>${d !== s ? `<s>⭐ ${s}</s>` : ""}<b>⭐ ${d}</b></div></div>
-  <button class="cta" id="payBtn" data-act="pay">${L("pay")} ${ic("card", 22)}</button></section>`;
-}
 const PARA = `<svg class="para ${"{c}"}" viewBox="0 0 60 80" fill="none"><path d="M4 28C4 10 16 2 30 2s26 8 26 26c-6-5-12-5-18 0-5-5-11-5-16 0-6-5-12-5-18 0z" fill="#ffc83d" stroke="#ff9a1f" stroke-width="2"/><path d="M4 28L28 62M30 28v34M56 28L32 62" stroke="#9fb6ff" stroke-width="1.5"/><rect x="24" y="60" width="12" height="12" rx="2" fill="#2f7bff"/></svg>`;
 function vSuccess() {
   return `<section class="screen succ"><div class="sky">${PARA.replace("{c}", "l")}${PARA.replace("{c}", "r")}
   <div class="okring"><svg viewBox="0 0 120 120" fill="none"><circle class="c" cx="60" cy="60" r="54" stroke="#2fd27a" stroke-width="7" stroke-linecap="round" transform="rotate(-90 60 60)"/><polyline class="t" points="36,62 54,80 86,42" stroke="#2fd27a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
   <h1>${L("s_t")}</h1><p>${L("s_d")}</p>
-  <div class="info"><span class="ii">${ic("clip", 20)}</span><div><small>${L("s_no")}:</small><b id="ocode">${S.code || "…"}</b></div></div>
   <div class="info"><span class="ii">${ic("check", 20)}</span><div>${L("s_note")}</div></div>
   <button class="cta" data-act="nav" data-to="home">${ic("home", 22)} ${L("to_home")}</button></section>`;
 }
@@ -433,9 +425,9 @@ function vOrders() {
   if (S.orders === null && !S.ordErr) body = '<div class="sk"></div><div class="sk"></div><div class="sk"></div>';
   else if (S.ordErr) body = `<div class="empty"><i>⚠️</i>${L("o_err")}</div>`;
   else {
-    const list = S.orders.filter(o => f === "all" || o.st === f);
-    body = list.length ? list.map((o, i) => { const it = (SHOP[o.g] || {items: {}}).items[o.i] || [o.i, o.s];
-      return `<div class="ord" style="--i:${Math.min(i, 8)}">${pkgImg(o.i)}<div class="m"><b>${esc(it[0])}</b><span>⭐ ${o.s}</span><small>${esc(o.c || "")}</small></div>
+    const list = S.orders.filter(o => f === "all" || o.st === f || (f === "pending" && o.st === "new"));
+    body = list.length ? list.map((o, i) => { const it = (SHOP[o.g] || {items: {}}).items[o.i] || [LEGACY[o.i] || o.i, o.s];
+      return `<div class="ord" style="--i:${Math.min(i, 8)}">${pkgImg(o.i)}<div class="m"><b>${esc(it[0])}</b><span>${o.cur === "xtr" ? "⭐ " + o.s : fmtSum(o.s) + " so'm"}</span><small>${esc(o.c || "")}</small></div>
       <div class="r"><span class="st ${o.st}">${L("st_" + o.st)}</span><small>${fmtDate(o.t)}</small></div></div>`; }).join("")
       : `<div class="empty"><i>🛒</i>${L("o_empty")}</div>`;
   }
@@ -465,14 +457,14 @@ function vNews() {
   return `<section class="screen"><div class="news"><span class="gi">${ic("gift", 26)}</span><div><b>${L("promo_t")}</b><p>${el ? L("n_promo", {p}) : (p ? L("n_used") : L("n_none"))}</p></div></div>
   ${CHANNEL ? `<button class="sbtn" data-act="chanopen">${ic("send", 22)} ${L("sup_ch")}</button>` : ""}</section>`;
 }
-const VIEWS = {home: vHome, form: vForm, confirm: vConfirm, success: vSuccess, orders: vOrders, support: vSupport, profile: vProfile, news: vNews};
-const TITLES = {form: "order", confirm: "confirm", orders: "orders", support: "support", profile: "profile", news: "news"};
+const VIEWS = {home: vHome, form: vForm, success: vSuccess, orders: vOrders, support: vSupport, profile: vProfile, news: vNews};
+const TITLES = {form: "order", orders: "orders", support: "support", profile: "profile", news: "news"};
 const TABMAP = {home: "home", form: "home", news: "home", orders: "orders", support: "support", profile: "profile"};
 
 // ===== Chizish =====
 function render() {
   const sc = S.screen;
-  $("#app").classList.toggle("no-tabs", sc === "confirm" || sc === "success");
+  $("#app").classList.toggle("no-tabs", sc === "success");
   const brand = `${pic("logo.png", "logo", LOGO)}<div class="brand"><b>YAQUB UC SHOP</b><small>${L("sub")}</small></div>`;
   $("#top").innerHTML = sc === "home" ? brand
     : sc === "success" ? brand
@@ -530,13 +522,6 @@ async function loadOrders() {
   try { S.orders = (await api("/api/orders")).orders; } catch (e) { S.ordErr = true; }
   if (S.screen === "orders") render();
 }
-async function pollOrder(id) {
-  for (let i = 0; i < 12; i++) {
-    try { const r = await api("/api/order/" + id); if (r.code) { S.code = r.code; const e = $("#ocode"); if (e) e.textContent = r.code; return; } } catch (e) {}
-    await new Promise(r => setTimeout(r, 800));
-  }
-}
-
 // ===== Harakatlar =====
 function applyTheme() {
   document.documentElement.dataset.theme = theme;
@@ -545,20 +530,15 @@ function applyTheme() {
   try { tg.setBottomBarColor(c); } catch (e) {}
 }
 function mark(id, msg) { const f = $(id); f.classList.remove("bad"); void f.offsetWidth; f.classList.add("bad"); const i = f.querySelector("input"); i && i.focus(); toast(msg); note("error"); }
-async function pay() {
+async function place() {
   if (S.busy) return;
-  const b = $("#payBtn"); S.busy = true; b && b.classList.add("busy");
-  const end = () => { S.busy = false; const x = $("#payBtn"); x && x.classList.remove("busy"); };
+  const b = $(".cta[data-act=cont]"); S.busy = true; b && b.classList.add("busy");
+  const end = () => { S.busy = false; const x = $(".cta[data-act=cont]"); x && x.classList.remove("busy"); };
   try {
-    const r = await api("/api/invoice", {g: "pubg", i: S.pkg, p: S.pid, n: S.nick});
-    S.oid = r.id;
-    tg.openInvoice(r.link, st => {
-      end();
-      if (st === "paid") { note("success"); S.code = ""; S.stack = []; S.screen = "success"; window.scrollTo(0, 0); render(); pollOrder(r.id); loadMe(); }
-      else if (st === "failed") alertMsg(L("pay_fail"));
-      else if (st === "cancelled") toast(L("pay_cancel"));
-    });
-  } catch (e) { end(); alertMsg(L("pay_err")); }
+    await api("/api/place", {g: "pubg", i: S.pkg, p: S.pid, n: S.nick});
+    end(); note("success"); S.stack = []; S.screen = "success"; window.scrollTo(0, 0); render();
+    setTimeout(() => { try { tg.close(); } catch (e) {} }, 700);   // Mini App yopiladi, mijoz botdagi xabarni ko'radi
+  } catch (e) { end(); alertMsg(/409/.test(e.message) ? L("bot_err") : L("pay_err")); }
 }
 function setLang(l) {
   lang = l; LS.set("lang", l); api("/api/settings", {lang: l}).catch(() => {});
@@ -572,10 +552,9 @@ const ACT = {
     S.pid = ($("#pid").value || "").trim(); S.nick = ($("#nick").value || "").replace(/\s+/g, " ").trim();
     if (!okPid(S.pid)) return mark("#f-pid", L("e_pid"));
     if (!okNick(S.nick)) return mark("#f-nick", L("e_nick"));
-    LS.set("pid", S.pid); LS.set("nick", S.nick); hap(); nav("confirm", true);
+    LS.set("pid", S.pid); LS.set("nick", S.nick); hap(); place();
   },
   copy: el => el.dataset.v && copy(el.dataset.v),
-  pay,
   filter: el => { S.filter = el.dataset.f; hap(); render(); },
   chatopen: () => { hap(); const u = "https://t.me/" + SUPPORT; try { tg.openTelegramLink(u); } catch (e) { location.href = u; } },
   chanopen: () => { hap(); const u = "https://t.me/" + CHANNEL; try { tg.openTelegramLink(u); } catch (e) { location.href = u; } },
