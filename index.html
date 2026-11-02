@@ -353,7 +353,7 @@ const pkgImg = k => pic(k + ".png", "pimg", pic("uc.png", "pimg"));
 // ===== Holat =====
 const S = {screen: "home", stack: [], pkg: null, pid: LS.get("pid") || "", nick: LS.get("nick") || "", orders: null, ordErr: false, filter: "all", busy: false, code: "", oid: 0};
 let me = null;
-let theme = LS.get("theme") === "light" ? "light" : "dark";
+const theme = "dark";
 const API = ((new URLSearchParams(location.search).get("api")) || LS.get("api") || API_FALLBACK).replace(/\/$/, "");
 if (new URLSearchParams(location.search).get("api")) LS.set("api", API);
 
@@ -459,7 +459,6 @@ function vProfile() {
     <div class="it"><span class="l">${ic("clip", 18)}</span><span class="t">${L("p_orders")}:</span><span class="v">${me ? me.orders : "—"}</span></div></div>
   <div class="card" id="settings"><div class="it"><span class="l">${ic("bell", 18)}</span><span class="t">${L("p_notif")}</span><button class="sw${on ? " on" : ""}" data-act="notif" aria-label="notif"></button></div>
     <button class="it" data-act="shlang"><span class="l">${ic("globe", 18)}</span><span class="t">${L("p_lang")}</span><span class="v">${lang === "ru" ? "Русский" : "O'zbek"}</span>${ic("chev", 18)}</button>
-    <button class="it" data-act="shtheme"><span class="l">${ic(theme === "dark" ? "moon" : "sun", 18)}</span><span class="t">${L("p_theme")}</span><span class="v">${L(theme === "dark" ? "th_dark" : "th_light")}</span>${ic("chev", 18)}</button>
     <button class="it" data-act="logout"><span class="l">${ic("out", 18)}</span><span class="t">${L("p_out")}</span></button></div></section>`;
 }
 function vNews() {
@@ -585,8 +584,6 @@ const ACT = {
   notif: el => { const v = !(me ? me.notify : true); if (me) me.notify = v; el.classList.toggle("on", v); hap(); api("/api/settings", {notify: v}).catch(() => { if (me) me.notify = !v; el.classList.toggle("on", !v); }); },
   shlang: () => openSheet(L("sh_lang"), [{act: "setlang", v: "uz", t: "O'zbekcha", ic: "🇺🇿", on: lang === "uz"}, {act: "setlang", v: "ru", t: "Русский", ic: "🇷🇺", on: lang === "ru"}]),
   setlang: el => setLang(el.dataset.v),
-  shtheme: () => openSheet(L("sh_theme"), [{act: "settheme", v: "dark", t: L("th_dark"), ic: ic("moon", 22), on: theme === "dark"}, {act: "settheme", v: "light", t: L("th_light"), ic: ic("sun", 22), on: theme === "light"}]),
-  settheme: el => { theme = el.dataset.v; LS.set("theme", theme); applyTheme(); closeSheet(); render(); },
   logout: () => { try { tg.showConfirm(L("out_q"), ok => ok && tg.close()); } catch (e) {} }
 };
 document.addEventListener("click", e => { const el = e.target.closest("[data-act]"); if (el && ACT[el.dataset.act]) ACT[el.dataset.act](el, e); });
