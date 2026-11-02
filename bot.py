@@ -5,8 +5,7 @@ from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunparse, u
 
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import CommandStart
-from aiogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
-                           LabeledPrice, ReplyKeyboardRemove, WebAppInfo)
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from aiohttp import web
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
@@ -17,40 +16,68 @@ API_BASE = (os.environ.get("API_URL") or os.environ.get("RENDER_EXTERNAL_URL") o
 # Doimiy baza (Neon/Supabase): postgresql://... Bo'sh bo'lsa vaqtinchalik SQLite ishlatiladi
 DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
 DB_PATH = os.environ.get("DB_PATH", "shop.db")
-# Birinchi buyurtmaga chegirma (foiz). 0 qilsangiz aksiya o'chadi
-FIRST_ORDER_DISCOUNT = int(os.environ.get("FIRST_ORDER_DISCOUNT", "5"))
+# To'lov kartasi (mijozga ko'rsatiladi). Render'da CARD_NUMBER / CARD_OWNER bilan almashtirsa bo'ladi
+CARD_NUMBER = os.environ.get("CARD_NUMBER", "5614682113746525").strip()
+CARD_OWNER = os.environ.get("CARD_OWNER", "ZOKIROV YOQUBJON").strip()
+SUPPORT = os.environ.get("SUPPORT", "believerr88").lstrip("@")
 TZ = timezone(timedelta(hours=5))  # O'zbekiston vaqti
 
 _u = urlparse(WEBAPP_URL)
 ORIGIN = f"{_u.scheme}://{_u.netloc}"
 
-# Narxlar yulduzda (⭐). index.html dagi SHOP bilan BIR XIL bo'lsin
+# Narxlar so'mda. index.html dagi SHOP bilan BIR XIL bo'lsin
 SHOP = {
     "pubg": {"name": "PUBG MOBILE", "items": {
-        "uc60": ("60 UC", 50),
-        "uc325": ("325 UC", 250),
-        "uc660": ("660 UC", 500),
-        "uc1800": ("1800 UC", 1350),
-        "uc3850": ("3850 UC", 2800),
-        "uc8100": ("8100 UC", 5600),
+        "uc60": ("60 UC", 13000),
+        "uc120": ("120 UC", 26000),
+        "uc180": ("180 UC", 39000),
+        "uc240": ("240 UC", 52000),
+        "uc325": ("325 UC", 60000),
+        "uc385": ("385 UC", 73000),
+        "uc660": ("660 UC", 120000),
+        "uc720": ("720 UC", 133000),
+        "uc1800": ("1800 UC", 305000),
+        "uc2460": ("2460 UC", 425000),
+        "uc5650": ("5650 UC", 885000),
+        "uc8100": ("8100 UC", 1200000),
     }},
 }
+# Eski (Stars davridagi) buyurtmalar tarixda to'g'ri ko'rinishi uchun
+LEGACY = {"uc3850": "3850 UC"}
 
 # Mijozga ketadigan xabarlar
 MSG = {
     "uz": {
-        "paid": "✅ <b>To'lov qabul qilindi!</b>\n{code}\n<b>{game} — {item}</b>\n"
-                "👤 <b>ID:</b> <code>{pid}</code>\n🎮 <b>Nickname:</b> {nick}\nUC tez orada tushadi.",
+        "order": "✅ <b>Mini App orqali buyurtma qabul qilindi!</b>\n\n"
+                 "📦 Paket: <b>{item} — {sum} so'm</b>\n🆔 PUBG ID: <code>{pid}</code>\n👑 Nickname: {nick}\n\n"
+                 "💳 <b>To'lov uchun karta:</b>\n<code>{card}</code>\n👤 Egasi: <b>{owner}</b>\n\n"
+                 "To'lovni amalga oshirgach, <b>to'lov chekini (skrinshot) shu yerga yuboring:</b>",
+        "received": "✅ <b>Chek qabul qilindi!</b>\n{code}\nAdmin tekshirib chiqadi. Tasdiqlangach UC hisobingizga tushiriladi.",
+        "extra": "✅ Qo'shimcha chek adminga yuborildi.",
+        "again": "Chekingiz allaqachon yuborilgan, admin tekshirmoqda. Iltimos, kuting 🙏",
+        "need_order": "Avval do'kon orqali buyurtma bering 👇",
+        "need_receipt": "Iltimos, to'lov chekini <b>skrinshot (rasm)</b> ko'rinishida yuboring.",
+        "fail": "❌ Chekni adminga yetkazib bo'lmadi. Qaytadan yuboring.",
         "done": "✅ <b>Buyurtmangiz bajarildi!</b>\n{code}\n<b>{game} — {item}</b>\nUC hisobingizga tushdi. Rahmat! 🙏",
-        "cancel": "❌ <b>Buyurtmangiz bekor qilindi.</b>\n{code}\n⭐ {stars} Stars hisobingizga qaytarildi.",
+        "cancel": "❌ <b>Buyurtmangiz bekor qilindi.</b>\n{code}\nSavollar bo'lsa: @{support}",
+        "cancel_refund": "❌ <b>Buyurtmangiz bekor qilindi.</b>\n{code}\n⭐ {stars} Stars hisobingizga qaytarildi.",
         "welcome": "Xush kelibsiz! Do'konni ochish uchun tugmani bosing 👇",
         "open": "🛒 Do'konni ochish",
     },
     "ru": {
-        "paid": "✅ <b>Оплата принята!</b>\n{code}\n<b>{game} — {item}</b>\n"
-                "👤 <b>ID:</b> <code>{pid}</code>\n🎮 <b>Ник:</b> {nick}\nUC скоро поступят.",
+        "order": "✅ <b>Заказ из Mini App принят!</b>\n\n"
+                 "📦 Пакет: <b>{item} — {sum} сум</b>\n🆔 PUBG ID: <code>{pid}</code>\n👑 Ник: {nick}\n\n"
+                 "💳 <b>Карта для оплаты:</b>\n<code>{card}</code>\n👤 Владелец: <b>{owner}</b>\n\n"
+                 "После оплаты <b>отправьте сюда чек (скриншот):</b>",
+        "received": "✅ <b>Чек получен!</b>\n{code}\nАдминистратор проверит оплату. После подтверждения UC будут зачислены.",
+        "extra": "✅ Дополнительный чек отправлен админу.",
+        "again": "Чек уже отправлен, администратор проверяет. Пожалуйста, подождите 🙏",
+        "need_order": "Сначала оформите заказ в магазине 👇",
+        "need_receipt": "Пожалуйста, отправьте чек в виде <b>скриншота (картинки)</b>.",
+        "fail": "❌ Не удалось передать чек админу. Отправьте ещё раз.",
         "done": "✅ <b>Ваш заказ выполнен!</b>\n{code}\n<b>{game} — {item}</b>\nUC зачислены на аккаунт. Спасибо! 🙏",
-        "cancel": "❌ <b>Ваш заказ отменён.</b>\n{code}\n⭐ {stars} Stars возвращены на ваш счёт.",
+        "cancel": "❌ <b>Ваш заказ отменён.</b>\n{code}\nЕсли есть вопросы: @{support}",
+        "cancel_refund": "❌ <b>Ваш заказ отменён.</b>\n{code}\n⭐ {stars} Stars возвращены на ваш счёт.",
         "welcome": "Добро пожаловать! Нажмите кнопку, чтобы открыть магазин 👇",
         "open": "🛒 Открыть магазин",
     },
@@ -60,8 +87,17 @@ bot = Bot(BOT_TOKEN)
 dp = Dispatcher()
 
 
-def discounted(stars: int) -> int:
-    return (stars * (100 - FIRST_ORDER_DISCOUNT) + 50) // 100
+def fmt(n) -> str:
+    return f"{int(n):,}"
+
+
+def item_name(game: str, item: str) -> str:
+    it = SHOP.get(game, {}).get("items", {}).get(item)
+    return it[0] if it else LEGACY.get(item, item)
+
+
+def game_name(game: str) -> str:
+    return SHOP.get(game, {}).get("name", "PUBG MOBILE")
 
 
 # ---------- Baza (Postgres yoki SQLite) ----------
@@ -154,6 +190,10 @@ async def db_init():
         "user_id BIGINT NOT NULL, game TEXT, item TEXT, pid TEXT, nick TEXT, "
         "stars INTEGER, list_stars INTEGER, status TEXT NOT NULL DEFAULT 'new', "
         "charge_id TEXT, ts BIGINT NOT NULL, paid_ts BIGINT)")
+    try:
+        await q_exec("ALTER TABLE orders ADD COLUMN uzs BIGINT")
+    except Exception:
+        pass  # ustun allaqachon bor
     await q_exec("CREATE UNIQUE INDEX IF NOT EXISTS orders_code_u ON orders(code)")
     await q_exec("CREATE INDEX IF NOT EXISTS orders_user_i ON orders(user_id)")
     return warn
@@ -178,41 +218,28 @@ async def user_lang(uid) -> str:
     return r["lang"] if r and r["lang"] in MSG else "uz"
 
 
-async def is_first_order(uid) -> bool:
+async def user_orders_count(uid) -> int:
     r = await q_one("SELECT COUNT(*) AS n FROM orders WHERE user_id=? AND status IN ('pending','done')", uid)
-    return r["n"] == 0
+    return int(r["n"])
 
 
-async def user_stats(uid):
-    r = await q_one(
-        "SELECT COUNT(*) AS n, COALESCE(SUM(stars),0) AS s FROM orders "
-        "WHERE user_id=? AND status IN ('pending','done')", uid)
-    return {"n": int(r["n"]), "s": int(r["s"])}
-
-
-async def new_order(uid, g, i, pid, nick, stars, list_stars) -> int:
+async def new_order(uid, g, i, pid, nick, uzs) -> int:
+    """Buyurtma yaratadi va unga kunlik raqam beradi: #YAQUB-20261102-001.
+    Mijozning avvalgi to'lanmagan buyurtmasi va 24 soatdan eskilari o'chiriladi."""
     now = int(time.time())
-    await q_exec("DELETE FROM orders WHERE status='new' AND ts < ?", now - 3600)
-    return await q_insert(
-        "INSERT INTO orders(user_id, game, item, pid, nick, stars, list_stars, status, ts) "
-        "VALUES (?,?,?,?,?,?,?,?,?)", uid, g, i, pid, nick, stars, list_stars, "new", now)
-
-
-async def mark_paid(oid: int, charge_id: str):
-    """To'langan buyurtmaga kun bo'yicha raqam beradi: #YAQUB-20261101-001"""
+    await q_exec("DELETE FROM orders WHERE status='new' AND (user_id=? OR ts < ?)", uid, now - 86400)
+    day = datetime.now(TZ).strftime("%Y%m%d")
     for _ in range(5):
-        day = datetime.now(TZ).strftime("%Y%m%d")
         r = await q_one("SELECT COALESCE(MAX(seq),0) AS m FROM orders WHERE day=?", day)
         seq = int(r["m"]) + 1
         code = f"#YAQUB-{day}-{seq:03d}"
         try:
-            n = await q_exec(
-                "UPDATE orders SET status='pending', charge_id=?, code=?, day=?, seq=?, paid_ts=? "
-                "WHERE id=? AND status='new'", charge_id, code, day, seq, int(time.time()), oid)
-            return code if n else None
+            return await q_insert(
+                "INSERT INTO orders(user_id, game, item, pid, nick, uzs, status, ts, code, day, seq) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?)", uid, g, i, pid, nick, uzs, "new", now, code, day, seq)
         except Exception:
             await asyncio.sleep(0.05)
-    return None
+    raise RuntimeError("order code")
 
 
 # ---------- Mini App autentifikatsiyasi ----------
@@ -243,24 +270,45 @@ def webapp_url() -> str:
 def parse_order(d: dict):
     """Buyurtmani tekshiradi. Narx faqat serverdagi SHOP dan olinadi."""
     game = SHOP[d["g"]]
-    name, stars = game["items"][d["i"]]
+    name, price = game["items"][d["i"]]
     pid = str(d["p"]).strip()
     if not re.fullmatch(r"\d{5,15}", pid):
         raise ValueError("pid")
     nick = re.sub(r"[\s\x00-\x1f\x7f]+", " ", str(d["n"])).strip()
     if not (1 <= len(nick) <= 20):
         raise ValueError("nick")
-    return d["g"], d["i"], game, name, stars, pid, nick
+    return d["g"], d["i"], game, name, price, pid, nick
 
 
 def admin_kb(oid: int, confirm: bool = False) -> InlineKeyboardMarkup:
     if confirm:
-        row = [InlineKeyboardButton(text="⭐ Ha, qaytarish", callback_data=f"ord:cx:{oid}"),
+        row = [InlineKeyboardButton(text="❌ Ha, bekor qilish", callback_data=f"ord:cx:{oid}"),
                InlineKeyboardButton(text="↩️ Yo'q", callback_data=f"ord:back:{oid}")]
     else:
         row = [InlineKeyboardButton(text="✅ Bajarildi", callback_data=f"ord:done:{oid}"),
                InlineKeyboardButton(text="❌ Bekor qilish", callback_data=f"ord:cancel:{oid}")]
     return InlineKeyboardMarkup(inline_keyboard=[row])
+
+
+def price_text(o) -> str:
+    return f"{fmt(o['uzs'])} so'm" if o.get("uzs") is not None else f"⭐ {o['stars']}"
+
+
+def admin_text(o, u, status: str) -> str:
+    name = escape((u or {}).get("first_name") or "—")
+    un = (u or {}).get("username")
+    who = f"{name} (@{escape(un)})" if un else name
+    return (f"🔔 <b>Yangi buyurtma!</b> {o['code'] or ''}\n\n"
+            f"👤 Xaridor: <b>{who}</b>\n"
+            f"🆔 Telegram ID: <code>{o['user_id']}</code>\n"
+            f"📦 Paket: <b>{item_name(o['game'], o['item'])} — {price_text(o)}</b>\n"
+            f"🎮 PUBG ID: <code>{o['pid']}</code>\n"
+            f"👑 Nickname: {escape(o['nick'] or '')}\n\n{status}")
+
+
+def open_kb(lang: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(text=MSG[lang]["open"], web_app=WebAppInfo(url=webapp_url()))]])
 
 
 # ---------- Bot ----------
@@ -269,63 +317,59 @@ async def start(m: types.Message):
     await upsert_user({"id": m.from_user.id, "first_name": m.from_user.first_name,
                        "username": m.from_user.username, "language_code": m.from_user.language_code})
     lang = await user_lang(m.from_user.id)
-    kb = InlineKeyboardMarkup(inline_keyboard=[[
-        InlineKeyboardButton(text=MSG[lang]["open"], web_app=WebAppInfo(url=webapp_url()))
-    ]])
-    await m.answer(MSG[lang]["welcome"], reply_markup=kb)
+    await m.answer(MSG[lang]["welcome"], reply_markup=open_kb(lang))
 
 
-@dp.pre_checkout_query()
-async def pre_checkout(q: types.PreCheckoutQuery):
-    try:
-        oid = int(q.invoice_payload[1:])
-        o = await q_one("SELECT user_id, stars, list_stars, status FROM orders WHERE id=?", oid)
-        if (not o or o["status"] != "new" or o["user_id"] != q.from_user.id
-                or o["stars"] != q.total_amount or q.currency != "XTR"):
-            return await q.answer(ok=False, error_message="Buyurtma topilmadi yoki allaqachon to'langan. Do'konni qayta oching.")
-        if o["stars"] < o["list_stars"] and not await is_first_order(q.from_user.id):
-            return await q.answer(ok=False, error_message="Chegirma faqat birinchi buyurtmaga amal qiladi. Do'konni qayta oching.")
-    except Exception:
-        return await q.answer(ok=False, error_message="Xatolik. Qayta urinib ko'ring.")
-    await q.answer(ok=True)
+def is_receipt(m: types.Message) -> bool:
+    if m.photo:
+        return True
+    d = m.document
+    return bool(d and (d.mime_type or "").startswith(("image/", "application/pdf")))
 
 
-@dp.message(F.successful_payment)
-async def paid(m: types.Message):
-    p = m.successful_payment
-    try:
-        oid = int(p.invoice_payload[1:])
-    except Exception:
-        oid = 0
-    o = await q_one("SELECT * FROM orders WHERE id=?", oid)
+@dp.message(F.photo | F.document)
+async def receipt(m: types.Message):
+    uid = m.from_user.id
+    lang = await user_lang(uid)
+    if not is_receipt(m):
+        return await m.answer(MSG[lang]["need_receipt"], parse_mode="HTML")
+    o = await q_one("SELECT * FROM orders WHERE user_id=? AND status='new' ORDER BY id DESC LIMIT 1", uid)
     if not o:
-        await bot.send_message(
-            ADMIN_ID,
-            f"⚠️ To'lov keldi, lekin buyurtma topilmadi.\nMijoz: <code>{m.from_user.id}</code>\n"
-            f"⭐ {p.total_amount}\nCharge: <code>{escape(p.telegram_payment_charge_id)}</code>",
-            parse_mode="HTML")
-        return
-    code = await mark_paid(oid, p.telegram_payment_charge_id)
-    if not code:
-        return  # allaqachon qayta ishlangan
-    game = SHOP[o["game"]]
-    name, _ = game["items"][o["item"]]
-    lang = await user_lang(o["user_id"])
-    await m.answer(
-        MSG[lang]["paid"].format(code=code, game=game["name"], item=name, pid=o["pid"], nick=escape(o["nick"])),
-        parse_mode="HTML")
-    price = f"⭐ {p.total_amount}"
-    if o["list_stars"] and o["list_stars"] != p.total_amount:
-        price += f" (chegirma, asl narx ⭐ {o['list_stars']})"
-    await bot.send_message(
-        ADMIN_ID,
-        f"💰 <b>Yangi buyurtma</b> {code}\n"
-        f"👤 {escape(m.from_user.full_name)} (id: <code>{m.from_user.id}</code>)\n"
-        f"🎮 <b>{game['name']} — {name}</b>\n"
-        f"🆔 <b>ID:</b> <code>{o['pid']}</code>\n"
-        f"🎮 <b>Nickname:</b> {escape(o['nick'])}\n"
-        f"{price}",
-        parse_mode="HTML", reply_markup=admin_kb(oid))
+        p = await q_one("SELECT * FROM orders WHERE user_id=? AND status='pending' ORDER BY id DESC LIMIT 1", uid)
+        if p and int(time.time()) - int(p["paid_ts"] or 0) < 900:
+            try:  # qo'shimcha chek (masalan, 2-sahifa) — adminga o'tkaziladi
+                await bot.copy_message(ADMIN_ID, m.chat.id, m.message_id)
+                await bot.send_message(ADMIN_ID, f"➕ {p['code']} uchun qo'shimcha chek")
+                return await m.answer(MSG[lang]["extra"])
+            except Exception:
+                pass
+        if p:
+            return await m.answer(MSG[lang]["again"])
+        return await m.answer(MSG[lang]["need_order"], reply_markup=open_kb(lang))
+    if not await q_exec("UPDATE orders SET status='pending', paid_ts=? WHERE id=? AND status='new'",
+                        int(time.time()), o["id"]):
+        return await m.answer(MSG[lang]["again"])
+    await upsert_user({"id": uid, "first_name": m.from_user.first_name,
+                       "username": m.from_user.username, "language_code": m.from_user.language_code})
+    u = await get_user(uid)
+    try:
+        await bot.copy_message(ADMIN_ID, m.chat.id, m.message_id)
+        await bot.send_message(ADMIN_ID, admin_text(o, u, "⏳ HOLAT: KUTILMOQDA"),
+                               parse_mode="HTML", reply_markup=admin_kb(o["id"]))
+    except Exception as e:
+        print("Adminga yuborishda xato:", e)
+        await q_exec("UPDATE orders SET status='new', paid_ts=NULL WHERE id=?", o["id"])
+        return await m.answer(MSG[lang]["fail"])
+    await m.answer(MSG[lang]["received"].format(code=o["code"]), parse_mode="HTML")
+
+
+@dp.message(F.text)
+async def any_text(m: types.Message):
+    lang = await user_lang(m.from_user.id)
+    o = await q_one("SELECT id FROM orders WHERE user_id=? AND status='new' LIMIT 1", m.from_user.id)
+    if o:
+        return await m.answer(MSG[lang]["need_receipt"], parse_mode="HTML")
+    await m.answer(MSG[lang]["welcome"], reply_markup=open_kb(lang))
 
 
 @dp.callback_query(F.data.startswith("ord:"))
@@ -343,14 +387,12 @@ async def order_action(cb: types.CallbackQuery):
     if act in ("done", "cancel", "cx") and o["status"] != "pending":
         return await cb.answer("Bu buyurtmaning holati allaqachon o'zgargan", show_alert=True)
 
-    game = SHOP[o["game"]]
-    name, _ = game["items"][o["item"]]
     lang = await user_lang(o["user_id"])
     u = await get_user(o["user_id"])
 
     if act == "cancel":  # tasdiqlash so'raladi
         await cb.message.edit_reply_markup(reply_markup=admin_kb(oid, confirm=True))
-        return await cb.answer("Bekor qilinsa, ⭐ mijozga qaytariladi")
+        return await cb.answer("Rostdan bekor qilasizmi?")
     if act == "back":
         await cb.message.edit_reply_markup(reply_markup=admin_kb(oid))
         return await cb.answer()
@@ -358,12 +400,12 @@ async def order_action(cb: types.CallbackQuery):
     if act == "done":
         if not await q_exec("UPDATE orders SET status='done' WHERE id=? AND status='pending'", oid):
             return await cb.answer("Holat allaqachon o'zgargan", show_alert=True)
-        await cb.message.edit_text(cb.message.html_text + "\n\n✅ <b>Bajarildi</b>",
-                                   parse_mode="HTML", reply_markup=None)
+        await cb.message.edit_text(admin_text(o, u, "✅ HOLAT: BAJARILDI"), parse_mode="HTML", reply_markup=None)
         if not u or u["notify"]:
             try:
                 await bot.send_message(o["user_id"], MSG[lang]["done"].format(
-                    code=o["code"], game=game["name"], item=name), parse_mode="HTML")
+                    code=o["code"], game=game_name(o["game"]), item=item_name(o["game"], o["item"])),
+                    parse_mode="HTML")
             except Exception:
                 pass
         return await cb.answer("Bajarildi")
@@ -371,17 +413,23 @@ async def order_action(cb: types.CallbackQuery):
     if act == "cx":
         if not await q_exec("UPDATE orders SET status='cancelled' WHERE id=? AND status='pending'", oid):
             return await cb.answer("Holat allaqachon o'zgargan", show_alert=True)
-        try:
-            await bot.refund_star_payment(user_id=o["user_id"], telegram_payment_charge_id=o["charge_id"])
-        except Exception as e:
-            await q_exec("UPDATE orders SET status='pending' WHERE id=?", oid)
-            await cb.message.edit_reply_markup(reply_markup=admin_kb(oid))
-            return await cb.answer(f"Stars qaytarilmadi: {str(e)[:150]}", show_alert=True)
-        await cb.message.edit_text(cb.message.html_text + f"\n\n❌ <b>Bekor qilindi</b>, ⭐ {o['stars']} qaytarildi",
+        refunded = False
+        if o.get("charge_id"):  # eski Stars buyurtmasi: pulni qaytaramiz
+            try:
+                await bot.refund_star_payment(user_id=o["user_id"], telegram_payment_charge_id=o["charge_id"])
+                refunded = True
+            except Exception as e:
+                await q_exec("UPDATE orders SET status='pending' WHERE id=?", oid)
+                await cb.message.edit_reply_markup(reply_markup=admin_kb(oid))
+                return await cb.answer(f"Stars qaytarilmadi: {str(e)[:150]}", show_alert=True)
+        await cb.message.edit_text(admin_text(o, u, "❌ HOLAT: BEKOR QILINDI" + (" (⭐ qaytarildi)" if refunded else "")),
                                    parse_mode="HTML", reply_markup=None)
         try:
-            await bot.send_message(o["user_id"], MSG[lang]["cancel"].format(
-                code=o["code"], stars=o["stars"]), parse_mode="HTML")
+            if refunded:
+                txt = MSG[lang]["cancel_refund"].format(code=o["code"], stars=o["stars"])
+            else:
+                txt = MSG[lang]["cancel"].format(code=o["code"], support=SUPPORT)
+            await bot.send_message(o["user_id"], txt, parse_mode="HTML")
         except Exception:
             pass
         return await cb.answer("Bekor qilindi")
@@ -419,11 +467,8 @@ async def me_api(request):
         return deny()
     await upsert_user(u)
     row = await get_user(u["id"])
-    st = await user_stats(u["id"])
-    eligible = FIRST_ORDER_DISCOUNT > 0 and await is_first_order(u["id"])
     return web.json_response({
-        "notify": bool(row["notify"]), "lang": row["lang"], "orders": st["n"], "spent": st["s"],
-        "discount": {"pct": FIRST_ORDER_DISCOUNT, "eligible": bool(eligible)}})
+        "notify": bool(row["notify"]), "lang": row["lang"], "orders": await user_orders_count(u["id"])})
 
 
 async def orders_api(request):
@@ -431,11 +476,12 @@ async def orders_api(request):
     if not u:
         return deny()
     rows = await q_all(
-        "SELECT id, code, game, item, pid, nick, stars, list_stars, status, paid_ts FROM orders "
-        "WHERE user_id=? AND status<>'new' ORDER BY id DESC LIMIT 50", u["id"])
+        "SELECT id, code, game, item, pid, nick, stars, uzs, status, paid_ts, ts FROM orders "
+        "WHERE user_id=? ORDER BY id DESC LIMIT 50", u["id"])
     return web.json_response({"orders": [
         {"id": r["id"], "c": r["code"], "g": r["game"], "i": r["item"], "p": r["pid"], "n": r["nick"],
-         "s": r["stars"], "st": r["status"], "t": r["paid_ts"]} for r in rows]})
+         "s": r["uzs"] if r["uzs"] is not None else r["stars"], "cur": "uzs" if r["uzs"] is not None else "xtr",
+         "st": r["status"], "t": r["paid_ts"] or r["ts"]} for r in rows]})
 
 
 async def order_api(request):
@@ -468,32 +514,28 @@ async def settings_api(request):
     return web.json_response({"ok": True})
 
 
-async def invoice_api(request):
+async def place_api(request):
+    """Mini App'dan buyurtma: bazaga yoziladi, mijozga botdan karta ma'lumoti yuboriladi."""
     u = auth(request)
     if not u:
         return deny()
     try:
         d = await request.json()
-        g, i, game, name, stars, pid, nick = parse_order(d)
+        g, i, game, name, price, pid, nick = parse_order(d)
     except Exception:
         return web.json_response({"error": "bad"}, status=400)
     await upsert_user(u)
-    list_stars = stars
-    if FIRST_ORDER_DISCOUNT > 0 and await is_first_order(u["id"]):
-        stars = discounted(list_stars)
-    oid = await new_order(u["id"], g, i, pid, nick, stars, list_stars)
+    oid = await new_order(u["id"], g, i, pid, nick, price)
+    lang = await user_lang(u["id"])
     try:
-        link = await bot.create_invoice_link(
-            title=f"{game['name']} — {name}",
-            description=f"👤 ID: {pid}\n🎮 Nickname: {nick}",
-            payload=f"o{oid}",
-            currency="XTR",
-            prices=[LabeledPrice(label=name, amount=stars)],
-        )
+        await bot.send_message(u["id"], MSG[lang]["order"].format(
+            item=name, sum=fmt(price), pid=pid, nick=escape(nick), card=escape(CARD_NUMBER), owner=escape(CARD_OWNER)),
+            parse_mode="HTML")
     except Exception as e:
-        print("Invoice yaratishda xato:", e)
-        return web.json_response({"error": "invoice"}, status=500)
-    return web.json_response({"link": link, "id": oid, "price": stars, "list": list_stars})
+        print("Mijozga xabar yuborib bo'lmadi:", e)
+        await q_exec("DELETE FROM orders WHERE id=?", oid)
+        return web.json_response({"error": "nobot"}, status=409)
+    return web.json_response({"ok": True, "id": oid})
 
 
 async def main():
@@ -504,7 +546,7 @@ async def main():
     app.router.add_get("/api/orders", orders_api)
     app.router.add_get("/api/order/{id}", order_api)
     app.router.add_post("/api/settings", settings_api)
-    app.router.add_post("/api/invoice", invoice_api)
+    app.router.add_post("/api/place", place_api)
     runner = web.AppRunner(app)
     await runner.setup()
     await web.TCPSite(runner, "0.0.0.0", int(os.environ.get("PORT", 10000))).start()
