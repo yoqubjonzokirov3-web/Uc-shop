@@ -54,13 +54,6 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 .s1{right:30%;top:22%}.s2{right:8%;top:14%;animation-delay:1.1s}.s3{right:20%;bottom:34%;animation-delay:2s}
 @keyframes tw{40%,60%{opacity:1;transform:scale(1.4)}}
 
-/* ===== Aksiya ===== */
-.promo{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:12px 14px;text-align:left;border-radius:16px;border:1px solid rgba(255,200,61,.5);background:linear-gradient(90deg,rgba(255,200,61,.2),rgba(255,154,31,.08));box-shadow:0 0 22px rgba(255,200,61,.14)}
-.promo .gi{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--ink)}
-.promo b{display:block;color:var(--gold);font-size:15px}
-.promo small{display:block;margin-top:2px;font-size:13px}
-.promo>div{flex:1}
-
 /* ===== Paketlar ===== */
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .pk{position:relative;display:flex;flex-direction:column;align-items:center;padding:12px 4px 10px;border-radius:16px;border:1.5px solid var(--line);background:linear-gradient(180deg,var(--card2),var(--card));box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.34,1.56,.64,1),border-color .2s,box-shadow .2s;animation:rise .5s ease backwards;animation-delay:calc(var(--i) * 60ms)}
@@ -102,21 +95,6 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 .cta.busy{pointer-events:none;opacity:.75}
 .cta.busy::after{content:"";width:18px;height:18px;border-radius:50%;border:3px solid rgba(26,18,6,.3);border-top-color:var(--ink);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ===== Tasdiqlash ===== */
-.row{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
-.row>div{flex:1;min-width:0}
-.row small{display:block;font-size:12px;color:var(--muted)}
-.row b{display:block;margin-top:2px;font-size:17px;word-break:break-all}
-.cp{color:var(--blue);padding:6px}
-.meth{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:14px;border-radius:14px;border:1.5px solid var(--gold);background:rgba(255,200,61,.07)}
-.meth .mi{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,200,61,.18);font-size:20px}
-.meth b{flex:1;font-size:16px}
-.meth small{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
-.chk{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--gold);color:var(--ink)}
-.total{display:flex;align-items:center;justify-content:space-between;margin:14px 2px 14px;font-size:15px}
-.total b{font-size:20px;color:var(--gold)}
-.total s{color:var(--muted);font-size:14px;margin-right:6px}
 
 /* ===== Muvaffaqiyat ===== */
 .succ{text-align:center;padding-top:6px}
@@ -273,13 +251,13 @@ const ITEMS = Object.entries(SHOP.pubg.items);
 const I18N = {
 uz: {
   sub: "PREMIUM GAME STORE", hero: "UC xarid qilish endi yanada oson!", pick: "UC Paketlarini tanlang",
-  promo_t: "Aksiya!", promo_d: "Birinchi buyurtmaga {p}% chegirma!", popular: "Mashxur",
+  promo_t: "Aksiya!", popular: "Mashxur",
   order: "Buyurtma berish", player: "O'yinchi ma'lumotlari", pid: "Player ID", pid_ph: "ID raqamingizni kiriting",
   nick: "Nickname", nick_ph: "O'yin ichidagi nickname", help: "ID ni o'yin ichida Profil bo'limidan topasiz",
   warn_t: "Muhim ma'lumot!", warn_d: "ID va nickname to'g'ri bo'lishi muhim. Buyurtmadan so'ng karta ma'lumotlari bot orqali yuboriladi.",
   cont: "Buyurtma berish", e_pid: "ID 5–15 ta raqamdan iborat bo'lishi kerak", e_nick: "Nickname kiriting (20 belgigacha)",
-  confirm: "Buyurtmani tasdiqlash", copied: "Nusxalandi", method: "To'lov usulini tanlang", stars: "Telegram Stars", stars_d: "Tez va xavfsiz to'lov",
-  total: "To'lov summasi", pay: "To'lov qilish", pay_err: "Buyurtmani yuborib bo'lmadi. Qaytadan urinib ko'ring.", bot_err: "Avval botga kirib /start bosing, keyin qayta urinib ko'ring.", pay_fail: "To'lov amalga oshmadi.", pay_cancel: "To'lov bekor qilindi.",
+  copied: "Nusxalandi",
+  pay_err: "Buyurtmani yuborib bo'lmadi. Qaytadan urinib ko'ring.", bot_err: "Avval botga kirib /start bosing, keyin qayta urinib ko'ring.",
   s_t: "Buyurtma qabul qilindi!", s_d: "Karta ma'lumotlari botga yuborildi. Botga o'tib, to'lov chekini (skrinshot) yuboring.", s_no: "Buyurtma raqami", s_note: "Admin tekshirgach, UC hisobingizga tushiriladi.", to_home: "Bosh sahifaga qaytish",
   orders: "Buyurtmalar tarixi", f_all: "Barcha", f_pending: "Jarayonda", f_done: "Bajarilgan", st_new: "To'lov kutilmoqda", st_pending: "Tekshirilmoqda", st_done: "Bajarilgan", st_cancelled: "Bekor qilingan",
   o_empty: "Hozircha buyurtma yo'q", o_err: "Yuklab bo'lmadi. Keyinroq urinib ko'ring.",
@@ -288,18 +266,18 @@ uz: {
   p_out: "Chiqish", out_q: "Do'kondan chiqasizmi?", sh_lang: "Tilni tanlang", sh_theme: "Mavzuni tanlang",
   m_home: "Bosh sahifa", m_pick: "UC tanlash", m_orders: "Buyurtmalar tarixi", m_support: "Qo'llab-quvvatlash", m_profile: "Mening profilim", m_news: "Aksiya va yangiliklar", m_set: "Sozlamalar",
   tab_home: "Bosh sahifa", tab_orders: "Buyurtmalar", tab_support: "Qo'llab-quvvatlash", tab_profile: "Profil",
-  banner: "Ishonchli va sifatli!", news: "Aksiya va yangiliklar", n_promo: "Birinchi buyurtmaga {p}% chegirma. Chegirma to'lov bosqichida avtomatik qo'llanadi.",
-  n_used: "Birinchi buyurtma aksiyasidan foydalangansiz. Yangi aksiyalar tez orada!", n_none: "Hozircha yangi aksiyalar yo'q."
+  banner: "Ishonchli va sifatli!", news: "Aksiya va yangiliklar",
+  n_none: "Hozircha yangi aksiyalar yo'q."
 },
 ru: {
   sub: "PREMIUM GAME STORE", hero: "Покупать UC стало ещё проще!", pick: "Выберите пакет UC",
-  promo_t: "Акция!", promo_d: "Скидка {p}% на первый заказ!", popular: "Хит",
+  promo_t: "Акция!", popular: "Хит",
   order: "Оформление заказа", player: "Данные игрока", pid: "Player ID", pid_ph: "Введите ваш ID",
   nick: "Ник", nick_ph: "Ник в игре", help: "ID можно найти в игре, в разделе «Профиль»",
   warn_t: "Важная информация!", warn_d: "Важно указать верные ID и ник. После заказа данные карты придут в бот.",
   cont: "Оформить заказ", e_pid: "ID должен состоять из 5–15 цифр", e_nick: "Введите ник (до 20 символов)",
-  confirm: "Подтверждение заказа", copied: "Скопировано", method: "Выберите способ оплаты", stars: "Telegram Stars", stars_d: "Быстрая и безопасная оплата",
-  total: "Сумма к оплате", pay: "Оплатить", pay_err: "Не удалось отправить заказ. Попробуйте ещё раз.", bot_err: "Сначала зайдите в бота и нажмите /start, затем повторите.", pay_fail: "Оплата не прошла.", pay_cancel: "Оплата отменена.",
+  copied: "Скопировано",
+  pay_err: "Не удалось отправить заказ. Попробуйте ещё раз.", bot_err: "Сначала зайдите в бота и нажмите /start, затем повторите.",
   s_t: "Заказ принят!", s_d: "Данные карты отправлены в бота. Перейдите в бота и отправьте чек (скриншот).", s_no: "Номер заказа", s_note: "После проверки админом UC будут зачислены.", to_home: "На главную",
   orders: "История заказов", f_all: "Все", f_pending: "В процессе", f_done: "Выполнен", st_new: "Ожидает оплаты", st_pending: "Проверяется", st_done: "Выполнен", st_cancelled: "Отменён",
   o_empty: "Заказов пока нет", o_err: "Не удалось загрузить. Попробуйте позже.",
@@ -308,8 +286,8 @@ ru: {
   p_out: "Выйти", out_q: "Выйти из магазина?", sh_lang: "Выберите язык", sh_theme: "Выберите тему",
   m_home: "Главная", m_pick: "Выбор UC", m_orders: "История заказов", m_support: "Поддержка", m_profile: "Мой профиль", m_news: "Акции и новости", m_set: "Настройки",
   tab_home: "Главная", tab_orders: "Заказы", tab_support: "Поддержка", tab_profile: "Профиль",
-  banner: "Надёжно и качественно!", news: "Акции и новости", n_promo: "Скидка {p}% на первый заказ. Применяется автоматически при оплате.",
-  n_used: "Вы уже использовали акцию на первый заказ. Новые акции скоро!", n_none: "Пока нет новых акций."
+  banner: "Надёжно и качественно!", news: "Акции и новости",
+  n_none: "Пока нет новых акций."
 }};
 
 // ===== Yordamchilar =====
@@ -374,7 +352,6 @@ async function api(path, body) {
   return r.json();
 }
 
-const disc = () => 0;
 const fmtSum = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 const priceHtml = s => `${fmtSum(s)} <small>so'm</small>`;
 const okPid = v => /^\d{5,15}$/.test(v);
@@ -455,8 +432,7 @@ function vProfile() {
     <button class="it" data-act="logout"><span class="l">${ic("out", 18)}</span><span class="t">${L("p_out")}</span></button></div></section>`;
 }
 function vNews() {
-  const p = me && me.discount ? me.discount.pct : 0, el = disc();
-  return `<section class="screen"><div class="news"><span class="gi">${ic("gift", 26)}</span><div><b>${L("promo_t")}</b><p>${el ? L("n_promo", {p}) : (p ? L("n_used") : L("n_none"))}</p></div></div>
+  return `<section class="screen"><div class="news"><span class="gi">${ic("gift", 26)}</span><div><b>${L("promo_t")}</b><p>${L("n_none")}</p></div></div>
   ${CHANNEL ? `<button class="sbtn" data-act="chanopen">${ic("send", 22)} ${L("sup_ch")}</button>` : ""}</section>`;
 }
 const VIEWS = {home: vHome, form: vForm, success: vSuccess, orders: vOrders, support: vSupport, profile: vProfile, news: vNews};
