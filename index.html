@@ -35,6 +35,7 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 /* ===== Ekranlar ===== */
 #view{padding:6px 14px 0}
 .screen{animation:scrIn .38s cubic-bezier(.22,1,.36,1)}
+#view.still .screen{animation:none}
 @keyframes scrIn{from{opacity:0;transform:translateX(26px)}}
 .sec{display:flex;align-items:center;gap:8px;margin:22px 2px 12px;font-size:16px;font-weight:800}
 .sec span{font-size:18px}
@@ -66,7 +67,8 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 @keyframes rise{from{opacity:0;transform:translateY(20px) scale(.94)}}
 .pk:active{transform:scale(.93)}
 .pk.hot{border-color:var(--gold);box-shadow:0 0 0 2px rgba(255,200,61,.16),var(--shadow)}
-.pimg{display:block;object-fit:contain;filter:drop-shadow(0 5px 7px rgba(0,0,0,.5))}
+.pimg.ld{opacity:1}
+.pimg{opacity:0;transition:opacity .3s ease;display:block;object-fit:contain;filter:drop-shadow(0 5px 7px rgba(0,0,0,.5))}
 .pk .pimg{width:calc(100% - 12px);max-width:92px;height:62px;margin:0 0 6px}
 .pk b{font-size:19px;font-weight:900;line-height:1}
 .pk small{font-size:10px;letter-spacing:.14em;color:var(--muted);margin-top:2px}
@@ -350,7 +352,7 @@ const LOGO = `<svg class="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="2
 const BAD = new Set();
 function pic(src, cls, fb = "") {
   if (BAD.has(src)) return fb;
-  return `<img class="${cls}" src="${src}" alt="" data-s="${src}" data-fb="${encodeURIComponent(fb)}" onerror="picFail(this)">`;
+  return `<img class="${cls}" src="${src}" alt="" data-s="${src}" data-fb="${encodeURIComponent(fb)}" onload="this.classList.add('ld')" onerror="picFail(this)">`;
 }
 function picFail(el) { BAD.add(el.dataset.s); el.outerHTML = decodeURIComponent(el.dataset.fb); }
 const pkgImg = k => pic(k + ".png", "pimg", IMGMAP[k] ? pic(IMGMAP[k] + ".png", "pimg", pic("uc.png", "pimg")) : pic("uc.png", "pimg"));
@@ -447,7 +449,7 @@ function vProfile() {
   return `<section class="screen prof"><div class="ava">${esc(ini)}${u.photo_url ? `<img src="${esc(u.photo_url)}" alt="" onerror="this.remove()">` : ""}</div>
   <h2>${esc(name)}</h2><div class="un">${u.username ? "@" + esc(u.username) : ""}</div>
   <div class="card"><button class="it" data-act="copy" data-v="${u.id || ""}"><span class="l">${ic("user", 18)}</span><span class="t">ID: ${u.id || "—"}</span>${ic("copy", 18)}</button>
-    <div class="it"><span class="l">${ic("clip", 18)}</span><span class="t">${L("p_orders")}:</span><span class="v">${me ? me.orders : "—"}</span></div></div>
+    <div class="it"><span class="l">${ic("clip", 18)}</span><span class="t">${L("p_orders")}:</span><span class="v" id="ocnt">${me ? me.orders : "—"}</span></div></div>
   <div class="card" id="settings"><div class="it"><span class="l">${ic("bell", 18)}</span><span class="t">${L("p_notif")}</span><button class="sw${on ? " on" : ""}" data-act="notif" aria-label="notif"></button></div>
     <button class="it" data-act="shlang"><span class="l">${ic("globe", 18)}</span><span class="t">${L("p_lang")}</span><span class="v">${lang === "ru" ? "Русский" : "O'zbek"}</span>${ic("chev", 18)}</button>
     <button class="it" data-act="logout"><span class="l">${ic("out", 18)}</span><span class="t">${L("p_out")}</span></button></div></section>`;
@@ -462,8 +464,9 @@ const TITLES = {form: "order", orders: "orders", support: "support", profile: "p
 const TABMAP = {home: "home", form: "home", news: "home", orders: "orders", support: "support", profile: "profile"};
 
 // ===== Chizish =====
-function render() {
+function render(still) {
   const sc = S.screen;
+  $("#view").classList.toggle("still", !!still);   // ma'lumot yangilanganda sahifa qayta "kirmaydi"
   $("#app").classList.toggle("no-tabs", sc === "success");
   const brand = `${pic("logo.png", "logo", LOGO)}<div class="brand"><b>YAQUB UC SHOP</b><small>${L("sub")}</small></div>`;
   $("#top").innerHTML = sc === "home" ? brand
@@ -513,14 +516,18 @@ function back() {
 async function loadMe() {
   try {
     me = await api("/api/me");
+    const prev = lang;
     if (!LS.get("lang") && me.lang && I18N[me.lang]) lang = me.lang;
+    if (lang !== prev) { const y = window.scrollY; render(true); window.scrollTo(0, y); return; }
   } catch (e) { return; }
-  if (["home", "profile", "news"].includes(S.screen)) { const y = window.scrollY; render(); window.scrollTo(0, y); }
+  // Sahifani qayta chizmasdan, faqat o'zgargan joylarni yangilaymiz (miltillash bo'lmasin)
+  const c = $("#ocnt"); if (c) c.textContent = me.orders;
+  const sw = $(".sw"); if (sw) sw.classList.toggle("on", !!me.notify);
 }
 async function loadOrders() {
-  S.orders = null; S.ordErr = false; render();
+  S.orders = null; S.ordErr = false; render(true);
   try { S.orders = (await api("/api/orders")).orders; } catch (e) { S.ordErr = true; }
-  if (S.screen === "orders") render();
+  if (S.screen === "orders") render(true);
 }
 // ===== Harakatlar =====
 function applyTheme() {
