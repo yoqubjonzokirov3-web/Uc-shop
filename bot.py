@@ -5,7 +5,7 @@ from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunparse, u
 
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import CommandStart
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, MenuButtonWebApp, WebAppInfo
 from aiohttp import web
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
@@ -550,6 +550,11 @@ async def main():
     runner = web.AppRunner(app)
     await runner.setup()
     await web.TCPSite(runner, "0.0.0.0", int(os.environ.get("PORT", 10000))).start()
+    try:  # chatning pastki chap "Menu" tugmasi ham do'konni ochadi
+        await bot.set_chat_menu_button(menu_button=MenuButtonWebApp(
+            text="🛒 Do'kon", web_app=WebAppInfo(url=webapp_url())))
+    except Exception as e:
+        print("Menu tugmasini o'rnatib bo'lmadi:", e)
     if warn:
         try:
             await bot.send_message(ADMIN_ID, "⚠️ " + warn)
