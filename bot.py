@@ -397,18 +397,28 @@ async def order_action(cb: types.CallbackQuery):
         await cb.message.edit_reply_markup(reply_markup=admin_kb(oid))
         return await cb.answer()
 
+    async def finish(status_line: str, text: str, label: str):
+        """Avval mijozga xabar yuboradi, keyin admin xabarini yangilaydi. Xato bo'lsa, adminga ko'rsatadi."""
+        err = None
+        try:
+            await bot.send_message(o["user_id"], text, parse_mode="HTML")
+        except Exception as e:
+            err = str(e)[:150]
+            print("Mijozga xabar yuborilmadi:", o["user_id"], e)
+        try:
+            warn = f"\n\n⚠️ Mijozga xabar yuborilmadi: {escape(err)}" if err else ""
+            await cb.message.edit_text(admin_text(o, u, status_line) + warn, parse_mode="HTML", reply_markup=None)
+        except Exception as e:
+            print("Admin xabarini yangilab bo'lmadi:", e)
+        if err:
+            return await cb.answer(f"{label}, lekin mijozga xabar yuborilmadi: {err}"[:190], show_alert=True)
+        return await cb.answer(label)
+
     if act == "done":
         if not await q_exec("UPDATE orders SET status='done' WHERE id=? AND status='pending'", oid):
             return await cb.answer("Holat allaqachon o'zgargan", show_alert=True)
-        await cb.message.edit_text(admin_text(o, u, "✅ HOLAT: BAJARILDI"), parse_mode="HTML", reply_markup=None)
-        if not u or u["notify"]:
-            try:
-                await bot.send_message(o["user_id"], MSG[lang]["done"].format(
-                    code=o["code"], game=game_name(o["game"]), item=item_name(o["game"], o["item"])),
-                    parse_mode="HTML")
-            except Exception:
-                pass
-        return await cb.answer("Bajarildi")
+        txt = MSG[lang]["done"].format(code=o["code"], game=game_name(o["game"]), item=item_name(o["game"], o["item"]))
+        return await finish("✅ HOLAT: BAJARILDI", txt, "Bajarildi")
 
     if act == "cx":
         if not await q_exec("UPDATE orders SET status='cancelled' WHERE id=? AND status='pending'", oid):
@@ -422,17 +432,11 @@ async def order_action(cb: types.CallbackQuery):
                 await q_exec("UPDATE orders SET status='pending' WHERE id=?", oid)
                 await cb.message.edit_reply_markup(reply_markup=admin_kb(oid))
                 return await cb.answer(f"Stars qaytarilmadi: {str(e)[:150]}", show_alert=True)
-        await cb.message.edit_text(admin_text(o, u, "❌ HOLAT: BEKOR QILINDI" + (" (⭐ qaytarildi)" if refunded else "")),
-                                   parse_mode="HTML", reply_markup=None)
-        try:
-            if refunded:
-                txt = MSG[lang]["cancel_refund"].format(code=o["code"], stars=o["stars"])
-            else:
-                txt = MSG[lang]["cancel"].format(code=o["code"], support=SUPPORT)
-            await bot.send_message(o["user_id"], txt, parse_mode="HTML")
-        except Exception:
-            pass
-        return await cb.answer("Bekor qilindi")
+        if refunded:
+            txt = MSG[lang]["cancel_refund"].format(code=o["code"], stars=o["stars"])
+        else:
+            txt = MSG[lang]["cancel"].format(code=o["code"], support=SUPPORT)
+        return await finish("❌ HOLAT: BEKOR QILINDI" + (" (⭐ qaytarildi)" if refunded else ""), txt, "Bekor qilindi")
     await cb.answer()
 
 
