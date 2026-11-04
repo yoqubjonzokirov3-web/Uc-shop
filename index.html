@@ -119,8 +119,8 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 .succ .cta{margin-top:16px}
 
 /* ===== Tarix ===== */
-.chips{display:flex;gap:8px;margin:8px 0 14px;overflow-x:auto}
-.chip{padding:9px 18px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:14px;font-weight:700;white-space:nowrap}
+.chips{display:flex;gap:6px;margin:8px 0 14px;overflow-x:auto;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:1 0 auto;padding:9px 8px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:13px;font-weight:700;white-space:nowrap}
 .chip.on{background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink);border-color:transparent}
 .ord{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:12px;border-radius:16px;border:1px solid var(--line);background:var(--card);animation:rise .45s ease backwards;animation-delay:calc(var(--i) * 55ms)}
 .ord .pimg{width:64px;height:52px;flex:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
@@ -259,10 +259,10 @@ uz: {
   copied: "Nusxalandi",
   pay_err: "Buyurtmani yuborib bo'lmadi. Qaytadan urinib ko'ring.", bot_err: "Avval botga kirib /start bosing, keyin qayta urinib ko'ring.",
   s_t: "Buyurtma qabul qilindi!", s_d: "Karta ma'lumotlari botga yuborildi. Botga o'tib, to'lov chekini (skrinshot) yuboring.", s_no: "Buyurtma raqami", s_note: "Admin tekshirgach, UC hisobingizga tushiriladi.", to_home: "Bosh sahifaga qaytish",
-  orders: "Buyurtmalar tarixi", f_all: "Barcha", f_pending: "Jarayonda", f_done: "Bajarilgan", st_new: "To'lov kutilmoqda", st_pending: "Tekshirilmoqda", st_done: "Bajarilgan", st_cancelled: "Bekor qilingan",
+  orders: "Buyurtmalar tarixi", f_all: "Barcha", f_pending: "Jarayonda", f_done: "Bajarilgan", f_cancelled: "Bekor qilingan", st_new: "To'lov kutilmoqda", st_pending: "Tekshirilmoqda", st_done: "Bajarilgan", st_cancelled: "Bekor qilingan",
   o_empty: "Hozircha buyurtma yo'q", o_err: "Yuklab bo'lmadi. Keyinroq urinib ko'ring.",
   support: "Qo'llab-quvvatlash", sup_h: "Biz bilan bog'laning!", sup_d: "Savollaringiz bo'lsa, biz doimo siz bilanmiz.", sup_chat: "Chat ochish", sup_ch: "Telegram kanal",
-  profile: "Profil", p_orders: "Buyurtmalar", p_notif: "Bildirishnomalar", p_lang: "Til / Language", p_theme: "Mavzu", th_dark: "Qora rejim", th_light: "Yorug' rejim",
+  profile: "Profil", p_orders: "Buyurtmalar", p_notif: "Bildirishnomalar", p_lang: "Til", p_theme: "Mavzu", th_dark: "Qora rejim", th_light: "Yorug' rejim",
   p_out: "Chiqish", out_q: "Do'kondan chiqasizmi?", sh_lang: "Tilni tanlang", sh_theme: "Mavzuni tanlang",
   m_home: "Bosh sahifa", m_pick: "UC tanlash", m_orders: "Buyurtmalar tarixi", m_support: "Qo'llab-quvvatlash", m_profile: "Mening profilim", m_news: "Aksiya va yangiliklar", m_set: "Sozlamalar",
   tab_home: "Bosh sahifa", tab_orders: "Buyurtmalar", tab_support: "Qo'llab-quvvatlash", tab_profile: "Profil",
@@ -279,10 +279,10 @@ ru: {
   copied: "Скопировано",
   pay_err: "Не удалось отправить заказ. Попробуйте ещё раз.", bot_err: "Сначала зайдите в бота и нажмите /start, затем повторите.",
   s_t: "Заказ принят!", s_d: "Данные карты отправлены в бота. Перейдите в бота и отправьте чек (скриншот).", s_no: "Номер заказа", s_note: "После проверки админом UC будут зачислены.", to_home: "На главную",
-  orders: "История заказов", f_all: "Все", f_pending: "В процессе", f_done: "Выполнен", st_new: "Ожидает оплаты", st_pending: "Проверяется", st_done: "Выполнен", st_cancelled: "Отменён",
+  orders: "История заказов", f_all: "Все", f_pending: "В процессе", f_done: "Выполнен", f_cancelled: "Отменён", st_new: "Ожидает оплаты", st_pending: "Проверяется", st_done: "Выполнен", st_cancelled: "Отменён",
   o_empty: "Заказов пока нет", o_err: "Не удалось загрузить. Попробуйте позже.",
   support: "Поддержка", sup_h: "Свяжитесь с нами!", sup_d: "Если есть вопросы, мы всегда на связи.", sup_chat: "Открыть чат", sup_ch: "Telegram-канал",
-  profile: "Профиль", p_orders: "Заказы", p_notif: "Уведомления", p_lang: "Язык / Til", p_theme: "Тема", th_dark: "Тёмная тема", th_light: "Светлая тема",
+  profile: "Профиль", p_orders: "Заказы", p_notif: "Уведомления", p_lang: "Язык", p_theme: "Тема", th_dark: "Тёмная тема", th_light: "Светлая тема",
   p_out: "Выйти", out_q: "Выйти из магазина?", sh_lang: "Выберите язык", sh_theme: "Выберите тему",
   m_home: "Главная", m_pick: "Выбор UC", m_orders: "История заказов", m_support: "Поддержка", m_profile: "Мой профиль", m_news: "Акции и новости", m_set: "Настройки",
   tab_home: "Главная", tab_orders: "Заказы", tab_support: "Поддержка", tab_profile: "Профиль",
@@ -399,7 +399,7 @@ function vSuccess() {
 }
 function vOrders() {
   const f = S.filter;
-  const chips = ["all", "pending", "done"].map(k => `<button class="chip${f === k ? " on" : ""}" data-act="filter" data-f="${k}">${L("f_" + k)}</button>`).join("");
+  const chips = ["all", "pending", "done", "cancelled"].map(k => `<button class="chip${f === k ? " on" : ""}" data-act="filter" data-f="${k}">${L("f_" + k)}</button>`).join("");
   let body;
   if (S.orders === null && !S.ordErr) body = '<div class="sk"></div><div class="sk"></div><div class="sk"></div>';
   else if (S.ordErr) body = `<div class="empty"><i>⚠️</i>${L("o_err")}</div>`;
