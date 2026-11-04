@@ -407,7 +407,7 @@ function vOrders() {
   else {
     const list = S.orders.filter(o => f === "all" || o.st === f || (f === "pending" && o.st === "new"));
     body = list.length ? list.map((o, i) => { const it = (SHOP[o.g] || {items: {}}).items[o.i] || [LEGACY[o.i] || o.i, o.s];
-      return `<div class="ord" style="--i:${Math.min(i, 8)}">${pkgImg(o.i)}<div class="m"><b>${esc(it[0])}</b><span>${o.cur === "xtr" ? "⭐ " + o.s : fmtSum(o.s) + " so'm"}</span><small>${esc(o.c || "")}</small></div>
+      return `<div class="ord" style="--i:${Math.min(i, 8)}">${pkgImg(o.i)}<div class="m"><b>${esc(it[0])}</b><span>${o.cur === "xtr" ? "⭐ " + o.s : fmtSum(o.s) + " so'm"}</span></div>
       <div class="r"><span class="st ${o.st}">${L("st_" + o.st)}</span><small>${fmtDate(o.t)}</small></div></div>`; }).join("")
       : `<div class="empty"><i>🛒</i>${L("o_empty")}</div>`;
   }

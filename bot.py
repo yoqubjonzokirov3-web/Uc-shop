@@ -52,15 +52,15 @@ MSG = {
                  "📦 Paket: <b>{item} — {sum} so'm</b>\n🆔 PUBG ID: <code>{pid}</code>\n👑 Nickname: {nick}\n\n"
                  "💳 <b>To'lov uchun karta:</b>\n<code>{card}</code>\n👤 Egasi: <b>{owner}</b>\n\n"
                  "To'lovni amalga oshirgach, <b>to'lov chekini (skrinshot) shu yerga yuboring:</b>",
-        "received": "✅ <b>Chek qabul qilindi!</b>\n{code}\nAdmin tekshirib chiqadi. Tasdiqlangach UC hisobingizga tushiriladi.",
+        "received": "✅ <b>Chek qabul qilindi!</b>\nAdmin tekshirib chiqadi. Tasdiqlangach UC hisobingizga tushiriladi.",
         "extra": "✅ Qo'shimcha chek adminga yuborildi.",
         "again": "Chekingiz allaqachon yuborilgan, admin tekshirmoqda. Iltimos, kuting 🙏",
         "need_order": "Avval do'kon orqali buyurtma bering 👇",
         "need_receipt": "Iltimos, to'lov chekini <b>skrinshot (rasm)</b> ko'rinishida yuboring.",
         "fail": "❌ Chekni adminga yetkazib bo'lmadi. Qaytadan yuboring.",
-        "done": "✅ <b>Buyurtmangiz bajarildi!</b>\n{code}\n<b>{game} — {item}</b>\nUC hisobingizga tushdi. Rahmat! 🙏",
-        "cancel": "❌ <b>Buyurtmangiz bekor qilindi.</b>\n{code}\nSavollar bo'lsa: @{support}",
-        "cancel_refund": "❌ <b>Buyurtmangiz bekor qilindi.</b>\n{code}\n⭐ {stars} Stars hisobingizga qaytarildi.",
+        "done": "✅ <b>Buyurtmangiz bajarildi!</b>\n<b>{game} — {item}</b>\nUC hisobingizga tushdi. Rahmat! 🙏",
+        "cancel": "❌ <b>Buyurtmangiz bekor qilindi.</b>\nSavollar bo'lsa: @{support}",
+        "cancel_refund": "❌ <b>Buyurtmangiz bekor qilindi.</b>\n⭐ {stars} Stars hisobingizga qaytarildi.",
         "welcome": "Xush kelibsiz! Do'konni ochish uchun tugmani bosing 👇",
         "open": "🛒 Do'konni ochish",
     },
@@ -69,15 +69,15 @@ MSG = {
                  "📦 Пакет: <b>{item} — {sum} сум</b>\n🆔 PUBG ID: <code>{pid}</code>\n👑 Ник: {nick}\n\n"
                  "💳 <b>Карта для оплаты:</b>\n<code>{card}</code>\n👤 Владелец: <b>{owner}</b>\n\n"
                  "После оплаты <b>отправьте сюда чек (скриншот):</b>",
-        "received": "✅ <b>Чек получен!</b>\n{code}\nАдминистратор проверит оплату. После подтверждения UC будут зачислены.",
+        "received": "✅ <b>Чек получен!</b>\nАдминистратор проверит оплату. После подтверждения UC будут зачислены.",
         "extra": "✅ Дополнительный чек отправлен админу.",
         "again": "Чек уже отправлен, администратор проверяет. Пожалуйста, подождите 🙏",
         "need_order": "Сначала оформите заказ в магазине 👇",
         "need_receipt": "Пожалуйста, отправьте чек в виде <b>скриншота (картинки)</b>.",
         "fail": "❌ Не удалось передать чек админу. Отправьте ещё раз.",
-        "done": "✅ <b>Ваш заказ выполнен!</b>\n{code}\n<b>{game} — {item}</b>\nUC зачислены на аккаунт. Спасибо! 🙏",
-        "cancel": "❌ <b>Ваш заказ отменён.</b>\n{code}\nЕсли есть вопросы: @{support}",
-        "cancel_refund": "❌ <b>Ваш заказ отменён.</b>\n{code}\n⭐ {stars} Stars возвращены на ваш счёт.",
+        "done": "✅ <b>Ваш заказ выполнен!</b>\n<b>{game} — {item}</b>\nUC зачислены на аккаунт. Спасибо! 🙏",
+        "cancel": "❌ <b>Ваш заказ отменён.</b>\nЕсли есть вопросы: @{support}",
+        "cancel_refund": "❌ <b>Ваш заказ отменён.</b>\n⭐ {stars} Stars возвращены на ваш счёт.",
         "welcome": "Добро пожаловать! Нажмите кнопку, чтобы открыть магазин 👇",
         "open": "🛒 Открыть магазин",
     },
@@ -298,7 +298,7 @@ def admin_text(o, u, status: str) -> str:
     name = escape((u or {}).get("first_name") or "—")
     un = (u or {}).get("username")
     who = f"{name} (@{escape(un)})" if un else name
-    return (f"🔔 <b>Yangi buyurtma!</b> {o['code'] or ''}\n\n"
+    return (f"🔔 <b>Yangi buyurtma!</b>\n\n"
             f"👤 Xaridor: <b>{who}</b>\n"
             f"🆔 Telegram ID: <code>{o['user_id']}</code>\n"
             f"📦 Paket: <b>{item_name(o['game'], o['item'])} — {price_text(o)}</b>\n"
@@ -339,7 +339,7 @@ async def receipt(m: types.Message):
         if p and int(time.time()) - int(p["paid_ts"] or 0) < 900:
             try:  # qo'shimcha chek (masalan, 2-sahifa) — adminga o'tkaziladi
                 await bot.copy_message(ADMIN_ID, m.chat.id, m.message_id)
-                await bot.send_message(ADMIN_ID, f"➕ {p['code']} uchun qo'shimcha chek")
+                await bot.send_message(ADMIN_ID, f"➕ Qo'shimcha chek (Telegram ID: {p['user_id']})")
                 return await m.answer(MSG[lang]["extra"])
             except Exception:
                 pass
@@ -360,7 +360,7 @@ async def receipt(m: types.Message):
         print("Adminga yuborishda xato:", e)
         await q_exec("UPDATE orders SET status='new', paid_ts=NULL WHERE id=?", o["id"])
         return await m.answer(MSG[lang]["fail"])
-    await m.answer(MSG[lang]["received"].format(code=o["code"]), parse_mode="HTML")
+    await m.answer(MSG[lang]["received"].format(), parse_mode="HTML")
 
 
 @dp.message(F.text)
@@ -417,7 +417,7 @@ async def order_action(cb: types.CallbackQuery):
     if act == "done":
         if not await q_exec("UPDATE orders SET status='done' WHERE id=? AND status='pending'", oid):
             return await cb.answer("Holat allaqachon o'zgargan", show_alert=True)
-        txt = MSG[lang]["done"].format(code=o["code"], game=game_name(o["game"]), item=item_name(o["game"], o["item"]))
+        txt = MSG[lang]["done"].format(game=game_name(o["game"]), item=item_name(o["game"], o["item"]))
         return await finish("✅ HOLAT: BAJARILDI", txt, "Bajarildi")
 
     if act == "cx":
@@ -433,9 +433,9 @@ async def order_action(cb: types.CallbackQuery):
                 await cb.message.edit_reply_markup(reply_markup=admin_kb(oid))
                 return await cb.answer(f"Stars qaytarilmadi: {str(e)[:150]}", show_alert=True)
         if refunded:
-            txt = MSG[lang]["cancel_refund"].format(code=o["code"], stars=o["stars"])
+            txt = MSG[lang]["cancel_refund"].format(stars=o["stars"])
         else:
-            txt = MSG[lang]["cancel"].format(code=o["code"], support=SUPPORT)
+            txt = MSG[lang]["cancel"].format(support=SUPPORT)
         return await finish("❌ HOLAT: BEKOR QILINDI" + (" (⭐ qaytarildi)" if refunded else ""), txt, "Bekor qilindi")
     await cb.answer()
 
