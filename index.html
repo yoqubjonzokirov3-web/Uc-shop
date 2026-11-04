@@ -258,7 +258,7 @@ uz: {
   cont: "Buyurtma berish", e_pid: "ID 5–15 ta raqamdan iborat bo'lishi kerak", e_nick: "Nickname kiriting (20 belgigacha)",
   copied: "Nusxalandi",
   pay_err: "Buyurtmani yuborib bo'lmadi. Qaytadan urinib ko'ring.", bot_err: "Avval botga kirib /start bosing, keyin qayta urinib ko'ring.",
-  s_t: "Buyurtma qabul qilindi!", s_d: "Karta ma'lumotlari botga yuborildi. Botga o'tib, to'lov chekini (skrinshot) yuboring.", s_no: "Buyurtma raqami", s_note: "Admin tekshirgach, UC hisobingizga tushiriladi.", to_home: "Bosh sahifaga qaytish",
+  s_t: "Buyurtma qabul qilindi!", s_d: "Karta ma'lumotlari botga yuborildi. Botga o'tib, to'lov chekini (skrinshot) yuboring.", s_no: "Buyurtma raqami", s_note: "Admin tekshirgach, UC hisobingizga tushiriladi.", to_home: "Bosh sahifaga qaytish", to_bot: "Botga o'tish",
   orders: "Buyurtmalar tarixi", f_all: "Barchasi", f_pending: "Jarayonda", f_done: "Bajarilgan", f_cancelled: "Bekor qilingan", st_new: "To'lov kutilmoqda", st_pending: "Tekshirilmoqda", st_done: "Bajarilgan", st_cancelled: "Bekor qilingan",
   o_empty: "Hozircha buyurtma yo'q", o_err: "Yuklab bo'lmadi. Keyinroq urinib ko'ring.",
   support: "Qo'llab-quvvatlash", sup_h: "Biz bilan bog'laning!", sup_d: "Savollaringiz bo'lsa, biz doimo siz bilanmiz.", sup_chat: "Chat ochish", sup_ch: "Telegram kanal",
@@ -278,7 +278,7 @@ ru: {
   cont: "Оформить заказ", e_pid: "ID должен состоять из 5–15 цифр", e_nick: "Введите ник (до 20 символов)",
   copied: "Скопировано",
   pay_err: "Не удалось отправить заказ. Попробуйте ещё раз.", bot_err: "Сначала зайдите в бота и нажмите /start, затем повторите.",
-  s_t: "Заказ принят!", s_d: "Данные карты отправлены в бота. Перейдите в бота и отправьте чек (скриншот).", s_no: "Номер заказа", s_note: "После проверки админом UC будут зачислены.", to_home: "На главную",
+  s_t: "Заказ принят!", s_d: "Данные карты отправлены в бота. Перейдите в бота и отправьте чек (скриншот).", s_no: "Номер заказа", s_note: "После проверки админом UC будут зачислены.", to_home: "На главную", to_bot: "Перейти в бота",
   orders: "История заказов", f_all: "Все", f_pending: "В процессе", f_done: "Выполнен", f_cancelled: "Отменён", st_new: "Ожидает оплаты", st_pending: "Проверяется", st_done: "Выполнен", st_cancelled: "Отменён",
   o_empty: "Заказов пока нет", o_err: "Не удалось загрузить. Попробуйте позже.",
   support: "Поддержка", sup_h: "Свяжитесь с нами!", sup_d: "Если есть вопросы, мы всегда на связи.", sup_chat: "Открыть чат", sup_ch: "Telegram-канал",
@@ -395,7 +395,8 @@ function vSuccess() {
   <div class="okring"><svg viewBox="0 0 120 120" fill="none"><circle class="c" cx="60" cy="60" r="54" stroke="#2fd27a" stroke-width="7" stroke-linecap="round" transform="rotate(-90 60 60)"/><polyline class="t" points="36,62 54,80 86,42" stroke="#2fd27a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
   <h1>${L("s_t")}</h1><p>${L("s_d")}</p>
   <div class="info"><span class="ii">${ic("check", 20)}</span><div>${L("s_note")}</div></div>
-  <button class="cta" data-act="nav" data-to="home">${ic("home", 22)} ${L("to_home")}</button></section>`;
+  <button class="cta" style="margin-bottom:12px" data-act="tobot">${ic("send", 22)} ${L("to_bot")}</button>
+  <button class="sbtn" data-act="nav" data-to="home">${ic("home", 22)} ${L("to_home")}</button></section>`;
 }
 function vOrders() {
   const f = S.filter;
@@ -536,6 +537,7 @@ const ACT = {
     if (!okNick(S.nick)) return mark("#f-nick", L("e_nick"));
     LS.set("pid", S.pid); LS.set("nick", S.nick); hap(); place();
   },
+  tobot: () => { hap(); try { tg.close(); } catch (e) {} },   // Mini App yopiladi, mijoz bot chatiga qaytadi
   copy: el => el.dataset.v && copy(el.dataset.v),
   filter: el => { S.filter = el.dataset.f; hap(); render(); },
   chatopen: () => { hap(); const u = "https://t.me/" + SUPPORT; try { tg.openTelegramLink(u); } catch (e) { location.href = u; } },
