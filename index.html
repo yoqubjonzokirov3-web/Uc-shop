@@ -520,7 +520,6 @@ async function place() {
   try {
     await api("/api/place", {g: "pubg", i: S.pkg, p: S.pid, n: S.nick});
     end(); note("success"); S.stack = []; S.screen = "success"; window.scrollTo(0, 0); render();
-    setTimeout(() => { try { tg.close(); } catch (e) {} }, 700);   // Mini App yopiladi, mijoz botdagi xabarni ko'radi
   } catch (e) { end(); alertMsg(/409/.test(e.message) ? L("bot_err") : L("pay_err")); }
 }
 function setLang(l) {
