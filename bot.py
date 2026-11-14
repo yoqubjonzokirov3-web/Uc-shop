@@ -4,7 +4,7 @@ from html import escape
 from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunparse, urlunsplit
 
 from aiogram import Bot, Dispatcher, F, types
-from aiogram.filters import Command, CommandStart
+from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, MenuButtonWebApp, WebAppInfo
 from aiohttp import web
 
@@ -319,20 +319,6 @@ async def start(m: types.Message):
                        "username": m.from_user.username, "language_code": m.from_user.language_code})
     lang = await user_lang(m.from_user.id)
     await m.answer(MSG[lang]["welcome"], reply_markup=open_kb(lang))
-
-
-@dp.message(Command("pending"))
-async def pending(m: types.Message):
-    if m.from_user.id != ADMIN_ID:
-        return
-    rows = await q_all("SELECT * FROM orders WHERE status='pending' ORDER BY id LIMIT 20")
-    if not rows:
-        return await m.answer("✅ Kutilayotgan buyurtma yo'q.")
-    await m.answer(f"⏳ Kutilayotgan buyurtmalar: <b>{len(rows)}</b>", parse_mode="HTML")
-    for o in rows:
-        u = await get_user(o["user_id"])
-        await m.answer(admin_text(o, u, "⏳ HOLAT: KUTILMOQDA"),
-                       parse_mode="HTML", reply_markup=admin_kb(o["id"]))
 
 
 def is_receipt(m: types.Message) -> bool:
