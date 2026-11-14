@@ -298,8 +298,7 @@ def admin_text(o, u, status: str) -> str:
     name = escape((u or {}).get("first_name") or "—")
     un = (u or {}).get("username")
     who = f"{name} (@{escape(un)})" if un else name
-    code = f"🧾 Raqam: <code>{escape(o['code'])}</code>\n" if o.get("code") else ""
-    return (f"🔔 <b>Yangi buyurtma!</b>\n\n{code}"
+    return (f"🔔 <b>Yangi buyurtma!</b>\n\n"
             f"👤 Xaridor: <b>{who}</b>\n"
             f"🆔 Telegram ID: <code>{o['user_id']}</code>\n"
             f"📦 Paket: <b>{item_name(o['game'], o['item'])} — {price_text(o)}</b>\n"
