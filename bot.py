@@ -551,7 +551,7 @@ async def place_api(request):
         print("Mijozga xabar yuborib bo'lmadi:", e)
         await q_exec("DELETE FROM orders WHERE id=?", oid)
         return web.json_response({"error": "nobot"}, status=409)
-    return web.json_response({"ok": True, "id": oid})
+    return web.json_response({"ok": True, "id": oid, "card": CARD_NUMBER, "owner": CARD_OWNER})
 
 
 async def main():

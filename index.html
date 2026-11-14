@@ -17,6 +17,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;paddin
 #app{position:relative;z-index:1;max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 #app.no-tabs{padding-bottom:28px}
 #app.no-tabs #tabs{display:none}
+#app.has-bar{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
 
 /* ===== Yuqori panel ===== */
 #top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--topbg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -66,6 +67,9 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 .pk .pr{margin-top:7px;padding:3px 9px;border-radius:14px;background:rgba(255,200,61,.14);color:var(--gold);font-size:12.5px;font-weight:800;white-space:nowrap}
 .pk .pr s{color:var(--muted);font-weight:600;font-size:10px;margin-left:3px}
 .pr small,.gold small{margin:0;letter-spacing:0;font-size:.62em;font-weight:700;color:inherit;opacity:.85}
+.sv{position:absolute;top:11px;right:7px;padding:2px 6px;border-radius:8px;background:linear-gradient(90deg,#27c46d,#2fd27a);color:#04210f;font-size:11px;font-weight:900;font-style:normal}
+.per{display:block;margin-top:6px;color:var(--muted);font-size:13px;font-weight:600}
+.per b{margin-left:4px;padding:1px 6px;border-radius:7px;background:rgba(47,210,122,.2);color:var(--green);font-size:12px}
 .flag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;font-size:10.5px;font-weight:900;padding:2px 8px;border-radius:9px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink)}
 
 /* ===== Forma ===== */
@@ -90,6 +94,17 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 .warn p{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--text);opacity:.88}
 .cta{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;border-radius:16px;background:linear-gradient(90deg,var(--gold),var(--gold2));color:var(--ink);font-size:18px;font-weight:900;box-shadow:0 8px 24px rgba(255,154,31,.35);transition:transform .15s}
 .cta:active{transform:scale(.97)}
+.crow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 14px;border-bottom:1px solid rgba(100,140,255,.14);font-size:15px}
+.crow:last-child{border-bottom:0}
+.crow span{color:var(--muted);flex:none}
+.crow b{text-align:right;word-break:break-all;font-size:16px}
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:30;max-width:520px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:var(--topbg);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+#bar:empty{display:none}
+#bar .sum{flex:none;max-width:44%;min-width:0}
+#bar .sum i{display:block;font-style:normal;font-size:12px;color:var(--muted)}
+#bar .sum b{display:block;color:var(--gold);font-size:18px;font-weight:900;white-space:nowrap}
+#bar .sum b small{font-size:.62em;font-weight:700;opacity:.85}
+#bar .cta{flex:1;width:auto;padding:14px 10px;font-size:16px}
 .cta.busy{pointer-events:none;opacity:.75}
 .cta.busy::after{content:"";width:18px;height:18px;border-radius:50%;border:3px solid rgba(26,18,6,.3);border-top-color:var(--ink);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -108,6 +123,26 @@ img.logo{height:44px;width:auto;min-width:44px;max-width:130px}
 .okring .c{stroke-dasharray:340;stroke-dashoffset:340;animation:draw .7s .1s ease forwards}
 .okring .t{stroke-dasharray:80;stroke-dashoffset:80;animation:draw .5s .65s ease forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
+.succ .sky{height:160px}
+.succ .okring{top:14px;width:110px;height:110px;margin-left:-55px}
+.steps{display:flex;gap:4px;margin:4px 0 18px}
+.stp{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--muted);font-size:11px;font-weight:700}
+.stp::before{content:"";position:absolute;top:13px;left:-50%;width:100%;height:2px;background:var(--line)}
+.stp:first-child::before{display:none}
+.stp i{position:relative;z-index:1;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12px;font-weight:900;border:1.5px solid var(--line);background:var(--card)}
+.stp.ok,.stp.cur{color:var(--text)}
+.stp.ok::before,.stp.cur::before{background:var(--green)}
+.stp.ok i{background:var(--green);border-color:var(--green);color:#04210f}
+.stp.cur i{background:linear-gradient(90deg,var(--gold),var(--gold2));border-color:transparent;color:var(--ink)}
+.paycard{margin:0 0 14px;padding:14px 14px 12px;text-align:left;border-radius:18px;border:1px solid rgba(255,200,61,.5);background:linear-gradient(120deg,#2b2410,var(--card2) 60%,var(--card));box-shadow:0 0 26px rgba(255,200,61,.12)}
+.paycard .pt{margin-bottom:4px;color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.prow{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 0;text-align:left;border-bottom:1px solid rgba(100,140,255,.16)}
+.prow.last{border-bottom:0}
+.prow small{display:block;margin-bottom:2px;color:var(--muted);font-size:12px}
+.prow b{font-size:16px}
+.prow .cn{font-size:19px;letter-spacing:.05em;font-variant-numeric:tabular-nums}
+.prow svg{color:#7fb0ff}
+.paycard .pn{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.4}
 .succ h1{margin:6px 0 8px;font-size:23px;line-height:1.2}
 .succ p{margin:0 0 20px;color:var(--muted);font-size:15px}
 .info{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:13px 14px;text-align:left;border-radius:14px;border:1px solid var(--line);background:var(--card)}
@@ -217,6 +252,7 @@ body.dr .di{animation:dIn .5s cubic-bezier(.22,1,.36,1) forwards;animation-delay
 </head>
 <body>
 <div id="app"><header id="top"></header><main id="view"></main><nav id="tabs"></nav></div>
+<div id="bar"></div>
 <div id="ov" data-act="dclose"></div>
 <aside id="drawer"></aside>
 <div id="sheet"></div>
@@ -239,6 +275,10 @@ const SHOP = {pubg: {name: "PUBG MOBILE", items: {
 const IMGMAP = {uc120: "uc60", uc180: "uc60", uc240: "uc325", uc385: "uc325", uc720: "uc660", uc2460: "uc1800", uc5650: "uc3850"};
 const LEGACY = {uc3850: "3850 UC"};   // eski buyurtmalar tarixi uchun
 const ITEMS = Object.entries(SHOP.pubg.items);
+// Tejamkorlik: 1 UC narxi eng kichik paketga nisbatan qancha arzon (5% dan kam bo'lsa ko'rsatilmaydi)
+const perUc = k => { const [n, s] = SHOP.pubg.items[k]; return s / parseInt(n, 10); };
+const BASE_UC = perUc(ITEMS[0][0]);
+const saving = k => { const p = Math.round((1 - perUc(k) / BASE_UC) * 100); return p >= 5 ? p : 0; };
 
 // ===== Matnlar =====
 const I18N = {
@@ -260,7 +300,12 @@ uz: {
   m_home: "Bosh sahifa", m_pick: "UC tanlash", m_orders: "Buyurtmalar tarixi", m_support: "Qo'llab-quvvatlash", m_profile: "Mening profilim", m_news: "Aksiya va yangiliklar", m_set: "Sozlamalar",
   tab_home: "Bosh sahifa", tab_orders: "Buyurtmalar", tab_support: "Qo'llab-quvvatlash", tab_profile: "Profil",
   banner: "Ishonchli va sifatli!", news: "Aksiya va yangiliklar",
-  n_none: "Hozircha yangi aksiyalar yo'q."
+  n_none: "Hozircha yangi aksiyalar yo'q.",
+  next: "Davom etish", conf_t: "Tasdiqlash", send: "Tasdiqlash", c_pkg: "Paket", c_price: "Narxi", per_uc: "1 UC = {v} so'm",
+  conf_d: "Ma'lumotlarni tekshiring. ID xato bo'lsa, UC boshqa akkauntga tushib ketishi mumkin va qaytarib bo'lmaydi.",
+  st1: "Buyurtma", st2: "To'lov", st3: "Chek", st4: "UC tushadi",
+  pay_t: "To'lov ma'lumotlari", pay_sum: "To'lov summasi", pay_card: "Karta raqami", pay_owner: "Karta egasi",
+  pay_note: "To'lovni o'tkazing, so'ng botga o'tib chekni (skrinshot) yuboring."
 },
 ru: {
   sub: "PREMIUM GAME STORE", hero: "Покупать UC стало ещё проще!", pick: "Выберите пакет UC",
@@ -280,7 +325,12 @@ ru: {
   m_home: "Главная", m_pick: "Выбор UC", m_orders: "История заказов", m_support: "Поддержка", m_profile: "Мой профиль", m_news: "Акции и новости", m_set: "Настройки",
   tab_home: "Главная", tab_orders: "Заказы", tab_support: "Поддержка", tab_profile: "Профиль",
   banner: "Надёжно и качественно!", news: "Акции и новости",
-  n_none: "Пока нет новых акций."
+  n_none: "Пока нет новых акций.",
+  next: "Продолжить", conf_t: "Подтверждение", send: "Подтвердить", c_pkg: "Пакет", c_price: "Цена", per_uc: "1 UC = {v} сум",
+  conf_d: "Проверьте данные. При неверном ID UC могут уйти на чужой аккаунт, вернуть их будет нельзя.",
+  st1: "Заказ", st2: "Оплата", st3: "Чек", st4: "UC придут",
+  pay_t: "Данные для оплаты", pay_sum: "Сумма к оплате", pay_card: "Номер карты", pay_owner: "Владелец карты",
+  pay_note: "Переведите оплату, затем перейдите в бота и отправьте чек (скриншот)."
 }};
 
 // ===== Yordamchilar =====
@@ -366,24 +416,45 @@ function vHome() {
     ${pic("uc.png", "hero-img")}</div>
   <h2 class="sec" id="picks"><span>💎</span>${L("pick")}</h2>
   <div class="pgrid">${ITEMS.map(([k, [n, s]], i) => `<button class="pk${k === POPULAR ? " hot" : ""}" style="--i:${i}" data-act="pick" data-k="${k}">
-    ${k === POPULAR ? `<em class="flag">🔥 ${L("popular")}</em>` : ""}${pkgImg(k)}<b>${n.split(" ")[0]}</b><small>UC</small><span class="pr">${priceHtml(s)}</span></button>`).join("")}</div></section>`;
+    ${k === POPULAR ? `<em class="flag">🔥 ${L("popular")}</em>` : ""}${saving(k) ? `<em class="sv">-${saving(k)}%</em>` : ""}${pkgImg(k)}<b>${n.split(" ")[0]}</b><small>UC</small><span class="pr">${priceHtml(s)}</span></button>`).join("")}</div></section>`;
 }
 function vForm() {
   const [n, s] = SHOP.pubg.items[S.pkg];
   return `<section class="screen">
-  <div class="pkgcard">${pkgImg(S.pkg)}<div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span></div>${S.pkg === POPULAR ? `<span class="pill">${L("popular")}</span>` : ""}</div>
+  <div class="pkgcard">${pkgImg(S.pkg)}<div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span>${perHtml(S.pkg)}</div>${S.pkg === POPULAR ? `<span class="pill">${L("popular")}</span>` : ""}</div>
   <h2 class="sec">${L("player")}</h2>
   <div class="fld" id="f-pid"><span class="fi">${ic("user", 22)}</span><div class="fb"><small>${L("pid")}</small><input id="pid" inputmode="numeric" maxlength="15" autocomplete="off" placeholder="${L("pid_ph")}" value="${esc(S.pid)}"></div><button class="help" data-act="help">${ic("help", 20)}</button></div>
   <div class="fld" id="f-nick"><span class="fi">👑</span><div class="fb"><small>${L("nick")}</small><input id="nick" maxlength="20" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${L("nick_ph")}" value="${esc(S.nick)}"></div></div>
-  <div class="warn">${ic("alert", 26)}<div><b>${L("warn_t")}</b><p>${L("warn_d")}</p></div></div>
-  <button class="cta" data-act="cont">${L("cont")} ${ic("arrow", 22)}</button></section>`;
+  <div class="warn">${ic("alert", 26)}<div><b>${L("warn_t")}</b><p>${L("warn_d")}</p></div></div></section>`;
 }
+const perHtml = k => { const v = saving(k); return `<span class="per">${L("per_uc", {v: fmtSum(Math.round(perUc(k)))})}${v ? `<b>-${v}%</b>` : ""}</span>`; };
+function vConfirm() {
+  const [n, s] = SHOP.pubg.items[S.pkg];
+  return `<section class="screen">
+  <div class="pkgcard">${pkgImg(S.pkg)}<div><b class="big">${n}</b><span class="gold">${priceHtml(s)}</span>${perHtml(S.pkg)}</div></div>
+  <h2 class="sec">${L("player")}</h2>
+  <div class="card"><div class="crow"><span>${L("c_pkg")}</span><b>${n}</b></div><div class="crow"><span>${L("c_price")}</span><b>${priceHtml(s)}</b></div>
+    <div class="crow"><span>${L("pid")}</span><b>${esc(S.pid)}</b></div><div class="crow"><span>${L("nick")}</span><b>${esc(S.nick)}</b></div></div>
+  <div class="warn">${ic("alert", 26)}<div><b>${L("warn_t")}</b><p>${L("conf_d")}</p></div></div></section>`;
+}
+// Pastki yopishqoq panel: tanlangan paket + narx + asosiy tugma
+const barHtml = (act, label) => { const [n, s] = SHOP.pubg.items[S.pkg];
+  return `<div class="sum"><i>${n}</i><b>${priceHtml(s)}</b></div><button class="cta" data-act="${act}">${label} ${ic("arrow", 22)}</button>`; };
+const BARS = {form: () => barHtml("cont", L("next")), confirm: () => barHtml("send", L("send"))};
+const fmtCard = c => String(c).replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim();
 const PARA = `<svg class="para ${"{c}"}" viewBox="0 0 60 80" fill="none"><path d="M4 28C4 10 16 2 30 2s26 8 26 26c-6-5-12-5-18 0-5-5-11-5-16 0-6-5-12-5-18 0z" fill="#ffc83d" stroke="#ff9a1f" stroke-width="2"/><path d="M4 28L28 62M30 28v34M56 28L32 62" stroke="#9fb6ff" stroke-width="1.5"/><rect x="24" y="60" width="12" height="12" rx="2" fill="#2f7bff"/></svg>`;
 function vSuccess() {
+  const p = S.paid || {}, it = SHOP.pubg.items[p.k || S.pkg];
+  const steps = ["st1", "st2", "st3", "st4"].map((k, i) => `<div class="stp${i === 0 ? " ok" : i === 1 ? " cur" : ""}"><i>${i === 0 ? ic("check", 14) : i + 1}</i><span>${L(k)}</span></div>`).join("");
+  const pay = p.card ? `<div class="paycard"><div class="pt">${L("pay_t")}</div>
+    <button class="prow" data-act="copy" data-v="${it[1]}"><span><small>${L("pay_sum")}</small><b class="gold">${priceHtml(it[1])}</b></span>${ic("copy", 20)}</button>
+    <button class="prow" data-act="copy" data-v="${esc(p.card.replace(/\D/g, ""))}"><span><small>${L("pay_card")}</small><b class="cn">${esc(fmtCard(p.card))}</b></span>${ic("copy", 20)}</button>
+    <div class="prow last"><span><small>${L("pay_owner")}</small><b>${esc(p.owner || "")}</b></span></div>
+    <p class="pn">${L("pay_note")}</p></div>` : `<div class="info"><span class="ii">${ic("check", 20)}</span><div>${L("s_note")}</div></div>`;
   return `<section class="screen succ"><div class="sky">${PARA.replace("{c}", "l")}${PARA.replace("{c}", "r")}
   <div class="okring"><svg viewBox="0 0 120 120" fill="none"><circle class="c" cx="60" cy="60" r="54" stroke="#2fd27a" stroke-width="7" stroke-linecap="round" transform="rotate(-90 60 60)"/><polyline class="t" points="36,62 54,80 86,42" stroke="#2fd27a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
   <h1>${L("s_t")}</h1><p>${L("s_d")}</p>
-  <div class="info"><span class="ii">${ic("check", 20)}</span><div>${L("s_note")}</div></div>
+  <div class="steps">${steps}</div>${pay}
   <button class="cta" style="margin-bottom:12px" data-act="tobot">${ic("send", 22)} ${L("to_bot")}</button>
   <button class="sbtn" data-act="nav" data-to="home">${ic("home", 22)} ${L("to_home")}</button></section>`;
 }
@@ -423,15 +494,18 @@ function vNews() {
   return `<section class="screen"><div class="news"><span class="gi">${ic("gift", 26)}</span><div><b>${L("promo_t")}</b><p>${L("n_none")}</p></div></div>
   ${CHANNEL ? `<button class="sbtn" data-act="chanopen">${ic("send", 22)} ${L("sup_ch")}</button>` : ""}</section>`;
 }
-const VIEWS = {home: vHome, form: vForm, success: vSuccess, orders: vOrders, support: vSupport, profile: vProfile, news: vNews};
-const TITLES = {form: "order", orders: "orders", support: "support", profile: "profile", news: "news"};
-const TABMAP = {home: "home", form: "home", news: "home", orders: "orders", support: "support", profile: "profile"};
+const VIEWS = {home: vHome, form: vForm, confirm: vConfirm, success: vSuccess, orders: vOrders, support: vSupport, profile: vProfile, news: vNews};
+const TITLES = {form: "order", confirm: "conf_t", orders: "orders", support: "support", profile: "profile", news: "news"};
+const TABMAP = {home: "home", form: "home", confirm: "home", news: "home", orders: "orders", support: "support", profile: "profile"};
 
 // ===== Chizish =====
 function render(still) {
   const sc = S.screen;
   $("#view").classList.toggle("still", !!still);   // ma'lumot yangilanganda sahifa qayta "kirmaydi"
-  $("#app").classList.toggle("no-tabs", sc === "success");
+  const bar = BARS[sc];   // forma va tasdiqlash ekranida pastki menyu o'rniga yopishqoq panel
+  $("#app").classList.toggle("no-tabs", sc === "success" || !!bar);
+  $("#app").classList.toggle("has-bar", !!bar);
+  $("#bar").innerHTML = bar ? bar() : "";
   const brand = `${pic("logo.png", "logo", LOGO)}<div class="brand"><b>YAQUB UC SHOP</b><small>${L("sub")}</small></div>`;
   $("#top").innerHTML = sc === "home" ? brand
     : sc === "success" ? brand
@@ -443,7 +517,7 @@ function render(still) {
   try { sc === "home" ? tg.BackButton.hide() : tg.BackButton.show(); } catch (e) {}
 }
 function renderDrawer() {
-  const cur = S.screen === "home" || S.screen === "form" ? "home" : S.screen;
+  const cur = ["home", "form", "confirm"].includes(S.screen) ? "home" : S.screen;
   const items = [["home", "home", "m_home"], ["pick", "grid", "m_pick"], ["orders", "clip", "m_orders"], ["support", "head", "m_support"], ["profile", "user", "m_profile"], ["news", "gift", "m_news"], ["settings", "sliders", "m_set"]];
   $("#drawer").innerHTML = `<div class="dh">${pic("logo.png", "logo", LOGO)}<div><b>YAQUB UC SHOP</b><small>Premium Game Store</small></div><button class="rb" data-act="dclose">${ic("x", 20)}</button></div>
   <nav class="dnav">${items.map(([to, i, k], n) => `<button class="di${cur === to ? " on" : ""}" style="--i:${n}" data-act="nav" data-to="${to}">${ic(i, 22)}<span>${L(k)}</span><i class="ch">${ic("chev", 18)}</i></button>`).join("")}</nav>
@@ -501,10 +575,11 @@ function applyTheme() {
 function mark(id, msg) { const f = $(id); f.classList.remove("bad"); void f.offsetWidth; f.classList.add("bad"); const i = f.querySelector("input"); i && i.focus(); toast(msg); note("error"); }
 async function place() {
   if (S.busy) return;
-  const b = $(".cta[data-act=cont]"); S.busy = true; b && b.classList.add("busy");
-  const end = () => { S.busy = false; const x = $(".cta[data-act=cont]"); x && x.classList.remove("busy"); };
+  const b = $(".cta[data-act=send]"); S.busy = true; b && b.classList.add("busy");
+  const end = () => { S.busy = false; const x = $(".cta[data-act=send]"); x && x.classList.remove("busy"); };
   try {
-    await api("/api/place", {g: "pubg", i: S.pkg, p: S.pid, n: S.nick});
+    const r = await api("/api/place", {g: "pubg", i: S.pkg, p: S.pid, n: S.nick});
+    S.paid = {k: S.pkg, card: r.card || "", owner: r.owner || ""};
     end(); note("success"); S.stack = []; S.screen = "success"; window.scrollTo(0, 0); render();
   } catch (e) { end(); alertMsg(/409/.test(e.message) ? L("bot_err") : L("pay_err")); }
 }
@@ -520,8 +595,9 @@ const ACT = {
     S.pid = ($("#pid").value || "").trim(); S.nick = ($("#nick").value || "").replace(/\s+/g, " ").trim();
     if (!okPid(S.pid)) return mark("#f-pid", L("e_pid"));
     if (!okNick(S.nick)) return mark("#f-nick", L("e_nick"));
-    LS.set("pid", S.pid); LS.set("nick", S.nick); hap(); place();
+    LS.set("pid", S.pid); LS.set("nick", S.nick); hap(); nav("confirm", true);
   },
+  send: () => { hap(); place(); },
   tobot: () => { hap(); try { tg.close(); } catch (e) {} },   // Mini App yopiladi, mijoz bot chatiga qaytadi
   copy: el => el.dataset.v && copy(el.dataset.v),
   filter: el => { S.filter = el.dataset.f; hap(); render(); },
