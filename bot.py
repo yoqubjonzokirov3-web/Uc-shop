@@ -4,7 +4,7 @@ from html import escape
 from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunparse, urlunsplit
 
 from aiogram import Bot, Dispatcher, F, types
-from aiogram.filters import CommandStart
+from aiogram.filters import Command, CommandStart
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, MenuButtonWebApp, WebAppInfo
 from aiohttp import web
 
@@ -184,7 +184,7 @@ async def db_init():
     await q_exec(
         "CREATE TABLE IF NOT EXISTS users("
         "user_id BIGINT PRIMARY KEY, first_name TEXT, username TEXT, "
-        "notify INTEGER NOT NULL DEFAULT 1, lang TEXT NOT NULL DEFAULT 'uz', created_at BIGINT NOT NULL)")
+        "lang TEXT NOT NULL DEFAULT 'uz', created_at BIGINT NOT NULL)")
     await q_exec(
         f"CREATE TABLE IF NOT EXISTS orders(id {auto}, code TEXT, day TEXT, seq INTEGER, "
         "user_id BIGINT NOT NULL, game TEXT, item TEXT, pid TEXT, nick TEXT, "
@@ -202,9 +202,9 @@ async def db_init():
 async def upsert_user(u: dict):
     lang = "ru" if str(u.get("language_code") or "").startswith("ru") else "uz"
     await q_exec(
-        "INSERT INTO users(user_id, first_name, username, notify, lang, created_at) "
-        "VALUES (?,?,?,?,?,?) ON CONFLICT(user_id) DO NOTHING",
-        u["id"], u.get("first_name") or "", u.get("username") or "", 1, lang, int(time.time()))
+        "INSERT INTO users(user_id, first_name, username, lang, created_at) "
+        "VALUES (?,?,?,?,?) ON CONFLICT(user_id) DO NOTHING",
+        u["id"], u.get("first_name") or "", u.get("username") or "", lang, int(time.time()))
     await q_exec("UPDATE users SET first_name=?, username=? WHERE user_id=?",
                  u.get("first_name") or "", u.get("username") or "", u["id"])
 
@@ -298,7 +298,8 @@ def admin_text(o, u, status: str) -> str:
     name = escape((u or {}).get("first_name") or "—")
     un = (u or {}).get("username")
     who = f"{name} (@{escape(un)})" if un else name
-    return (f"🔔 <b>Yangi buyurtma!</b>\n\n"
+    code = f"🧾 Raqam: <code>{escape(o['code'])}</code>\n" if o.get("code") else ""
+    return (f"🔔 <b>Yangi buyurtma!</b>\n\n{code}"
             f"👤 Xaridor: <b>{who}</b>\n"
             f"🆔 Telegram ID: <code>{o['user_id']}</code>\n"
             f"📦 Paket: <b>{item_name(o['game'], o['item'])} — {price_text(o)}</b>\n"
@@ -318,6 +319,20 @@ async def start(m: types.Message):
                        "username": m.from_user.username, "language_code": m.from_user.language_code})
     lang = await user_lang(m.from_user.id)
     await m.answer(MSG[lang]["welcome"], reply_markup=open_kb(lang))
+
+
+@dp.message(Command("pending"))
+async def pending(m: types.Message):
+    if m.from_user.id != ADMIN_ID:
+        return
+    rows = await q_all("SELECT * FROM orders WHERE status='pending' ORDER BY id LIMIT 20")
+    if not rows:
+        return await m.answer("✅ Kutilayotgan buyurtma yo'q.")
+    await m.answer(f"⏳ Kutilayotgan buyurtmalar: <b>{len(rows)}</b>", parse_mode="HTML")
+    for o in rows:
+        u = await get_user(o["user_id"])
+        await m.answer(admin_text(o, u, "⏳ HOLAT: KUTILMOQDA"),
+                       parse_mode="HTML", reply_markup=admin_kb(o["id"]))
 
 
 def is_receipt(m: types.Message) -> bool:
@@ -471,8 +486,7 @@ async def me_api(request):
         return deny()
     await upsert_user(u)
     row = await get_user(u["id"])
-    return web.json_response({
-        "notify": bool(row["notify"]), "lang": row["lang"], "orders": await user_orders_count(u["id"])})
+    return web.json_response({"lang": row["lang"], "orders": await user_orders_count(u["id"])})
 
 
 async def orders_api(request):
@@ -511,8 +525,6 @@ async def settings_api(request):
     except Exception:
         return web.json_response({"error": "bad"}, status=400)
     await upsert_user(u)
-    if "notify" in d:
-        await q_exec("UPDATE users SET notify=? WHERE user_id=?", 1 if d["notify"] else 0, u["id"])
     if d.get("lang") in ("uz", "ru"):
         await q_exec("UPDATE users SET lang=? WHERE user_id=?", d["lang"], u["id"])
     return web.json_response({"ok": True})
